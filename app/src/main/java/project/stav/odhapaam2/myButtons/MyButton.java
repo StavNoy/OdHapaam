@@ -28,11 +28,16 @@ public class MyButton extends TextView {
     }
 
     private int yPos;
-    public int TYPE=0;
+
+    public int getTYPE() {
+        return TYPE;
+    }
+
+    private int TYPE=0;
 
     public MyButton(Context context) {
         super(context);
-        //this.setBackground(*ImageCollectable*[TYPE]);
+        //this.setBackground(*ImageCollection*[TYPE]);
     }
 
 
