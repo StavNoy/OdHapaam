@@ -11,8 +11,8 @@ import project.stav.odhapaam2.MainActivity;
  */
 
 public class MyButton extends TextView {
-    public int x;
-    public int y;
+    public int xPos;
+    public int yPos;
     public int TYPE=0;
     public MyButton(Context context) {
         super(context);

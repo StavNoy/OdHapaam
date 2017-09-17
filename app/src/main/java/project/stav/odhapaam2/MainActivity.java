@@ -19,18 +19,4 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void SelectedView(MyButton v){
-        if (selected==null){
-            selected = v;
-        }else{
-            if (Math.abs((v.x+v.y)-(selected.x+selected.y))==1){
-                swap(selected , v);
-            }
-        }
-    }
 
-    public void swap(View selected, View v) {
-        selected.positio
-        selected=null;
-    }
-}
