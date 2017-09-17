@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void swap(View selected, View v) {
-
+        selected.positio
         selected=null;
     }
 }

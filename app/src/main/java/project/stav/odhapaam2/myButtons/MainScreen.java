@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class MainScreen extends AppCompatActivity {
     final int [] buttons= new int[]{R.layout.button1,R.layout.button2,R.layout.button3};
-    Button[] [] candies=new Button[5][5];
+    MyButton[] [] candies=new MyButton[5][5];
     GridLayout main;
     int i;
     @Override
@@ -32,8 +32,8 @@ public class MainScreen extends AppCompatActivity {
         }
 
     }
-    private Button randomize(){
-        Button b =(Button) LayoutInflater.from(this).inflate(buttons[new Random().nextInt(3)],null);
+    private MyButton randomize(){
+        MyButton b =(MyButton) LayoutInflater.from(this).inflate(buttons[new Random().nextInt(3)],null);
         return b;
     }
 }
