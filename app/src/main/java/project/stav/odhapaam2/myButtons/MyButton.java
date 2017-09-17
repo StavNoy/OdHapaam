@@ -28,7 +28,6 @@ public class MyButton extends ImageView {
 
     public void setxPos(int xPos) {
         this.xPos = xPos;
-
     }
 
     public void setyPos(int yPos) {
