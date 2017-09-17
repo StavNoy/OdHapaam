@@ -51,6 +51,14 @@ public class MainScreen extends AppCompatActivity {
 
     public void swap(View selected, View v) {
         candies[selected.x][y]
+    public void swap(MyButton selected, MyButton v) {
+        int x1=selected.xPos , y1=selected.yPos, x2=v.xPos, y2=v.yPos;
+        candies[x1][y1]=v;
+        candies[x2][y2]=selected;
+        selected.xPos=x2;
+        selected.yPos=y2;
+        v.xPos=x1;
+        v.yPos=y1;
         selected=null;
     }
 }
