@@ -14,6 +14,7 @@ public class MainScreen extends AppCompatActivity {
     MyButton[] [] candies=new MyButton[5][5];
     GridLayout main;
     int i;
+    MyButton selected;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,22 +44,20 @@ public class MainScreen extends AppCompatActivity {
         if (selected==null){
             selected = v;
         }else{
-            if (Math.abs((v.xPos +v.yPos)-(selected.xPos +selected.yPos))==1){
+            if (Math.abs((v.getxPos() +v.getyPos())-(selected.getxPos() +selected.getyPos()))==1){
                 swap(selected , v);
             }
         }
     }
 
-    public void swap(View selected, View v) {
-        candies[selected.x][y]
     public void swap(MyButton selected, MyButton v) {
-        int x1=selected.xPos , y1=selected.yPos, x2=v.xPos, y2=v.yPos;
+        int x1=selected.getxPos() , y1=selected.getyPos(), x2=v.getxPos(), y2=v.getyPos();
         candies[x1][y1]=v;
         candies[x2][y2]=selected;
-        selected.xPos=x2;
-        selected.yPos=y2;
-        v.xPos=x1;
-        v.yPos=y1;
+        selected.setxPos(x2);
+        selected.setyPos(y2);
+        v.setxPos(x1);
+        v.setyPos(y1);
         selected=null;
     }
 }
