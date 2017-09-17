@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 public class StartScreen extends AppCompatActivity {
+
+    ImageButton btnV1 , btnV2;
 
     ImageView img;
     Button button;
@@ -29,6 +33,15 @@ public class StartScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 openGallery();
+            }
+        });
+
+
+        btnV1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Animation
             }
         });
     }
