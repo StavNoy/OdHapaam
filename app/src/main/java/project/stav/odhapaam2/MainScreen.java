@@ -1,4 +1,4 @@
-package project.stav.odhapaam2.myButtons;
+package project.stav.odhapaam2;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.GridLayout;
 
 import java.util.Random;
+
+import project.stav.odhapaam2.myButtons.MyButton;
 
 
 public class MainScreen extends AppCompatActivity {

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import project.stav.odhapaam2.MainActivity;
-
 /**
  * Created by hackeru on 17/09/2017.
  */
@@ -31,9 +29,10 @@ public class MyButton extends TextView {
 
     private int yPos;
     public int TYPE=0;
+
     public MyButton(Context context) {
         super(context);
-        this.setBackground(MainActivity.imgUri[TYPE]);
+        //this.setBackground(*ImageCollectable*[TYPE]);
     }
 
 
