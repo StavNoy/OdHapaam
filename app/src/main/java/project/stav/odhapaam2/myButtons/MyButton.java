@@ -11,13 +11,31 @@ import project.stav.odhapaam2.MainActivity;
  */
 
 public class MyButton extends TextView {
-    public int xPos;
-    public int yPos;
+    public int getxPos() {
+        return xPos;
+    }
+
+    public int getyPos() {
+        return yPos;
+    }
+
+    private int xPos;
+
+    public void setxPos(int xPos) {
+        this.xPos = xPos;
+    }
+
+    public void setyPos(int yPos) {
+        this.yPos = yPos;
+    }
+
+    private int yPos;
     public int TYPE=0;
     public MyButton(Context context) {
         super(context);
         this.setBackground(MainActivity.imgUri[TYPE]);
     }
+
 
     public MyButton(Context context, AttributeSet attrs) {
         super(context, attrs);
