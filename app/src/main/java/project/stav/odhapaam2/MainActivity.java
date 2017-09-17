@@ -7,10 +7,11 @@ import android.view.View;
 
 import project.stav.odhapaam2.myButtons.MyButton;
 
+
 public class MainActivity extends AppCompatActivity {
     MyButton selected;
 
-    public static Drawable[] imgUri;
+    public static Drawable [] imgUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
