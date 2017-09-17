@@ -1,20 +1,26 @@
 package project.stav.odhapaam2;
 
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridLayout;
 
+import java.io.File;
 import java.util.Random;
 
 import project.stav.odhapaam2.myButtons.MyButton;
+import project.stav.odhapaam2.myButtons.StartScreen;
 
 
 public class MainScreen extends AppCompatActivity {
     final int [] buttons= new int[]{R.layout.button1,R.layout.button2,R.layout.button3};
     MyButton[] [] candies=new MyButton[5][5];
     GridLayout main;
+    Uri [] images;
+
     int i;
     MyButton selected;
     @Override
@@ -38,7 +44,10 @@ public class MainScreen extends AppCompatActivity {
 
     }
     private MyButton randomize(){
-        MyButton b =(MyButton) LayoutInflater.from(this).inflate(buttons[new Random().nextInt(3)],null);
+        MyButton b =new MyButton(this, new Random().nextInt(4));
+        b.setImageURI( images[b.getTYPE()]);
+
+
         return b;
     }
 

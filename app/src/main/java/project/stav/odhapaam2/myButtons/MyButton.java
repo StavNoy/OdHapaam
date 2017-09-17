@@ -2,13 +2,20 @@ package project.stav.odhapaam2.myButtons;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
  * Created by hackeru on 17/09/2017.
  */
 
-public class MyButton extends TextView {
+public class MyButton extends ImageView {
+    public MyButton(Context context,int type) {
+        super(context);
+        TYPE=type;
+    }
+
+
     public int getxPos() {
         return xPos;
     }
@@ -21,6 +28,7 @@ public class MyButton extends TextView {
 
     public void setxPos(int xPos) {
         this.xPos = xPos;
+
     }
 
     public void setyPos(int yPos) {
@@ -34,18 +42,4 @@ public class MyButton extends TextView {
     }
 
     private int TYPE=0;
-
-    public MyButton(Context context) {
-        super(context);
-        //this.setBackground(*ImageCollection*[TYPE]);
-    }
-
-
-    public MyButton(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public MyButton(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
 }

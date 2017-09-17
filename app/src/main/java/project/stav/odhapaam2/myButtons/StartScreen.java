@@ -13,7 +13,7 @@ public class StartScreen extends AppCompatActivity {
 
     ImageView img;
     Button button;
-    Uri imageUri;
+     public static Uri imageUri;
     private static final int PICK_IMAGE = 100;
 
     @Override
@@ -49,8 +49,8 @@ public class StartScreen extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RESULT_OK && requestCode == PICK_IMAGE){
-            imageUri = data.getData();
-            img.setImageURI(imageUri);
+             imageUri = data.getData();
+
         }
     }
 }
