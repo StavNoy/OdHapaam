@@ -50,7 +50,7 @@ public class MainScreen extends AppCompatActivity {
     }
 
     public void swap(View selected, View v) {
-        candies[selected.xPos][y]
+        candies[selected.x][y]
         selected=null;
     }
 }
