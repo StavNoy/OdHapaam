@@ -26,8 +26,9 @@ public class MainScreen extends AppCompatActivity {
             for (int y = 0;y<candies[x].length;y++){
                 candies[x][y]=randomize();
                 main.addView(candies[x][y],185,230);
-                (candies[x][y]).xPos=x;
-                (candies[x][y]).yPos=y;
+                candies[x][y].setX(x);
+                candies[x][y].setY(y);
+
 
             }
         }
