@@ -19,7 +19,7 @@ public class StartScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.start_screen);
 
         img = (ImageView)findViewById(R.id.image);
         button = (Button) findViewById(R.id.btn);

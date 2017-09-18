@@ -20,7 +20,7 @@ public class MainScreen extends AppCompatActivity {
     final int [] buttons= new int[]{R.layout.button1,R.layout.button2,R.layout.button3};
     MyButton[] [] candies=new MyButton[5][5];
     GridLayout main;
-    Uri [] images;//ToDo initialize; add dinamicaly; sharedPref (as Stack?)
+    Uri [] images;//ToDo initialize; add dynamically; sharedPref (as Stack?)
 
     int i;
     MyButton selected;
@@ -71,6 +71,7 @@ public class MainScreen extends AppCompatActivity {
     }
 
     //method for checking if 3 or more MyButtons are in a line
+    //maybe add recursion for when buttons move after scoring
     private void checkForScore() {
         for (int x=0 ; x<candies.length ; x++){
             for (int y=0 ; y<candies[x].length ; y++){
