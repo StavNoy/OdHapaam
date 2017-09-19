@@ -107,12 +107,4 @@ public class MainScreen extends AppCompatActivity {
             }
         }
     }
-
-
-    private void doSome() {
-        for (int i=0 ; i<main.getChildCount() ; i++) {
-            MyButton child =(MyButton) main.getChildAt(i);
-            child.setImageURI(images[child.getTYPE()]);
-        }
-    }
 }
