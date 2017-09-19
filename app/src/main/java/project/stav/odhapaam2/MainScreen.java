@@ -16,7 +16,7 @@ public class MainScreen extends AppCompatActivity {
     final int [] buttons= new int[]{R.layout.button1,R.layout.button2,R.layout.button3};
     MyButton[] [] candies=new MyButton[5][5];
     GridLayout main;
-    Uri [] images;//ToDo initialize; add dynamically; sharedPref (as Stack?)
+    Uri [] images;//ToDo initialize; add dinamicaly; sharedPref (as Stack?)
 
     MyButton selected;
     @Override
@@ -28,9 +28,9 @@ public class MainScreen extends AppCompatActivity {
         checkInRow();
     }
     private void creatingButtons(){
-        for (int x = 0;x<candies.length;x++){
-            for (int y = 0;y<candies[x].length;y++){
-                candies[x][y]=randomize();
+        for (int x = 0 ; x<candies.length ; x++){
+            for (int y = 0 ; y<candies[x].length ; y++){
+                candies[x][y]= randomize();
                 main.addView(candies[x][y],185,230);
                 candies[x][y].setxPos(x);
                 candies[x][y].setyPos(y);
@@ -38,7 +38,7 @@ public class MainScreen extends AppCompatActivity {
         }
     }
     private MyButton randomize(){
-        MyButton b =new MyButton(this, new Random().nextInt(4));
+        MyButton b = new MyButton(this, new Random().nextInt(4));
         b.setImageURI( images[b.getTYPE()]);
         return b;
     }
@@ -69,8 +69,8 @@ public class MainScreen extends AppCompatActivity {
     private void checkInRow() {
         for (int x=0 ; x<candies.length ; x++){
             for (int y=0 ; y<candies[x].length ; y++){
-                ArrayList<MyButton> inALine=new ArrayList(0);
-                for(int i=0; candies[x][y+i].getTYPE()==inALine.get(0).getTYPE();i++){
+                ArrayList<MyButton> inALine = new ArrayList(0);
+                for(int i=0; candies[x][y+i].getTYPE() == inALine.get(0).getTYPE();i++){
                     inALine.add(candies[x][y+i]);
                 }
                 if (inALine.size()>=3){
@@ -85,7 +85,7 @@ public class MainScreen extends AppCompatActivity {
                     inALine.add(candies[x+i][y]);
                 }
                 if (inALine.size()>=3){
-                    for (MyButton b :inALine){
+                    for (MyButton b : inALine){
                         //ToDo add animation and score
                         b.setVisibility(View.GONE);
                         checkInRow();

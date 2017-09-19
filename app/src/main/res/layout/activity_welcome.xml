@@ -8,12 +8,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="project.stav.odhapaam2.Welcome">
+    tools:context="project.stav.odhapaam2.Welcome"
+    android:background="@drawable/black_background">
 
 
 
     <TextView
-        android:id="@+id/ttl"
+        android:id="@+id/welcome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#fff"
@@ -34,7 +35,7 @@
         android:id="@+id/btn_game"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background=""
+        android:background="@mipmap/ic_play"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
@@ -51,7 +52,7 @@
             android:id="@+id/btn_settings"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@mipmap/ic_launcher"
+            android:background="@mipmap/ic_account"
             android:layout_weight="1"/>
         <Button
             android:id="@+id/btn_cemra"
