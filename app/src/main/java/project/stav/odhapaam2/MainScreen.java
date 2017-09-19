@@ -14,11 +14,11 @@ import project.stav.odhapaam2.myButtons.MyButton;
 
 public class MainScreen extends AppCompatActivity {
     final int [] buttons= new int[]{R.layout.button1,R.layout.button2,R.layout.button3};
-    private static MyButton[] [] candies=new MyButton[5][5];
-    private static GridLayout main;
-    private static Uri [] images;//ToDo initialize; add dynamically; sharedPref (as Stack?)
+    private MyButton[] [] candies=new MyButton[5][5];
+     GridLayout main;
+    private Uri [] images;//ToDo initialize; add dynamically; sharedPref (as Stack?)
 
-    private static MyButton selected;
+    private MyButton selected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +49,11 @@ public class MainScreen extends AppCompatActivity {
     public View.OnClickListener MyButtonListener=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            MainScreen.clickedMyButton((MyButton) v);
+            clickedMyButton((MyButton) v);
         }
     };
 
-    private static void clickedMyButton (MyButton v){
+    private void clickedMyButton (MyButton v){
         if (selected==null){
             selected = v;
         }else{
@@ -63,7 +63,7 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 
-    private static void swap(MyButton selected, MyButton v) {
+    private void swap(MyButton selected, MyButton v) {
         int sType =selected.getTYPE();
         selected.setTYPE(v.getTYPE());
         v.setTYPE(sType);
@@ -76,7 +76,7 @@ public class MainScreen extends AppCompatActivity {
     }
 
     //method for checking if 3 or more MyButtons are in a line
-    private static void checkInRow() {
+    private void checkInRow() {
         for (int x=0 ; x<candies.length ; x++){
             for (int y=0 ; y<candies[x].length ; y++){
                 ArrayList<MyButton> inALine=new ArrayList(0);
