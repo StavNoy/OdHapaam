@@ -16,6 +16,7 @@ public class MainScreen extends AppCompatActivity {
     final int [] buttons= new int[]{R.layout.button1,R.layout.button2,R.layout.button3};
     private MyButton[] [] candies=new MyButton[5][5];
     GridLayout main;
+    public MySharedPreferences prefs;
     private Uri [] images;//ToDo initialize; add dynamically; sharedPref (as Stack?)
 
     private MyButton selected;
@@ -25,6 +26,8 @@ public class MainScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         main = (GridLayout)findViewById(R.id.main);
+        prefs = new MySharedPreferences(getSharedPreferences("RasheyTevot", MODE_PRIVATE));
+        images=prefs.getImages();
         creatingButtons();
         checkInRow();
     }
