@@ -9,7 +9,16 @@
         android:layout_row="0" android:layout_centerHorizontal="true"
         android:textSize="20dp"/>
 
+    <Button
+        android:layout_below="@+id/main"
+        android:layout_centerHorizontal="true"
+        android:layout_width="200dp"
+        android:layout_height="250dp"
+        android:text="save candies"
+        android:onClick="saveCandies"/>
+
     <GridLayout
+        android:id="@+id/main"
         android:columnCount="5"
         android:rowCount="5"
 
@@ -22,27 +31,35 @@
 
         <ImageView
             android:id="@+id/image2"
-            android:style="@style/current_images"
+            android:layout_marginLeft="0dp"
+            style="@style/current_images"
             android:layout_row="2"
-            android:layout_column="1" />
+            android:layout_column="1"
+            android:tag="0"/>
 
         <ImageView
-            android:id="@+id/image1"
-            android:style="@style/current_images"
-            android:layout_row="1"
-            android:layout_column="1" />
-
-        <ImageView
+            android:layout_marginRight="0dp"
             android:id="@+id/image4"
             style="@style/current_images"
             android:layout_row="2"
-            android:layout_column="2"/>
+            android:layout_column="2"
+            android:tag="2"/>
+
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_marginLeft="0dp"
+            style="@style/current_images"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:tag="3"/>
 
         <ImageView
             android:id="@+id/image3"
-            android:style="@style/current_images"
+
+            style="@style/current_images"
             android:layout_row="1"
-            android:layout_column="2" />
+            android:layout_column="2"
+            android:tag="1"/>
     </GridLayout>
 </RelativeLayout>
 

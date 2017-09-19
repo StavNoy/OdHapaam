@@ -20,7 +20,7 @@ public class MySharedPreferences {
         if (newScore>=0) prefs.edit().putInt("score",newScore);
     }
     public Uri [] getImages(){
-        return prefs.getString("images","android.resource://[project.stav.odhapaam2]/[R.drawable.triangle]")
+        return prefs.getString("images","android.resource://[project.stav.odhapaam2]/[R.drawable.triangle]");
     }
 
 }
