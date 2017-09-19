@@ -12,15 +12,13 @@ import java.util.Random;
 
 import project.stav.odhapaam2.myButtons.MyButton;
 
-
 public class MainScreen extends AppCompatActivity {
-
     private MyButton[][] candies = new MyButton[5][5];
     GridLayout main;
     TextView points;
     int p = 0;
-    private Uri [] images;
-    private int [] altImages;//if no images are picked
+    private Uri[] images;
+    private int[] altImages;//if no images are picked
 
     private MyButton selected;
 
@@ -31,12 +29,12 @@ public class MainScreen extends AppCompatActivity {
         main = (GridLayout) findViewById(R.id.main);
         points = (TextView) findViewById(R.id.points);
         images = MySharedPreferences.getImages(this);
-        if (images[0]==null){//if no images are picked
-            altImages = new int [] {R.drawable.triangle,R.drawable.red_circle,R.drawable.yellow_square,R.drawable.green_x};
+        if (images[0] == null) {//if no images are picked
+            altImages = new int[]{R.drawable.triangle, R.drawable.red_circle, R.drawable.yellow_square, R.drawable.green_x};
         }
-
         p = MySharedPreferences.getScore(this);
-        points.setText(R.string.points + p);
+        String pointStr = getString(R.string.points) + p;
+        points.setText(pointStr);
 
         creatingButtons();
         checkInRow();
@@ -46,17 +44,17 @@ public class MainScreen extends AppCompatActivity {
         for (int x = 0; x < candies.length; x++) {
             for (int y = 0; y < candies[x].length; y++) {
                 candies[x][y] = randomize();
-                main.addView(candies[x][y], 185, 230);
                 candies[x][y].setxPos(x);
                 candies[x][y].setyPos(y);
                 candies[x][y].setOnClickListener(MyButtonListener);
+                main.addView(candies[x][y], 185, 230);
             }
         }
     }
 
     private MyButton randomize() {
         MyButton b = new MyButton(this, new Random().nextInt(4));
-        if (images[0] == null){ //if no images are picked
+        if (images[0] == null) { //if no images are picked
             b.setBackgroundResource(altImages[b.getTYPE()]);
         } else {
             b.setImageURI(images[b.getTYPE()]);
@@ -68,41 +66,48 @@ public class MainScreen extends AppCompatActivity {
     public View.OnClickListener MyButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            MyButton mB = (MyButton)v;
+            MyButton mB = (MyButton) v;
             if (selected == null) {
                 selected = mB;
             } else {
                 if (Math.abs((mB.getxPos() + mB.getyPos()) - (selected.getxPos() + selected.getyPos())) == 1) {
                     swap(selected, mB);
+                    selected = null;
+                    checkInRow();
                 }
+                //ToDo add indication for incorect move
             }
         }
     };
 
-    private void swap(MyButton selected, MyButton v) {
-        int sType = selected.getTYPE();
-        selected.setTYPE(v.getTYPE());
+    private void swap(MyButton selec, MyButton v) {
+        int sType = selec.getTYPE();
+        selec.setTYPE(v.getTYPE());
         v.setTYPE(sType);
         //ToDo add shrink animation
-        v.setImageURI(images[v.getTYPE()]);
-        selected.setImageURI(images[selected.getTYPE()]);
+        if (images[0] == null) { //if no images are picked
+            v.setBackgroundResource(altImages[v.getTYPE()]);
+            selec.setBackgroundResource(altImages[selec.getTYPE()]);
+        } else {
+            v.setImageURI(images[v.getTYPE()]);
+            selec.setImageURI(images[selec.getTYPE()]);
+        }
         //ToDo add expand animation
-        selected = null;
-        checkInRow();
     }
 
     //method for checking if 3 or more MyButtons are in a line
     private void checkInRow() {
         for (int x = 0; x < candies.length; x++) {
             for (int y = 0; y < candies[x].length; y++) {
-                ArrayList<MyButton> inALine = new ArrayList(0);
-                for (int i = 0; candies[x][y + i].getTYPE() == inALine.get(0).getTYPE(); i++) {
+                ArrayList<MyButton> inALine = new ArrayList<>();
+                for (int i = 0; y + i < candies[x].length && candies[x][y + i].getTYPE() == candies[x][y].getTYPE(); i++) {
                     inALine.add(candies[x][y + i]);
+
                 }
                 checkIfScore(inALine);
                 inALine.clear();
 
-                for (int i = 0; candies[x + i][y].getTYPE() == inALine.get(0).getTYPE(); i++) {
+                for (int i = 0; x + i < candies[x].length && candies[x + i][y].getTYPE() == candies[x][y].getTYPE(); i++) {
                     inALine.add(candies[x + i][y]);
                 }
                 checkIfScore(inALine);
@@ -114,12 +119,26 @@ public class MainScreen extends AppCompatActivity {
         if (inALine.size() >= 3) {
             for (MyButton b : inALine) {
                 //ToDo add animation
-                b.setVisibility(View.GONE);
+                b.setVisibility(View.INVISIBLE);//ToDO add rearrange
             }
             p+=inALine.size();
             MySharedPreferences.setScore(this,p);
-            points.setText(R.string.points + p);
-            checkInRow();
+            String pointStr = getString(R.string.points) + p;
+            points.setText(pointStr);
+//            checkInRow();// FIXME: 19/09/2017
         }
+//        reArrange();
     }
+
+//    private void reArrange(){//by changing during iteration, the iteration params also change
+//        for (int x = 0; x < candies.length; x++) {
+//            for (int y = 0; y+1 < candies[x].length ; y++) {
+//                MyButton mB = candies[x][y];
+//                MyButton above = candies[x][y+1];
+//                if (above.getVisibility()==View.INVISIBLE){
+//                    swap(mB,above);
+//                }
+//            }
+//        }
+//    }
 }
