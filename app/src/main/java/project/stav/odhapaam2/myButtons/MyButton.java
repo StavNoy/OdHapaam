@@ -10,11 +10,18 @@ import android.widget.TextView;
  */
 
 public class MyButton extends ImageView {
+
+    private int TYPE=0;
+
+    private int xPos;
+
+    private int yPos;
+
+
     public MyButton(Context context,int type) {
         super(context);
         TYPE=type;
     }
-
 
     public int getxPos() {
         return xPos;
@@ -24,8 +31,6 @@ public class MyButton extends ImageView {
         return yPos;
     }
 
-    private int xPos;
-
     public void setxPos(int xPos) {
         this.xPos = xPos;
     }
@@ -34,11 +39,7 @@ public class MyButton extends ImageView {
         this.yPos = yPos;
     }
 
-    private int yPos;
-
     public int getTYPE() {
         return TYPE;
     }
-
-    private int TYPE=0;
 }
