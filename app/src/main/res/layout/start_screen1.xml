@@ -2,16 +2,60 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+        <ImageView
+            android:id="@+id/image3"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+        <ImageView
+            android:id="@+id/image4"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+    </LinearLayout>
 
-    <ImageView
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
 
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
 
     <Button
         android:text="candy1"
-        android:layout_width="wrap_content"
-        android:layout_height="87dp"
-        android:id="@+id/button" />
+        android:layout_width="87dp"
+        android:layout_height="100dp"
 
+        android:id="@+id/button1" />
+
+        <Button
+            android:text="candy2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+
+            android:id="@+id/button2" />
+
+        <Button
+            android:text="candy3"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+
+            android:id="@+id/button3" />
+
+        <Button
+            android:text="candy4"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+
+            android:id="@+id/button4" />
+</LinearLayout>
 </LinearLayout>
