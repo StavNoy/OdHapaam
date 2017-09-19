@@ -31,7 +31,7 @@ public class MainScreen extends AppCompatActivity {
         images = MySharedPreferences.getImages(this);
 
         p++;
-        points.setText("points: " + p);
+        points.setText(R.string.points + p);
 
         creatingButtons();
         checkInRow();
@@ -112,7 +112,7 @@ public class MainScreen extends AppCompatActivity {
             }
             p+=inALine.size();
             MySharedPreferences.setScore(this,p);
-            points.setText("points: " + p);
+            points.setText(R.string.points + p);
             checkInRow();
         }
     }

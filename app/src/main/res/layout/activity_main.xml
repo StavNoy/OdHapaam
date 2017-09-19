@@ -32,8 +32,8 @@
         android:id="@+id/points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="points: "
-        android:textSize="30dp"
+        android:text="@string/points"
+        android:textSize="30sp"
         android:textColor="#fff"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
