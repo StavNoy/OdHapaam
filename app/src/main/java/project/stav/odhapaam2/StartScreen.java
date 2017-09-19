@@ -3,32 +3,27 @@ package project.stav.odhapaam2;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.animation.Animation;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Stack;
 
 public class StartScreen extends AppCompatActivity {
 
-    private boolean check = false;
+    //uri drown from gallery
     public static Uri imageUri;
+    //the intent code of the image picking from gallery
     private static final int PICK_IMAGE = 100;
+    //the code for requesting the external storage permission
     private final int MEDIA_REQUEST =102;
-    ImageView chosenView;
-   HashMap<ImageView,Uri> imagesUris = new HashMap<>();
-
+    //the last view that was clicked
+    private ImageView chosenView;
+    //the map that connects the uri and the views
+    Uri [] imagesUris = new Uri[4];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +33,7 @@ public class StartScreen extends AppCompatActivity {
 
     }
 
-
+    //send user to gallery for picking an image
     private void openGallery() {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
@@ -46,6 +41,7 @@ public class StartScreen extends AppCompatActivity {
 
 
     @Override
+    //the event after the user picked an image, saves it in Uri variable "imageUri"
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
@@ -56,9 +52,12 @@ public class StartScreen extends AppCompatActivity {
 
 
     }
+
     private void setImagesUris(Uri imageUri){
         if (imageUri != null) {
-            imagesUris.put(chosenView,imageUri);
+            //connect the view that was clicked with the image uri the image that the user chose
+          int index = Integer.parseInt(chosenView.getTag().toString());
+            imagesUris[index]= imageUri;
             chosenView.setImageURI(imageUri);
         }
         this.imageUri=null;
@@ -73,14 +72,21 @@ public class StartScreen extends AppCompatActivity {
     }
 
     public void saveCandies(View view) {
-        if (!imagesUris.isEmpty()){
-            Uri [] uris= new Uri[4];
-            int i = 0;
-            for (Uri uri : imagesUris.values()){
-                uris[i]=uri;
-                i++;
-            }
+        HashSet<Uri> uriSet =new HashSet<>();
+        for (Uri uri : imagesUris){
+            uriSet.add(uri);
+        }
+        if (uriSet.size()==4) {
+            MySharedPreferences.setImages(this, (Uri[]) uriSet.toArray());
+           finish();
+        }else{
+
+          AlertDialog.Builder aD = new AlertDialog.Builder(this);
+            aD.setMessage("please select four different images").show();
+        }
 
         }
-    }
-}
+
+        }
+
+
