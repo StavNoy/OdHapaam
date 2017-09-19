@@ -43,11 +43,13 @@ public class MainScreen extends AppCompatActivity {
     private void creatingButtons() {
         for (int x = 0; x < candies.length; x++) {
             for (int y = 0; y < candies[x].length; y++) {
-                candies[x][y] = randomize();
-                candies[x][y].setxPos(x);
-                candies[x][y].setyPos(y);
-                candies[x][y].setOnClickListener(MyButtonListener);
-                main.addView(candies[x][y], 185, 230);
+                if (candies[x][y]==null) {
+                    candies[x][y] = randomize();
+                    candies[x][y].setxPos(x);
+                    candies[x][y].setyPos(y);
+                    candies[x][y].setOnClickListener(MyButtonListener);
+                    main.addView(candies[x][y], 185, 230);
+                }
             }
         }
     }
@@ -75,7 +77,7 @@ public class MainScreen extends AppCompatActivity {
                     selected = null;
                     checkInRow();
                 }
-                //ToDo add indication for incorect move
+                //ToDo add indication for incorrect move
             }
         }
     };
@@ -102,11 +104,9 @@ public class MainScreen extends AppCompatActivity {
                 ArrayList<MyButton> inALine = new ArrayList<>();
                 for (int i = 0; y + i < candies[x].length && candies[x][y + i].getTYPE() == candies[x][y].getTYPE(); i++) {
                     inALine.add(candies[x][y + i]);
-
                 }
                 checkIfScore(inALine);
                 inALine.clear();
-
                 for (int i = 0; x + i < candies[x].length && candies[x + i][y].getTYPE() == candies[x][y].getTYPE(); i++) {
                     inALine.add(candies[x + i][y]);
                 }
@@ -120,25 +120,28 @@ public class MainScreen extends AppCompatActivity {
             for (MyButton b : inALine) {
                 //ToDo add animation
                 b.setVisibility(View.INVISIBLE);//ToDO add rearrange
+                main.removeView(b);
             }
             p+=inALine.size();
             MySharedPreferences.setScore(this,p);
             String pointStr = getString(R.string.points) + p;
             points.setText(pointStr);
-//            checkInRow();// FIXME: 19/09/2017
+//            checkInRow();//recursion FIXME: 19/09/2017
+//            reArrange();
         }
-//        reArrange();
     }
 
-//    private void reArrange(){//by changing during iteration, the iteration params also change
-//        for (int x = 0; x < candies.length; x++) {
-//            for (int y = 0; y+1 < candies[x].length ; y++) {
-//                MyButton mB = candies[x][y];
-//                MyButton above = candies[x][y+1];
-//                if (above.getVisibility()==View.INVISIBLE){
-//                    swap(mB,above);
-//                }
-//            }
-//        }
-//    }
+    private void reArrange(){//by changing during iteration, the iteration params also change
+        for (int x = 0; x < candies.length; x++) {
+            for (int y = 0; y+1 < candies[x].length ; y++) {
+                MyButton mB = candies[x][y];
+                if (mB == null){
+                    mB=candies[x][y+1];
+                    mB.setxPos(x);
+                    mB.setyPos(y);
+                    candies[x][y+1] = null;
+                }
+            }
+        }
+    }
 }
