@@ -35,7 +35,7 @@ public class MainScreen extends AppCompatActivity {
             altImages = new int [] {R.drawable.triangle,R.drawable.red_circle,R.drawable.yellow_square,R.drawable.green_x};
         }
 
-        p++;
+        p = MySharedPreferences.getScore(this);
         points.setText(R.string.points + p);
 
         creatingButtons();
@@ -68,19 +68,16 @@ public class MainScreen extends AppCompatActivity {
     public View.OnClickListener MyButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            clickedMyButton((MyButton) v);
-        }
-    };
-
-    private void clickedMyButton(MyButton v) {
-        if (selected == null) {
-            selected = v;
-        } else {
-            if (Math.abs((v.getxPos() + v.getyPos()) - (selected.getxPos() + selected.getyPos())) == 1) {
-                swap(selected, v);
+            MyButton mB = (MyButton)v;
+            if (selected == null) {
+                selected = mB;
+            } else {
+                if (Math.abs((mB.getxPos() + mB.getyPos()) - (selected.getxPos() + selected.getyPos())) == 1) {
+                    swap(selected, mB);
+                }
             }
         }
-    }
+    };
 
     private void swap(MyButton selected, MyButton v) {
         int sType = selected.getTYPE();
@@ -126,4 +123,3 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 }
-
