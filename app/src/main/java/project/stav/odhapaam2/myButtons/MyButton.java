@@ -17,11 +17,11 @@ public class MyButton extends ImageView {
 
     private int yPos;
 
-
     public MyButton(Context context,int type) {
         super(context);
-        TYPE=type;
+        setTYPE(type);
     }
+
 
     public int getxPos() {
         return xPos;
@@ -41,5 +41,9 @@ public class MyButton extends ImageView {
 
     public int getTYPE() {
         return TYPE;
+    }
+
+    public void setTYPE(int TYPE) {
+        this.TYPE = TYPE;
     }
 }

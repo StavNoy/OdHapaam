@@ -16,9 +16,8 @@ public class MainScreen extends AppCompatActivity {
     final int [] buttons= new int[]{R.layout.button1,R.layout.button2,R.layout.button3};
     MyButton[] [] candies=new MyButton[5][5];
     GridLayout main;
-    Uri [] images;//ToDo initialize; add dinamicaly; sharedPref (as Stack?)
+    Uri [] images;//ToDo initialize; add dynamically; sharedPref (as Stack?)
 
-    int i;
     MyButton selected;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +25,7 @@ public class MainScreen extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         main = (GridLayout)findViewById(R.id.main);
         creatingButtons();
-        checkForScore();
+        checkInRow();
     }
     private void creatingButtons(){
         for (int x = 0;x<candies.length;x++){
@@ -55,19 +54,19 @@ public class MainScreen extends AppCompatActivity {
     }
 
     public void swap(MyButton selected, MyButton v) {
-        int x1=selected.getxPos() , y1=selected.getyPos(), x2=v.getxPos(), y2=v.getyPos();
-        candies[x1][y1]=v;
-        candies[x2][y2]=selected;
-        selected.setxPos(x2);
-        selected.setyPos(y2);
-        v.setxPos(x1);
-        v.setyPos(y1);
+        int sType =selected.getTYPE();
+        selected.setTYPE(v.getTYPE());
+        v.setTYPE(sType);
+        //ToDo add shrink animation
+        v.setImageURI(images[v.getTYPE()]);
+        selected.setImageURI(images[selected.getTYPE()]);
+        //ToDo add expand animation
         selected=null;
-        checkForScore();
+        checkInRow();
     }
 
     //method for checking if 3 or more MyButtons are in a line
-    private void checkForScore() {
+    private void checkInRow() {
         for (int x=0 ; x<candies.length ; x++){
             for (int y=0 ; y<candies[x].length ; y++){
                 ArrayList<MyButton> inALine=new ArrayList(0);
@@ -78,6 +77,7 @@ public class MainScreen extends AppCompatActivity {
                     for (MyButton b :inALine){
                         //ToDo add animation and score
                         b.setVisibility(View.GONE);
+                        checkInRow();
                     }
                 }inALine.clear();
 
@@ -88,6 +88,7 @@ public class MainScreen extends AppCompatActivity {
                     for (MyButton b :inALine){
                         //ToDo add animation and score
                         b.setVisibility(View.GONE);
+                        checkInRow();
                     }
                 }
             }
