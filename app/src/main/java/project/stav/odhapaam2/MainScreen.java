@@ -15,7 +15,7 @@ import project.stav.odhapaam2.myButtons.MyButton;
 public class MainScreen extends AppCompatActivity {
     private MyButton[][] candies = new MyButton[5][5];
     GridLayout main;
-    private Uri [] images;//ToDo initialize; add dynamically; sharedPref (as Stack?)
+    private Uri[] images;//ToDo initialize; add dynamically; sharedPref (as Stack?)
 
     private MyButton selected;
 
@@ -108,4 +108,3 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 }
-
