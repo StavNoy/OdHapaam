@@ -1,10 +1,11 @@
 package project.stav.odhapaam2;
 
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.GridLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,6 +16,8 @@ import project.stav.odhapaam2.myButtons.MyButton;
 public class MainScreen extends AppCompatActivity {
     private MyButton[][] candies = new MyButton[5][5];
     GridLayout main;
+    TextView points;
+    int p = 0;
     private Uri[] images;//ToDo initialize; add dynamically; sharedPref (as Stack?)
 
     private MyButton selected;
@@ -24,7 +27,12 @@ public class MainScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         main = (GridLayout) findViewById(R.id.main);
+        points = (TextView) findViewById(R.id.points);
         images = MySharedPreferences.getImages(this);
+
+        p++;
+        points.setText("points: " + p);
+
         creatingButtons();
         checkInRow();
     }
