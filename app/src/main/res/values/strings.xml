@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">OdHapaam2</string>
+    <string name="points">Points: </string>
 </resources>
