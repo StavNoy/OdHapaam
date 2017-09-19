@@ -77,6 +77,7 @@ public class MainScreen extends AppCompatActivity {
                     for (MyButton b :inALine){
                         //ToDo add animation and score
                         b.setVisibility(View.GONE);
+                        checkForScore();
                     }
                 }inALine.clear();
 
@@ -87,6 +88,7 @@ public class MainScreen extends AppCompatActivity {
                     for (MyButton b :inALine){
                         //ToDo add animation and score
                         b.setVisibility(View.GONE);
+                        checkForScore();
                     }
                 }
             }
