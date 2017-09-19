@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -54,4 +55,5 @@ public class MySharedPreferences {
         getPref(context).edit().putStringSet("images",toSave).apply();
 
     }
+
 }
