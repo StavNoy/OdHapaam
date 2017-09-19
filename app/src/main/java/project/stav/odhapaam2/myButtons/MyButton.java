@@ -2,8 +2,11 @@ package project.stav.odhapaam2.myButtons;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import project.stav.odhapaam2.MainScreen;
 
 /**
  * Created by hackeru on 17/09/2017.
@@ -20,6 +23,12 @@ public class MyButton extends ImageView {
     public MyButton(Context context,int type) {
         super(context);
         setTYPE(type);
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
 
@@ -46,4 +55,5 @@ public class MyButton extends ImageView {
     public void setTYPE(int TYPE) {
         this.TYPE = TYPE;
     }
+
 }
