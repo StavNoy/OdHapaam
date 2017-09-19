@@ -1,6 +1,8 @@
 package project.stav.odhapaam2;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,65 +15,46 @@ import android.widget.ImageView;
 
 public class StartScreen extends AppCompatActivity {
 
-    ImageButton btnV1 , btnV2;
-
-    ImageView img;
-    Button button;
-     public static Uri imageUri;
+    private boolean check = false;
+    public static Uri imageUri;
     private static final int PICK_IMAGE = 100;
+    private final int MEDIA_REQUEST =102;
+    ImageView chosenView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.start_screen);
-
-        img = (ImageView)findViewById(R.id.image);
-        button = (Button) findViewById(R.id.btn);
+        setContentView(R.layout.activity_main);
+      PermissionManager.check(this,Manifest.permission.WRITE_EXTERNAL_STORAGE,MEDIA_REQUEST);
 
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openGallery();
-            }
-        });
-
-
-        btnV1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Animation
-            }
-        });
     }
 
 
-
-    private void openGallery(){
-        Intent gallery = new Intent(Intent.ACTION_PICK , MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(gallery , PICK_IMAGE);
+    private void openGallery() {
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
     }
-
-
-
-
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RESULT_OK && requestCode == PICK_IMAGE){
-             imageUri = data.getData();
-
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
+            imageUri = data.getData();
+            if (imageUri != null) {
+                chosenView.setImageURI(imageUri);
+            }
+            imageUri=null;
         }
 
 
     }
-    public void chooseImage(View view){
+
+    public void chooseImage(View view) {
+        chosenView =(ImageView)view;
         openGallery();
-        if (imageUri!=null) {
-            ((ImageView) view).setImageURI(imageUri);
-        }
+
+
     }
 }
