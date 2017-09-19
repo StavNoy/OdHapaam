@@ -19,6 +19,7 @@ public class MainScreen extends AppCompatActivity {
     TextView points;
     int p = 0;
     private Uri [] images;
+    private int [] altImages;//if no images are picked
 
     private MyButton selected;
 
@@ -29,6 +30,9 @@ public class MainScreen extends AppCompatActivity {
         main = (GridLayout) findViewById(R.id.main);
         points = (TextView) findViewById(R.id.points);
         images = MySharedPreferences.getImages(this);
+        if (images[0]==null){//if no images are picked
+            altImages = new int [] {R.drawable.triangle,R.drawable.red_circle,R.drawable.yellow_square,R.drawable.green_x};
+        }
 
         p++;
         points.setText(R.string.points + p);
@@ -51,7 +55,11 @@ public class MainScreen extends AppCompatActivity {
 
     private MyButton randomize() {
         MyButton b = new MyButton(this, new Random().nextInt(4));
-        b.setImageURI(images[b.getTYPE()]);
+        if (images[0] == null){ //if no images are picked
+            b.setBackgroundResource(altImages[b.getTYPE()]);
+        } else {
+            b.setImageURI(images[b.getTYPE()]);
+        }
         return b;
     }
 
