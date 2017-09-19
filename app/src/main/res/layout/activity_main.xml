@@ -11,13 +11,16 @@
     tools:context="unleashed.bigproject.MainActivity"
    android:background="@drawable/background" >
 
-<GridLayout
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="375dp"
-    android:columnCount="5"
-    android:background="@drawable/backgroundlayout"
-    android:alpha="0.5">
+    <GridLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="375dp"
+        android:columnCount="5"
+        android:background="@drawable/backgroundlayout"
+        android:alpha="0.5"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
-</GridLayout>
+    </GridLayout>
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package project.stav.odhapaam2.myButtons;
+package project.stav.odhapaam2;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -17,13 +17,13 @@ public class StartScreen extends AppCompatActivity {
 
     ImageView img;
     Button button;
-    Uri imageUri;
+     public static Uri imageUri;
     private static final int PICK_IMAGE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.start_screen);
 
         img = (ImageView)findViewById(R.id.image);
         button = (Button) findViewById(R.id.btn);
@@ -62,8 +62,8 @@ public class StartScreen extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RESULT_OK && requestCode == PICK_IMAGE){
-            imageUri = data.getData();
-            img.setImageURI(imageUri);
+             imageUri = data.getData();
+
         }
     }
 }

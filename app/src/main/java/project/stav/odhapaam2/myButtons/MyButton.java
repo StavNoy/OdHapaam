@@ -2,28 +2,44 @@ package project.stav.odhapaam2.myButtons;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import project.stav.odhapaam2.MainActivity;
 
 /**
  * Created by hackeru on 17/09/2017.
  */
 
-public class MyButton extends TextView {
-    public int x;
-    public int y;
-    public int TYPE=0;
-    public MyButton(Context context) {
+public class MyButton extends ImageView {
+
+    private int TYPE=0;
+
+    private int xPos;
+
+    private int yPos;
+
+
+    public MyButton(Context context,int type) {
         super(context);
-        this.setBackground(MainActivity.imgUri[TYPE]);
+        TYPE=type;
     }
 
-    public MyButton(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public int getxPos() {
+        return xPos;
     }
 
-    public MyButton(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+    public int getyPos() {
+        return yPos;
+    }
+
+    public void setxPos(int xPos) {
+        this.xPos = xPos;
+    }
+
+    public void setyPos(int yPos) {
+        this.yPos = yPos;
+    }
+
+    public int getTYPE() {
+        return TYPE;
     }
 }
