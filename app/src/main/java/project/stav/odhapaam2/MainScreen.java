@@ -34,6 +34,7 @@ public class MainScreen extends AppCompatActivity {
                 main.addView(candies[x][y],185,230);
                 candies[x][y].setxPos(x);
                 candies[x][y].setyPos(y);
+                candies[x][y].setOnClickListener(MyButtonListener);
             }
         }
     }
@@ -43,7 +44,15 @@ public class MainScreen extends AppCompatActivity {
         return b;
     }
 
-    public void SelectedView(MyButton v){
+
+    public View.OnClickListener MyButtonListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            clickedMyButton((MyButton) v);
+        }
+    };
+
+    private void clickedMyButton (MyButton v){
         if (selected==null){
             selected = v;
         }else{
@@ -53,7 +62,7 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 
-    public void swap(MyButton selected, MyButton v) {
+    private void swap(MyButton selected, MyButton v) {
         int sType =selected.getTYPE();
         selected.setTYPE(v.getTYPE());
         v.setTYPE(sType);

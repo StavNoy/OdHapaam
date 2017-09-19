@@ -65,5 +65,13 @@ public class StartScreen extends AppCompatActivity {
              imageUri = data.getData();
 
         }
+
+
+    }
+    public void chooseImage(View view){
+        openGallery();
+        if (imageUri!=null) {
+            ((ImageView) view).setImageURI(imageUri);
+        }
     }
 }
