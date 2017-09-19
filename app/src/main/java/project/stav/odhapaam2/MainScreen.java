@@ -18,7 +18,7 @@ public class MainScreen extends AppCompatActivity {
     GridLayout main;
     TextView points;
     int p = 0;
-    private Uri[] images;//ToDo initialize; add dynamically; sharedPref (as Stack?)
+    private Uri [] images;
 
     private MyButton selected;
 
@@ -93,26 +93,28 @@ public class MainScreen extends AppCompatActivity {
                 for (int i = 0; candies[x][y + i].getTYPE() == inALine.get(0).getTYPE(); i++) {
                     inALine.add(candies[x][y + i]);
                 }
-                if (inALine.size() >= 3) {
-                    for (MyButton b : inALine) {
-                        //ToDo add animation and score
-                        b.setVisibility(View.GONE);
-                        checkInRow();
-                    }
-                }
+                checkIfScore(inALine);
                 inALine.clear();
 
                 for (int i = 0; candies[x + i][y].getTYPE() == inALine.get(0).getTYPE(); i++) {
                     inALine.add(candies[x + i][y]);
                 }
-                if (inALine.size() >= 3) {
-                    for (MyButton b : inALine) {
-                        //ToDo add animation and score
-                        b.setVisibility(View.GONE);
-                        checkInRow();
-                    }
-                }
+                checkIfScore(inALine);
             }
         }
     }
+
+    private void checkIfScore(ArrayList<MyButton> inALine) {
+        if (inALine.size() >= 3) {
+            for (MyButton b : inALine) {
+                //ToDo add animation
+                b.setVisibility(View.GONE);
+            }
+            p+=inALine.size();
+            MySharedPreferences.setScore(this,p);
+            points.setText("points: " + p);
+            checkInRow();
+        }
+    }
 }
+
