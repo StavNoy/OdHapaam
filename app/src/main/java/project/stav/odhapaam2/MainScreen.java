@@ -14,11 +14,12 @@ import project.stav.odhapaam2.myButtons.MyButton;
 
 public class MainScreen extends AppCompatActivity {
     final int [] buttons= new int[]{R.layout.button1,R.layout.button2,R.layout.button3};
-    MyButton[] [] candies=new MyButton[5][5];
+    private MyButton[] [] candies=new MyButton[5][5];
     GridLayout main;
-    Uri [] images;//ToDo initialize; add dinamicaly; sharedPref (as Stack?)
+    private Uri [] images;//ToDo initialize; add dynamically; sharedPref (as Stack?)
 
-    MyButton selected;
+    private MyButton selected;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
