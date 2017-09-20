@@ -1,7 +1,11 @@
 package project.stav.odhapaam2;
 
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.GridLayout;
@@ -15,7 +19,7 @@ import project.stav.odhapaam2.myButtons.MyButton;
 public class MainScreen extends AppCompatActivity {
     private MyButton[][] candies = new MyButton[5][5];
     GridLayout main; //ViewGroup for play area
-    TextView points;
+    //TextView points; Made local variable for method updatePoints()
     int p = 0; //int for points
     private Uri[] images;//Images picked by user
     private int[] altImages;//if no images are picked
@@ -27,16 +31,20 @@ public class MainScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         main = (GridLayout) findViewById(R.id.main);
-        points = (TextView) findViewById(R.id.points);
+        //points = (TextView) findViewById(R.id.points);
         images = MySharedPreferences.getImages(this);
         if (images[0] == null) {//Default images if non are picked
             altImages = new int[]{R.drawable.triangle, R.drawable.red_circle, R.drawable.yellow_square, R.drawable.green_x};
         }
         p = MySharedPreferences.getScore(this);
-        String pointStr = getString(R.string.points) + p;
-        points.setText(pointStr);
+        updateScore();
 
         creatingButtons();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         checkInRow();
     }
 
@@ -80,6 +88,14 @@ public class MainScreen extends AppCompatActivity {
             } else { //This is click 2. Both clicks are same type and/or not adjacent
                 //ToDo add indication for incorrect move
                 selected = null;
+                Vibrator vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                if(vib.hasVibrator()) {
+                    if (Build.VERSION.SDK_INT<26) {
+                        vib.vibrate(500);
+                    } else {
+                        vib.vibrate(VibrationEffect.createOneShot(VibrationEffect.DEFAULT_AMPLITUDE,500));
+                    }
+                }
             }
         }
     };
@@ -109,14 +125,11 @@ public class MainScreen extends AppCompatActivity {
                     inALine.add(candies[x][y + i]);
                 }
                 checkIfScore(inALine);
-                System.out.println(inALine.size());
                 inALine.clear();
-                System.out.println(inALine.size());
                 for (int i = 0; x + i < candies.length && candies[x + i][y].getTYPE() == candies[x][y].getTYPE(); i++) {//Same for same position in each array
                     inALine.add(candies[x + i][y]);
                 }
                 checkIfScore(inALine);
-                System.out.println(inALine.size());
             }
         }
     }
@@ -129,14 +142,20 @@ public class MainScreen extends AppCompatActivity {
                 //main.removeView(b);
                 b.setPoped(true);
                 p++;
+                MediaPlayer.create(this,R.raw.pop).start();//sfx
             }
             //refresh score
-            MySharedPreferences.setScore(this,p);
-            String pointStr = getString(R.string.points) + p;
-            points.setText(pointStr);
+            updateScore();
 //            checkInRow();//recursion FIXME: 19/09/2017
 //            reArrange();
         }
+    }
+
+    private void updateScore() {
+        MySharedPreferences.setScore(this,p);
+        String pointStr = getString(R.string.points) + p;
+        ((TextView) findViewById(R.id.points)).setText(pointStr);
+        // TODO add sound effect
     }
 
     private void reArrange(){//by changing during iteration, the iteration params also change
