@@ -1,9 +1,6 @@
 package project.stav.odhapaam2.myButtons;
-
 import android.content.Context;
-import android.util.AttributeSet;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 /**
  * Created by hackeru on 17/09/2017.
@@ -11,17 +8,15 @@ import android.widget.TextView;
 
 public class MyButton extends ImageView {
 
+    private boolean poped = false;
     private int TYPE=0;
-
     private int xPos;
-
     private int yPos;
 
     public MyButton(Context context,int type) {
         super(context);
         setTYPE(type);
     }
-
 
     public int getxPos() {
         return xPos;
@@ -30,6 +25,7 @@ public class MyButton extends ImageView {
     public int getyPos() {
         return yPos;
     }
+
 
     public void setxPos(int xPos) {
         this.xPos = xPos;
@@ -45,5 +41,13 @@ public class MyButton extends ImageView {
 
     public void setTYPE(int TYPE) {
         this.TYPE = TYPE;
+    }
+
+    public void setPoped(boolean poped) {
+        this.poped = poped;
+    }
+
+    public boolean getPoped() {
+        return poped;
     }
 }

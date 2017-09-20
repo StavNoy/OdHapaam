@@ -12,7 +12,7 @@ import java.util.Set;
  * Created by stav.noy on 19/09/2017.
  */
 
-public class MySharedPreferences {
+    public class MySharedPreferences {
     //TODO - for production - encrypt all keys
     private static final String PREFS = "RasheyTevot";
     private static final String SCORE_KEY = "score";
