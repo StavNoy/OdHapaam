@@ -9,6 +9,7 @@ import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class MainScreen extends AppCompatActivity {
     private int[] altImages;//if no images are picked
 
     private MyButton selected;//First of 2 clicks
+    private boolean muted=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +53,11 @@ public class MainScreen extends AppCompatActivity {
     private void creatingButtons() {
         for (int x = 0; x < candies.length; x++) {
             for (int y = 0; y < candies[x].length; y++) {
-                if (candies[x][y]==null) {
+                if (candies[x][y]==null || !candies[x][y].getPoped()) {
                     candies[x][y] = randomize();
                     candies[x][y].setxPos(x);
                     candies[x][y].setyPos(y);
+                    candies[x][y].setPoped(false);
                     //candies[x][y].setOnClickListener(MyButtonListener); //Moved to method randomize()
                     main.addView(candies[x][y], 185, 230);
                 }
@@ -91,9 +94,9 @@ public class MainScreen extends AppCompatActivity {
                 Vibrator vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
                 if(vib.hasVibrator()) {
                     if (Build.VERSION.SDK_INT<26) {
-                        vib.vibrate(500);
+                        vib.vibrate(300);
                     } else {
-                        vib.vibrate(VibrationEffect.createOneShot(VibrationEffect.DEFAULT_AMPLITUDE,500));
+                        vib.vibrate(VibrationEffect.createOneShot(VibrationEffect.DEFAULT_AMPLITUDE,300));
                     }
                 }
             }
@@ -142,7 +145,7 @@ public class MainScreen extends AppCompatActivity {
                 //main.removeView(b);
                 b.setPoped(true);
                 p++;
-                MediaPlayer.create(this,R.raw.pop).start();//sfx
+                if(!muted) MediaPlayer.create(this,R.raw.pop).start();//sfx
             }
             //refresh score
             updateScore();
@@ -180,5 +183,10 @@ public class MainScreen extends AppCompatActivity {
                 }
             }
         }
+        creatingButtons();
+    }
+
+    public void mute(View v) {
+        ((ImageView)v).setImageResource((muted = !muted) ? R.drawable.unmutebtn : R.drawable.mute);
     }
 }
