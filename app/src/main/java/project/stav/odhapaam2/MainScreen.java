@@ -61,26 +61,20 @@ public class MainScreen extends AppCompatActivity {
     private void creatingButtons() {
         for (int x = 0; x < candies.length; x++) {
             for (int y = 0; y < candies[x].length; y++) {
-                if (candies[x][y] == null) {
-                    candies[x][y] = randomize(x, y);
-                } else if (candies[x][y].isPoped()){
-                    candies[x][y].setTYPE( new Random().nextInt(4));
-                    candies[x][y].setPoped(false);
-                }
-                if (images[0] == null) { //if no images are picked
-                    candies[x][y].setBackgroundResource(altImages[candies[x][y].getTYPE()]);
-                } else {
-                    candies[x][y].setImageURI(images[candies[x][y].getTYPE()]);
-                }
+                candies[x][y] = randomize(x, y);
                 main.addView(candies [x][y], 185, 230);
             }
         }
     }
 
-
     private MyButton randomize(int x, int y) {//Creates MyButton with random TYPE and according image
         MyButton b = new MyButton(this, new Random().nextInt(4), x, y);
         b.setOnClickListener(MyButtonListener);
+        if (images[0] == null) { //if no images are picked
+            b.setBackgroundResource(altImages[b.getTYPE()]); // TODO: 21/9/2017 move to MyButton.setTYPE()
+        } else {
+            b.setImageURI(images[candies[x][y].getTYPE()]);
+        }
         return b;
     }
 
@@ -155,7 +149,8 @@ public class MainScreen extends AppCompatActivity {
             updateScore();
             //checkInRow();//recursion FIXME: 19/09/2017
             reArrange();
-        }
+            reCreatePoped();
+       }
     }
 
     private void reArrange(){//After popping
@@ -169,23 +164,21 @@ public class MainScreen extends AppCompatActivity {
                 }
             }
         }
-//        creatingButtons();
     }
 
-    private void reArrange2(){
-        for (int i = 0 ; i<main.getChildCount() ; i++){//For each child of main ViewGroup, swap() with invisible under it
-            MyButton mB = (MyButton) main.getChildAt(i);
-            if (mB.getyPos()-1>=0) {
-                MyButton under = candies[mB.getxPos()][mB.getyPos()-1];
-                if (under.isPoped()){
-                    swap(mB,under);
-                    under.setPoped(mB.isPoped());
-                    mB.setPoped(true);
-                    //reArrange(); //recursion
-//                    checkInRow();//recursion
+    private void reCreatePoped() {
+        for (int x = 0; x < candies.length; x++) {
+            for (int y = 0; y < candies[x].length; y++) {
+                if (candies[x][y].isPoped()) {
+                    candies[x][y].setTYPE(new Random().nextInt(4));
+                    candies[x][y].setPoped(false);
+                }
+                if (images[0] == null) { //if no images are picked
+                    candies[x][y].setBackgroundResource(altImages[candies[x][y].getTYPE()]); // TODO: 21/9/2017 move to MyButton.setTYPE()
+                } else {
+                    candies[x][y].setImageURI(images[candies[x][y].getTYPE()]);
                 }
             }
         }
-//        creatingButtons();
     }
 }

@@ -1,13 +1,13 @@
 package project.stav.odhapaam2.myButtons;
 import android.content.Context;
 import android.graphics.Color;
-import android.widget.ImageView;
+import android.support.v7.widget.AppCompatImageView;
 
 /**
  * Created by hackeru on 17/09/2017.
  */
 
-public class MyButton extends ImageView {
+public class MyButton extends AppCompatImageView {
 
     private boolean poped = false;
     private int TYPE=0;
@@ -48,7 +48,7 @@ public class MyButton extends ImageView {
 
     public void setPoped(boolean poped) {
         this.poped = poped;
-        this.setBackgroundColor(poped? Color.BLACK : Color.TRANSPARENT);
+        if (poped) {this.setBackgroundColor(Color.BLACK);}
     }
 
     public boolean isPoped() {
