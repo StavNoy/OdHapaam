@@ -35,17 +35,11 @@ import java.util.Set;
         Uri [] images = new Uri[4];
         Set<String> prefImgs = getPref(context).getStringSet(IMAGES_KEY,new HashSet<String>(0));
         //if not initialized - use default images
-        if(prefImgs.isEmpty()){
-//            prefImgs.add("android.resource://[project.stav.odhapaam2]/[R.drawable.triangle]");
-//            prefImgs.add("android.resource://[project.stav.odhapaam2]/[R.drawable.triangle]");
-//            prefImgs.add("android.resource://[project.stav.odhapaam2]/[R.drawable.triangle]");
-//            prefImgs.add("android.resource://[project.stav.odhapaam2]/[R.drawable.triangle]");
-        } else {
+        if(!prefImgs.isEmpty()){
             for(int i =0 ; i<images.length ; i++){
                 images[i]=Uri.parse(prefImgs.iterator().next());
             }
         }
-
         return images;
     }
 

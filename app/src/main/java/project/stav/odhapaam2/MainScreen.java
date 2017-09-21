@@ -26,7 +26,7 @@ public class MainScreen extends AppCompatActivity {
     private int[] altImages;//if no images are picked
 
     private MyButton selected;//First of 2 clicks
-    private boolean muted=false;
+    private boolean muted=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,40 +42,47 @@ public class MainScreen extends AppCompatActivity {
         updateScore();
 
         creatingButtons();
+        checkInRow();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        checkInRow();
+
+    //refresh score
+    private void updateScore() {
+        MySharedPreferences.setScore(this,p);
+        String pointStr = getString(R.string.points) + p;
+        ((TextView) findViewById(R.id.points)).setText(pointStr);
+        // TODO add sound effect
+    }
+
+    public void mute(View v) {
+        ((ImageView)v).setImageResource((muted = !muted) ? R.drawable.unmute : R.drawable.mute);
     }
 
     private void creatingButtons() {
         for (int x = 0; x < candies.length; x++) {
             for (int y = 0; y < candies[x].length; y++) {
-                if (candies[x][y]==null || !candies[x][y].getPoped()) {
-                    candies[x][y] = randomize();
-                    candies[x][y].setxPos(x);
-                    candies[x][y].setyPos(y);
+                if (candies[x][y] == null) {
+                    candies[x][y] = randomize(x, y);
+                } else if (candies[x][y].isPoped()){
+                    candies[x][y].setTYPE( new Random().nextInt(4));
                     candies[x][y].setPoped(false);
-                    //candies[x][y].setOnClickListener(MyButtonListener); //Moved to method randomize()
-                    main.addView(candies[x][y], 185, 230);
                 }
+                if (images[0] == null) { //if no images are picked
+                    candies[x][y].setBackgroundResource(altImages[candies[x][y].getTYPE()]);
+                } else {
+                    candies[x][y].setImageURI(images[candies[x][y].getTYPE()]);
+                }
+                main.addView(candies [x][y], 185, 230);
             }
         }
     }
 
-    private MyButton randomize() {//Creates MyButton with random TYPE and according image
-        MyButton b = new MyButton(this, new Random().nextInt(4));
-        if (images[0] == null) { //if no images are picked
-            b.setBackgroundResource(altImages[b.getTYPE()]);
-        } else {
-            b.setImageURI(images[b.getTYPE()]);
-        }
+
+    private MyButton randomize(int x, int y) {//Creates MyButton with random TYPE and according image
+        MyButton b = new MyButton(this, new Random().nextInt(4), x, y);
         b.setOnClickListener(MyButtonListener);
         return b;
     }
-
 
     public View.OnClickListener MyButtonListener = new View.OnClickListener() {
         @Override
@@ -141,52 +148,44 @@ public class MainScreen extends AppCompatActivity {
         if (inALine.size() >= 3) { //if 3 or more are in line, add 1 to score for each element
             for (MyButton b : inALine) {
                 //ToDo add animation
-                //b.setVisibility(View.INVISIBLE);//ToDO add rearrange
-                //main.removeView(b);
                 b.setPoped(true);
                 p++;
                 if(!muted) MediaPlayer.create(this,R.raw.pop).start();//sfx
             }
-            //refresh score
             updateScore();
-//            checkInRow();//recursion FIXME: 19/09/2017
-//            reArrange();
+            //checkInRow();//recursion FIXME: 19/09/2017
+            reArrange();
         }
     }
 
-    private void updateScore() {
-        MySharedPreferences.setScore(this,p);
-        String pointStr = getString(R.string.points) + p;
-        ((TextView) findViewById(R.id.points)).setText(pointStr);
-        // TODO add sound effect
+    private void reArrange(){//After popping
+        for (MyButton[] candyArr : candies) {
+            for (int y = 0; y + 1 < candyArr.length; y++) {
+                MyButton current = candyArr[y], next = candyArr[y + 1];
+                if (current.isPoped() && !next.isPoped()) {
+                    swap(current, next);
+                    current.setPoped(false);
+                    next.setPoped(true);
+                }
+            }
+        }
+//        creatingButtons();
     }
 
-    private void reArrange(){//by changing during iteration, the iteration params also change
-//        for (int x = 0; x < candies.length; x++) {
-//            for (int y = 0; y+1 < candies[x].length ; y++) {
-//                MyButton mB = candies[x][y];
-//                if (mB == null){
-//                    mB=candies[x][y+1];
-//                    mB.setxPos(x);
-//                    mB.setyPos(y);
-//                    candies[x][y+1] = null;
-//                }
-//            }
-//        }
+    private void reArrange2(){
         for (int i = 0 ; i<main.getChildCount() ; i++){//For each child of main ViewGroup, swap() with invisible under it
             MyButton mB = (MyButton) main.getChildAt(i);
             if (mB.getyPos()-1>=0) {
                 MyButton under = candies[mB.getxPos()][mB.getyPos()-1];
-                if (under.getPoped()){
+                if (under.isPoped()){
                     swap(mB,under);
-                    //recursion
+                    under.setPoped(mB.isPoped());
+                    mB.setPoped(true);
+                    //reArrange(); //recursion
+//                    checkInRow();//recursion
                 }
             }
         }
-        creatingButtons();
-    }
-
-    public void mute(View v) {
-        ((ImageView)v).setImageResource((muted = !muted) ? R.drawable.unmutebtn : R.drawable.mute);
+//        creatingButtons();
     }
 }

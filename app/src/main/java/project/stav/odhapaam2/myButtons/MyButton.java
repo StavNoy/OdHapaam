@@ -1,5 +1,6 @@
 package project.stav.odhapaam2.myButtons;
 import android.content.Context;
+import android.graphics.Color;
 import android.widget.ImageView;
 
 /**
@@ -13,9 +14,11 @@ public class MyButton extends ImageView {
     private int xPos;
     private int yPos;
 
-    public MyButton(Context context,int type) {
+    public MyButton(Context context,int type , int x, int y) {
         super(context);
         setTYPE(type);
+        setxPos(x);
+        setyPos(y);
     }
 
     public int getxPos() {
@@ -45,9 +48,10 @@ public class MyButton extends ImageView {
 
     public void setPoped(boolean poped) {
         this.poped = poped;
+        this.setBackgroundColor(poped? Color.BLACK : Color.TRANSPARENT);
     }
 
-    public boolean getPoped() {
+    public boolean isPoped() {
         return poped;
     }
 }

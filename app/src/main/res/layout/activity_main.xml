@@ -34,12 +34,12 @@
         android:padding="25dp"/>
 
     <ImageButton
-        android:contentDescription="un/mute"
+        android:contentDescription="mute toggle"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/mute"
+        android:layout_margin="5dp"
+        android:src="@drawable/unmute"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:onClick="mute"
-        shap/>
+        android:onClick="mute" />
 </RelativeLayout>
