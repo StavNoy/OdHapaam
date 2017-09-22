@@ -3,6 +3,7 @@
     package="project.stav.odhapaam2">
 
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-feature android:name="android.hardware.audio.output" android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -10,7 +11,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainScreen">
+        <activity android:name=".Welcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,7 +22,7 @@
 
         </activity>
         <activity android:name=".LogActivity" />
-        <activity android:name=".Welcome"/>
+        <activity android:name=".MainScreen"/>
     </application>
 
 </manifest>

@@ -11,37 +11,28 @@
     tools:context="project.stav.odhapaam2.LogActivity"
     android:background="@drawable/main_background">
 
-
-
-
     <TextView
         android:id="@+id/ttl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Log In"
         android:gravity="center"
-        android:textSize="55dp"
+        android:textSize="55sp"
         android:textColor="#e1e1e1"
         android:layout_marginTop="50dp"
         />
 
     <EditText
         android:id="@+id/input1"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
+        style="@style/loginput"
         android:hint="User Name"
         android:layout_below="@+id/ttl"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"/>
     <EditText
         android:id="@+id/input2"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
+        style="@style/loginput"
         android:hint="Password"
-        android:layout_below="@+id/input1"
-        android:layout_alignLeft="@+id/input1"
-        android:layout_alignStart="@+id/input1"
-        />
+        android:layout_below="@+id/input1"/>
 
     <Button
         android:id="@+id/btnLog"
@@ -50,10 +41,9 @@
         android:text="sign in"
         android:background="#637593"
         android:textColor="#e1e1e1"
-        android:layout_below="@+id/input2"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-
+        android:layout_marginBottom="70dp"
         android:onClick="LogIn"/>
 
 </RelativeLayout>

@@ -9,7 +9,7 @@ import android.support.v7.widget.AppCompatImageView;
 
 public class MyButton extends AppCompatImageView {
 
-    private boolean poped = false;
+    private boolean poped = false;// Maybe replace with TYPE = -1 ?
     private int TYPE=0;
     private int xPos;
     private int yPos;
@@ -48,7 +48,7 @@ public class MyButton extends AppCompatImageView {
 
     public void setPoped(boolean poped) {
         this.poped = poped;
-        if (poped) {this.setBackgroundColor(Color.BLACK);}
+//        if (poped) {this.setBackgroundColor(Color.BLACK);}
     }
 
     public boolean isPoped() {

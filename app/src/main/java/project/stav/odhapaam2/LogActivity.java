@@ -20,7 +20,6 @@ public class LogActivity extends AppCompatActivity {
         user = (EditText) findViewById(R.id.input1);
         pass = (EditText) findViewById(R.id.input2);
 
-
     }
 
 
@@ -29,7 +28,6 @@ public class LogActivity extends AppCompatActivity {
         if(user.getText().toString().equals("game") && pass.getText().toString().equals("123")){
             Intent i = new Intent(this , LogActivity.class);
             startActivity(i);
-
         }else {
             Toast.makeText(this , "try again" ,Toast.LENGTH_LONG).show();}
     }

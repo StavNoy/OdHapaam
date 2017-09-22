@@ -1,7 +1,9 @@
 package project.stav.odhapaam2;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -14,13 +16,20 @@ public class Welcome extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
+        setContentView(R.layout.activity_welcome2);
 
         welcome = (TextView) findViewById(R.id.welcome);
         user = (EditText) findViewById(R.id.input1);
-
-
     }
 
+    public void goStScreen(View view){
+        startActivity(new Intent(this, StartScreen.class));
+    }
 
+    public void goLog(View view) {
+        startActivity(new Intent(this, LogActivity.class));
+    }
+    public void goPlay(View view) {
+        startActivity(new Intent(this, MainScreen.class));
+    }
 }

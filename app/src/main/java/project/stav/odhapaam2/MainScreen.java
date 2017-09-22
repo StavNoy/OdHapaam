@@ -1,5 +1,6 @@
 package project.stav.odhapaam2;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -32,7 +33,7 @@ public class MainScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        main = (GridLayout) findViewById(R.id.main);
+        main = (GridLayout) findViewById(R.id.play_grid);
         //points = (TextView) findViewById(R.id.points);
         images = MySharedPreferences.getImages(this);
         if (images[0] == null) {//Default images if non are picked
@@ -45,6 +46,9 @@ public class MainScreen extends AppCompatActivity {
         checkInRow();
     }
 
+    public void goHome(View view) {//Return to welcome screen
+        finish();
+    }
 
     //refresh score
     private void updateScore() {
@@ -55,7 +59,7 @@ public class MainScreen extends AppCompatActivity {
     }
 
     public void mute(View v) {
-        ((ImageView)v).setImageResource((muted = !muted) ? R.drawable.unmute : R.drawable.mute);
+        ((ImageView)v).setImageResource((muted = !muted) ? R.mipmap.ic_unmute : R.mipmap.ic_mute);
     }
 
     private void creatingButtons() {
@@ -68,14 +72,10 @@ public class MainScreen extends AppCompatActivity {
     }
 
     private MyButton randomize(int x, int y) {//Creates MyButton with random TYPE and according image
-        MyButton b = new MyButton(this, new Random().nextInt(4), x, y);
-        b.setOnClickListener(MyButtonListener);
-        if (images[0] == null) { //if no images are picked
-            b.setBackgroundResource(altImages[b.getTYPE()]); // TODO: 21/9/2017 move to MyButton.setTYPE()
-        } else {
-            b.setImageURI(images[candies[x][y].getTYPE()]);
-        }
-        return b;
+        MyButton mB = new MyButton(this, new Random().nextInt(4), x, y);
+        mB.setOnClickListener(MyButtonListener);
+        setImage(mB);
+        return mB;
     }
 
     public View.OnClickListener MyButtonListener = new View.OnClickListener() {
@@ -90,7 +90,7 @@ public class MainScreen extends AppCompatActivity {
                 selected = null;
                 checkInRow();
             } else { //This is click 2. Both clicks are same type and/or not adjacent
-                //ToDo add indication for incorrect move
+                //ToDo add animation for incorrect move + make vibrate optional
                 selected = null;
                 Vibrator vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
                 if(vib.hasVibrator()) {
@@ -110,13 +110,8 @@ public class MainScreen extends AppCompatActivity {
         v.setTYPE(sType);
         //ToDo add shrink animation
         //Set new Image for views based on new TYPE
-        if (images[0] == null) { //if no images are picked
-            v.setBackgroundResource(altImages[v.getTYPE()]);
-            selec.setBackgroundResource(altImages[selec.getTYPE()]);
-        } else {
-            v.setImageURI(images[v.getTYPE()]);
-            selec.setImageURI(images[selec.getTYPE()]);
-        }
+        setImage(v);
+        setImage(selec);
         //ToDo add expand animation
     }
 
@@ -139,13 +134,14 @@ public class MainScreen extends AppCompatActivity {
     }
 
     private void checkIfScore(ArrayList<MyButton> inALine) {
-        if (inALine.size() >= 3) { //if 3 or more are in line, add 1 to score for each element
+        if (inALine.size() >= 3) { //if 3 or more are in line, add 1 to score for each MyButton
             for (MyButton b : inALine) {
                 //ToDo add animation
                 b.setPoped(true);
                 p++;
-                if(!muted) MediaPlayer.create(this,R.raw.pop).start();//sfx
             }
+            p+=inALine.size()-3;//Extra point for each MyButton over 3;
+            if(!muted) MediaPlayer.create(this,R.raw.pop).start();//sfx
             updateScore();
             //checkInRow();//recursion FIXME: 19/09/2017
             reArrange();
@@ -167,18 +163,22 @@ public class MainScreen extends AppCompatActivity {
     }
 
     private void reCreatePoped() {
-        for (int x = 0; x < candies.length; x++) {
-            for (int y = 0; y < candies[x].length; y++) {
-                if (candies[x][y].isPoped()) {
-                    candies[x][y].setTYPE(new Random().nextInt(4));
-                    candies[x][y].setPoped(false);
+        for (MyButton[] candyArr : candies) {
+            for (MyButton mB : candyArr) {
+                if (mB.isPoped()) {
+                    mB.setTYPE(new Random().nextInt(4));
+                    mB.setPoped(false);
                 }
-                if (images[0] == null) { //if no images are picked
-                    candies[x][y].setBackgroundResource(altImages[candies[x][y].getTYPE()]); // TODO: 21/9/2017 move to MyButton.setTYPE()
-                } else {
-                    candies[x][y].setImageURI(images[candies[x][y].getTYPE()]);
-                }
+                setImage(mB);
             }
+        }
+    }
+
+    private void setImage(MyButton mB) {//Set image from chosen/default // TODO: 21/9/2017 move to MyButton.setTYPE()
+        if (images[0] != null) {
+            mB.setImageURI(images[mB.getTYPE()]);
+        } else { //if no images are picked
+            mB.setBackgroundResource(altImages[mB.getTYPE()]);
         }
     }
 }

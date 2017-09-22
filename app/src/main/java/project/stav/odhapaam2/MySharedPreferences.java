@@ -33,7 +33,7 @@ import java.util.Set;
 
     public static synchronized Uri [] getImages(Context context){
         Uri [] images = new Uri[4];
-        Set<String> prefImgs = getPref(context).getStringSet(IMAGES_KEY,new HashSet<String>(0));
+        Set<String> prefImgs = getPref(context).getStringSet(IMAGES_KEY,new HashSet<String>(0));// TODO: 22/9/2017  make LinkedhHashSet
         //if not initialized - use default images
         if(!prefImgs.isEmpty()){
             for(int i =0 ; i<images.length ; i++){
@@ -44,7 +44,7 @@ import java.util.Set;
     }
 
     public static synchronized void setImages(Context context, Uri[] uris){
-        Set<String> toSave=new HashSet<>();
+        Set<String> toSave=new HashSet<>(); // TODO: 22/9/2017 make LinkedHashSet
         for (Uri u : uris){
             toSave.add(u.toString());
         }

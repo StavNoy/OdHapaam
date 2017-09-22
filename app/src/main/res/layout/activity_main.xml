@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="project.stav.odhapaam2.MainScreen"
-    android:background="@drawable/background" >
+    android:background="@drawable/background">
 
     <GridLayout
-        android:id="@+id/main"
+        android:id="@+id/play_grid"
         android:layout_width="match_parent"
         android:layout_height="420dp"
         android:columnCount="5"
@@ -29,17 +29,26 @@
         android:text="@string/points"
         android:textSize="30sp"
         android:textColor="#fff"
+        android:layout_margin="25dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:padding="25dp"/>
+        android:layout_centerHorizontal="true" />
 
     <ImageButton
-        android:contentDescription="mute toggle"
-        android:layout_width="50dp"
+        android:contentDescription="Mute toggle"
+        android:layout_width="46dp"
         android:layout_height="50dp"
         android:layout_margin="5dp"
-        android:src="@drawable/unmute"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
+        android:src="@mipmap/ic_unmute"
+        android:layout_alignParentRight="true"
         android:onClick="mute" />
+    <ImageButton
+        android:contentDescription="Home"
+        android:layout_width="46dp"
+        android:layout_height="50dp"
+        android:layout_margin="5dp"
+        android:layout_alignParentTop="true"
+        android:src="@mipmap/ic_home"
+        android:layout_alignParentLeft="true"
+        android:onClick="goHome" />
 </RelativeLayout>
