@@ -23,19 +23,19 @@
         />
 
     <EditText
-        android:id="@+id/input1"
+        android:id="@+id/uName"
         style="@style/loginput"
         android:hint="User Name"
         android:layout_below="@+id/ttl"
         android:layout_marginTop="50dp"/>
     <EditText
-        android:id="@+id/input2"
+        android:id="@+id/uPass"
         style="@style/loginput"
         android:hint="Password"
-        android:layout_below="@+id/input1"/>
+        android:inputType="textPassword"
+        android:layout_below="@+id/uName"/>
 
     <Button
-        android:id="@+id/btnLog"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="sign in"

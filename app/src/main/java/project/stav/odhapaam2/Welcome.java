@@ -19,7 +19,7 @@ public class Welcome extends AppCompatActivity {
         setContentView(R.layout.activity_welcome2);
 
         welcome = (TextView) findViewById(R.id.welcome);
-        user = (EditText) findViewById(R.id.input1);
+        user = (EditText) findViewById(R.id.uName);
     }
 
     public void goStScreen(View view){
@@ -30,6 +30,7 @@ public class Welcome extends AppCompatActivity {
         startActivity(new Intent(this, LogActivity.class));
     }
     public void goPlay(View view) {
+        //ToDo if not logged- Alert
         startActivity(new Intent(this, MainScreen.class));
     }
 }
