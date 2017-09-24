@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<project.stav.odhapaam2.myButtons.MyButton xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="#00ffff"
-    android:tag="cyan">
-
-</project.stav.odhapaam2.myButtons.MyButton>

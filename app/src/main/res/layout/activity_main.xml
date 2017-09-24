@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:text="@string/points"
         android:textSize="30sp"
-        android:textColor="#fff"
+        android:textColor="#ffffff"
         android:layout_margin="25dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
