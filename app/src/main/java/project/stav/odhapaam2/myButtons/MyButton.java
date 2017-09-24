@@ -1,6 +1,5 @@
 package project.stav.odhapaam2.myButtons;
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.AppCompatImageView;
 
 /**
@@ -11,31 +10,31 @@ public class MyButton extends AppCompatImageView {
 
     private boolean poped = false;// Maybe replace with TYPE = -1 ?
     private int TYPE=0;
-    private int xPos;
-    private int yPos;
+    private int posX;
+    private int posY;
 
     public MyButton(Context context,int type , int x, int y) {
         super(context);
         setTYPE(type);
-        setxPos(x);
-        setyPos(y);
+        setPosX(x);
+        setPosY(y);
     }
 
-    public int getxPos() {
-        return xPos;
+    public int getPosX() {
+        return posX;
     }
 
-    public int getyPos() {
-        return yPos;
+    public int getPosY() {
+        return posY;
     }
 
 
-    public void setxPos(int xPos) {
-        this.xPos = xPos;
+    public void setPosX(int posX) {
+        this.posX = posX;
     }
 
-    public void setyPos(int yPos) {
-        this.yPos = yPos;
+    public void setPosY(int posY) {
+        this.posY = posY;
     }
 
     public int getTYPE() {
