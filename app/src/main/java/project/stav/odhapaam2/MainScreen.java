@@ -1,6 +1,5 @@
 package project.stav.odhapaam2;
 
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -9,6 +8,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -109,10 +109,14 @@ public class MainScreen extends AppCompatActivity {
         selec.setTYPE(v.getTYPE()); //Exchange the TYPEs of the 2 views
         v.setTYPE(sType);
         //ToDo add shrink animation
+
         //Set new Image for views based on new TYPE
         setImage(v);
         setImage(selec);
         //ToDo add expand animation
+
+
+
     }
 
     //method for checking how many MyButtons are in a line
@@ -154,6 +158,7 @@ public class MainScreen extends AppCompatActivity {
             for (int y = 0; y + 1 < candyArr.length; y++) {
                 MyButton current = candyArr[y], next = candyArr[y + 1];
                 if (current.isPoped() && !next.isPoped()) {
+                    next.startAnimation(AnimationUtils.loadAnimation(getApplicationContext() , R.anim.down));// start down animation
                     swap(current, next);
                     current.setPoped(false);
                     next.setPoped(true);
@@ -168,6 +173,9 @@ public class MainScreen extends AppCompatActivity {
                 if (mB.isPoped()) {
                     mB.setTYPE(new Random().nextInt(4));
                     mB.setPoped(false);
+                    // TODO: 24/09/2017 animarion
+                    //anim
+                    mB.startAnimation(AnimationUtils.loadAnimation(getApplicationContext() , R.anim.down));// start down animation
                 }
                 setImage(mB);
             }
