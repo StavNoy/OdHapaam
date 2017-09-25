@@ -1,6 +1,9 @@
 package project.stav.odhapaam2.myButtons;
 import android.content.Context;
 import android.support.v7.widget.AppCompatImageView;
+import android.view.animation.AnimationUtils;
+
+import project.stav.odhapaam2.R;
 
 /**
  * Created by hackeru on 17/09/2017.
@@ -52,5 +55,9 @@ public class MyButton extends AppCompatImageView {
 
     public boolean isPoped() {
         return poped;
+    }
+
+    public void animDown(){
+        this.startAnimation(AnimationUtils.loadAnimation(this.getContext() , R.anim.down));
     }
 }

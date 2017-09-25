@@ -18,9 +18,10 @@
         android:useDefaultMargins="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true" />
 
-    </GridLayout>
+    <!--android:columnCount="@integer/grid_side"fixme-->
+    <!--android:rowCount="@integer/grid_side"fixme-->
 
     <TextView
         android:id="@+id/points"

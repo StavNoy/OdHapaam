@@ -32,9 +32,9 @@ public class LogActivity extends AppCompatActivity {
         }
 
     private boolean validPass(String pswrd){
-        return pswrd.matches("(?=.*[A-Z]+)(?=.*[a-z]+)(?=.*\\d+)^.{8,}$");//ToDo add explanation in UI; Add "check available"
+        return pswrd.matches("(?=.*[A-Z]+)(?=.*[a-z]+)(?=.*\\d+)^.{8,}$");//ToDo add explanation in UI
     }
     private boolean validName(String name){//username must be at least 3 char long with no spaces
-        return name.matches("^[^\\s]{3,}$");//ToDo add explanation in UI
+        return name.matches("^[^\\s]{3,}$");//ToDo add explanation in UI; Add "check available"
     }
 }
