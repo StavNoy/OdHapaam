@@ -50,7 +50,7 @@ public class ChoosePic extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             Uri imageUri = data.getData();
             setImagesUris(imageUri);
-            ImageCropFunction(imageUri);
+
         }
 
 
@@ -62,6 +62,7 @@ public class ChoosePic extends AppCompatActivity {
             int index = Integer.parseInt(chosenView.getTag().toString());
             imagesUris[index]= imageUri;
             chosenView.setImageURI(imageUri);
+            chosenView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
     }
 
@@ -84,29 +85,8 @@ public class ChoosePic extends AppCompatActivity {
         }
 
         }
-    public void ImageCropFunction(Uri imageUri) {
 
-        // Image Crop Code
-        try {
-            CropIntent = new Intent("com.android.camera.action.CROP");
 
-            CropIntent.setDataAndType(imageUri, "image/*");
-
-            CropIntent.putExtra("crop", "true");
-            CropIntent.putExtra("outputX", 329);
-            CropIntent.putExtra("outputY", 180);
-            CropIntent.putExtra("aspectX", 1);
-            CropIntent.putExtra("aspectY", 1);
-            CropIntent.putExtra("scaleUpIfNeeded", true);
-            CropIntent.putExtra("return-data", true);
-
-            startActivityForResult(CropIntent, 1);
-
-        } catch (ActivityNotFoundException e) {
-
-        }
-    }
-    //Image Crop Code End Here
 
 
 }
