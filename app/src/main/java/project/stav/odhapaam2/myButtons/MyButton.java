@@ -1,8 +1,10 @@
 package project.stav.odhapaam2.myButtons;
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.animation.AnimationUtils;
 
+import project.stav.odhapaam2.MainScreen;
 import project.stav.odhapaam2.R;
 
 /**
@@ -12,15 +14,16 @@ import project.stav.odhapaam2.R;
 public class MyButton extends AppCompatImageView {
 
     private boolean poped = false;// Maybe replace with TYPE = -1 ?
-    private int TYPE=0;
+    private int TYPE;
     private int posX;
     private int posY;
+    private static final int[] altImages = new int[]{R.drawable.triangle, R.drawable.red_circle, R.drawable.yellow_square, R.drawable.green_x};
 
-    public MyButton(Context context,int type , int x, int y) {
+    public MyButton(final Context context,int type ,final int x,final int y) {
         super(context);
         setTYPE(type);
-        setPosX(x);
-        setPosY(y);
+        this.posX = x;
+        this.posY = y;
     }
 
     public int getPosX() {
@@ -31,26 +34,22 @@ public class MyButton extends AppCompatImageView {
         return posY;
     }
 
-
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
-
-    public void setPosY(int posY) {
-        this.posY = posY;
-    }
-
     public int getTYPE() {
         return TYPE;
     }
 
     public void setTYPE(int TYPE) {
         this.TYPE = TYPE;
+        Uri[] images = ((MainScreen)this.getContext()).images;
+        if (images[0] != null) {
+            this.setImageURI(images[TYPE]);
+        } else { //If no images are picked
+            this.setBackgroundResource(altImages[TYPE]);
+        }
     }
 
     public void setPoped(boolean poped) {
         this.poped = poped;
-//        if (poped) {this.setBackgroundColor(Color.BLACK);}
     }
 
     public boolean isPoped() {

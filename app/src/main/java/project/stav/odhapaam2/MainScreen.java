@@ -6,8 +6,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,14 +21,14 @@ import java.util.Random;
 import project.stav.odhapaam2.myButtons.MyButton;
 
 public class MainScreen extends AppCompatActivity {
-//    private int gridside = R.integer.grid_side; // FIXME: 25/09/2017
-    private MyButton[][] candies = new MyButton[5][5];
+    private int gridside = 5; // getResources().getInteger(R.integer.grid_side); // FIXME: 25/09/2017
+    private MyButton[][] candies = new MyButton[gridside][gridside];
     //candies[x] - lower X is higher row
     // TODO: 24/09/2017 change between x and y
     GridLayout playGrid; //ViewGroup for play area
     //TextView points; Made local variable for method updatePoints()
     int p = 0; //int for points
-    private Uri[] images;//Images picked by user
+    public Uri[] images;//Images picked by user
     private int[] altImages;//if no images are picked
 
     private MyButton firstClick;//First of 2 clicks
@@ -45,7 +48,6 @@ public class MainScreen extends AppCompatActivity {
         updateScore();
 
         creatingButtons();
-        checkInLine();
     }
 
     public void goHome(View view) {//Return to welcome screen
@@ -71,9 +73,17 @@ public class MainScreen extends AppCompatActivity {
                 //Creates MyButton with random TYPE and according image
                 candies[x][y] = new MyButton(this, new Random().nextInt(4), x, y);
                 candies[x][y].setOnClickListener(MyButtonListener);
-                setImage(candies[x][y]);
+                //setImage(candies[x][y]);//United with setTYPE
                 //Add the new MyButton to play grid
                 playGrid.addView(candies [x][y], (925/candies[x].length),(1150/candies.length));// TODO: 25/09/2017  fix scalability
+            }
+        }
+        //Down animation for entire grid
+        playGrid.startAnimation(AnimationUtils.loadAnimation(this, R.anim.down));
+        //Check new grid for scoring // TODO: 26/09/2017 Tie to playGrid animation end
+        for (MyButton[] xArr : candies){
+            for (MyButton newMB : xArr){
+                whenSwaped(newMB);
             }
         }
     }
@@ -114,75 +124,108 @@ public class MainScreen extends AppCompatActivity {
     };
 
     //Change between 2 views
-    private void swap(MyButton selec, MyButton v) {
+    private void swap(MyButton click1, MyButton click2) {
         //Exchange the TYPEs of the 2 views
-        int sType = selec.getTYPE();
-        selec.setTYPE(v.getTYPE());
-        v.setTYPE(sType);
+        int sType = click1.getTYPE();
+        click1.setTYPE(click2.getTYPE());
+        click2.setTYPE(sType);
         //Set new Image for views based on new TYPE
-        setImage(v);
-        setImage(selec);
+//        setImage(click2);//United with setTYPE
+//        setImage(click1);//United with setTYPE
         // if only one is popped, flip both
-        if (v.isPoped() ^ selec.isPoped()){
-            v.setPoped(!v.isPoped());
-            selec.setPoped(!selec.isPoped());
+        if (click2.isPoped() ^ click1.isPoped()){
+            click2.setPoped(!click2.isPoped());
+            click1.setPoped(!click1.isPoped());
         }
     }
 
-    private void whenSwaped(MyButton swapped){
-        //If column has 3+
-        ArrayList<MyButton> moreThan3 = inAColumn(swapped);
+    private void whenSwapedV1(MyButton swapped){
+        //If Row has 3+
+        ArrayList<MyButton> moreThan3 = inARow(swapped);
         if (moreThan3 != null) {
             pop(moreThan3);
-            ArrayList<MyButton> newColumn = columnToTop(moreThan3);
-            reFillPopped(newColumn);
-            for (MyButton newMB : newColumn) {
+            ArrayList<MyButton> newRow = rowToTop(moreThan3);
+            reFillPopped(newRow);
+            for (MyButton newMB : newRow) {
                 whenSwaped(newMB);
             }
 
         } else {
-            //If row has 3+
-            moreThan3 = inARow(swapped);
+            //If Column has 3+
+            moreThan3 = inAColumn(swapped);
             if (moreThan3 != null) {
                 pop(moreThan3);
-                rowToTop(moreThan3);
-                ArrayList<MyButton> newRow = rowToTop(moreThan3);
-                reFillPopped(newRow);
-                for (MyButton newMB : newRow) {
+                ArrayList<MyButton> newColumn = columnToTop(moreThan3);
+                reFillPopped(newColumn);
+                for (MyButton newMB : newColumn) {
                     whenSwaped(newMB);
                 }
             }
         }
     }
 
+    private void whenSwaped(final MyButton swapped){
+        //If Row has 3+
+        final ArrayList<MyButton> oldRow = inARow(swapped);
+        final boolean rowHas3 = oldRow != null;
+        //If Column has 3+
+        final ArrayList<MyButton> oldCol = inAColumn(swapped);
+        final boolean colHas3 = oldCol != null;
+        //Collect any repositioned popped
+        ArrayList<MyButton> allNew = new ArrayList<MyButton>(0);
+        //For rearranged column
+        //IMPORTANT : must be before row is rearranged
+        ArrayList<MyButton> newColumn;
+        if(colHas3) {
+            if(colHas3) pop(oldCol);
+            newColumn = columnToTop(oldCol);
+            allNew.addAll(newColumn);
+        }
+        //For rearranged Row
+        ArrayList<MyButton> newRow;
+        if (rowHas3) {
+            if(rowHas3) pop(oldRow);
+            newRow = rowToTop(oldRow);
+            allNew.addAll(newRow);
+        }
+        //Refill any repositioned popped
+        if(!allNew.isEmpty()){
+            reFillPopped(allNew);
+        }
+    }
+
     //Returns ArrayList of 3+ or null, based on Y of given MyButton
+    @Nullable
     private ArrayList<MyButton> inAColumn(MyButton clicked) {
         ArrayList<MyButton> inALine = new ArrayList<>();
         //Every Y with current Y
         int y = clicked.getPosY();
         for (MyButton[] xArr : candies) {
+            //If next is same TYPE
             if (xArr[y].getTYPE() == clicked.getTYPE()) {
                 inALine.add(xArr[y]);
             //If next is different, but already have 3
             } else if (inALine.size() >= 3) {
-                break;
+                return inALine;
             //When next is different before reaching 3
             } else {
                 inALine.clear();
             }
         }
-            if (inALine.size() >= 3) {
-                return inALine;
-            }
+        if (inALine.size() >= 3) {
+            return inALine;
+        }
         return null;
     }
 
     //Returns ArrayList of 3+ or null, based on X of given MyButon
+    @Nullable
     private ArrayList<MyButton> inARow(MyButton clicked) {
         ArrayList<MyButton> inALine = new ArrayList<>();
         //Every Y on current X
         MyButton[] xArr = candies[clicked.getPosX()];
         for (MyButton xY : xArr) {
+            //If next is same TYPE
             if (xY.getTYPE() == clicked.getTYPE()) {
                 inALine.add(xY);
             //If next is different, but already have 3
@@ -200,6 +243,7 @@ public class MainScreen extends AppCompatActivity {
     }
 
     //Reposition row top after pop
+    //I M P O R T A N T : Must N-O-T be used before cloumnToTop(same parameter);
     private ArrayList<MyButton> rowToTop(ArrayList<MyButton> popped){
         //Every MyButton in same row has same X
         int rowX = popped.get(0).getPosX();
@@ -209,13 +253,16 @@ public class MainScreen extends AppCompatActivity {
         } else {
             ArrayList<MyButton> popsAtTop = new ArrayList<>(popped);
             for (MyButton pop : popped) {
-                int y = pop.getPosY();
-                for (int x = rowX-1; x > 0; x--) { //candies[index-1] -> one above
-                    // Move all popped to the top- where X=0
-                    swap(pop, candies[x][y]);
-                    pop.animDown(); // pop now is candies[above] before. Start down animation
+                //In case pop was already repositioned by columnToTop
+                if (pop.isPoped()) {
+                    int y = pop.getPosY();
+                    for (int x = rowX-1; x > 0; x--) { //candies[index-1] -> one above
+                        // Move all popped to the top- where X=0
+                        swap(pop, candies[x][y]);
+                        pop.animDown(); // pop now is candies[above] before. Start down animation
+                    }
+                    popsAtTop.add(candies[0][y]);// Each popped is now in candies[0]. Y is unchanged
                 }
-                popsAtTop.add(candies[0][y]);// Each popped is now in candies[0]. Y is unchanged
             }
             return popsAtTop;
         }
@@ -227,6 +274,20 @@ public class MainScreen extends AppCompatActivity {
         //If top MyButton in current column is popped, no need for rearranging
         if (candies[0][y].isPoped()) {
             return popped;
+           } else {
+            //Collect popped MyButtons in new positions
+            ArrayList<MyButton> rePosPop = new ArrayList<>(popped);
+
+            for (int x=popped.size()-1 ; x>0 && popped.iterator().hasNext(); x--){
+                MyButton newPosition = candies[x][y];
+                MyButton pop = popped.iterator().next();
+                if(!newPosition.isPoped()) {
+                    swap(pop, newPosition);
+                    pop.animDown(); // pop now is candies[above] before. Start down animation
+                }
+                rePosPop.add(newPosition);
+            }
+            return rePosPop;
 //        } else {
 //            ArrayList<MyButton> rePosPop = new ArrayList<>(popped);
 //            for (MyButton pop : popped){
@@ -239,18 +300,6 @@ public class MainScreen extends AppCompatActivity {
 //                rePosPop.add(newPosition);
 //            }
 //            return rePosPop;
-        } else {
-            ArrayList<MyButton> rePosPop = new ArrayList<>(popped);
-            for (int x=popped.size()-1 ; x>0 && popped.iterator().hasNext(); x--){
-                MyButton newPosition = candies[x][y];
-                MyButton pop = popped.iterator().next();
-                if(!newPosition.isPoped()) {
-                    swap(pop, newPosition);
-                    pop.animDown(); // pop now is candies[above] before. Start down animation
-                }
-                rePosPop.add(newPosition);
-            }
-            return rePosPop;
         }
     }
 
@@ -295,19 +344,19 @@ public class MainScreen extends AppCompatActivity {
         for (MyButton pop : allPopped) {
             pop.setTYPE(new Random().nextInt(4));
             pop.setPoped(false);
-            setImage(pop);
+            //setImage(pop);// United with setTYPE;
             pop.animDown();
         }
     }
 
-    //Set image from chosen/default, by TYPE
-    private void setImage(MyButton mB) { // TODO: 21/9/2017 move to MyButton.setTYPE()
-        if (images[0] != null) {
-            mB.setImageURI(images[mB.getTYPE()]);
-        } else { //If no images are picked
-            mB.setBackgroundResource(altImages[mB.getTYPE()]);
-        }
-    }
+//    //Set image from chosen/default, by TYPE
+//    private void setImage(MyButton mB) { // TODO: 21/9/2017 move to MyButton.setTYPE()
+//        if (images[0] != null) {
+//            mB.setImageURI(images[mB.getTYPE()]);
+//        } else { //If no images are picked
+//            mB.setBackgroundResource(altImages[mB.getTYPE()]);
+//        }
+//    }
 
     //*****************************************O L D E R ------- S T I L L --- F O R --- o n C R E A T E ( ) ****************************************************************************************************
     //Method for checking how many MyButtons are in a line
@@ -367,7 +416,7 @@ public class MainScreen extends AppCompatActivity {
                     mB.setPoped(false);
                     // TODO: 24/09/2017 animation
                     //anim
-                    setImage(mB);
+                    //setImage(mB); //United with setTYPE
                     mB.animDown();// Start down animation
                 }
             }
