@@ -23,7 +23,7 @@ public class Welcome extends AppCompatActivity {
     }
 
     public void goStScreen(View view){
-        startActivity(new Intent(this, ChoosePic.class));
+        startActivity(new Intent(this, ChoosePicActivity.class));
     }
 
     public void goLog(View view) {

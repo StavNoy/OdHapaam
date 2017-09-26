@@ -2,7 +2,6 @@ package project.stav.odhapaam2;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,15 +11,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.HashSet;
 
-public class ChoosePic extends AppCompatActivity {
+public class ChoosePicActivity extends AppCompatActivity {
 
     //uri drown from gallery
     //the intent code of the image picking from gallery
@@ -61,28 +58,34 @@ public class ChoosePic extends AppCompatActivity {
 
     }
 
-    private void setImagesUris(Uri imageUri) {
-            if (imageUri != null) {
-                //connect the view that was clicked with the image uri the image that the user chose
-                int index = Integer.parseInt(chosenView.getTag().toString());
-                chosenView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                chosenView.setImageURI(imageUri);
-                 String filesPath = getFilesDir()+"/images/img"+index+".jpg";
-                try (FileInputStream fis = new FileInputStream(imageUri.getPath());
-                     FileOutputStream fos = new FileOutputStream(filesPath)) {
+    private void setImagesUris(final Uri imageUri) {
 
-                    int b;
-                    while ((b = fis.read()) != -1) {
-                        fos.write(b);
+        if (imageUri != null) {
+            //connect the view that was clicked with the image uri the image that the user chose
+            final int index = Integer.parseInt(chosenView.getTag().toString());
+            chosenView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            chosenView.setImageURI(imageUri);
+            final String filesPath = getFilesDir() + "/img" + index + ".jpg";
+            FilesPath[index] = filesPath;
+            new Thread() {
+                @Override
+                public void run() {
+                    try (InputStream fis = getContentResolver().openInputStream(imageUri);
+                         FileOutputStream fos = new FileOutputStream(filesPath)) {
+
+                        int b;
+                        while ((b = fis.read()) != -1) {
+                            fos.write(b);
+                        }
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(ChoosePicActivity.this, "IOException", Toast.LENGTH_SHORT).show();
                     }
-                    FilesPath[index]=filesPath;
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this,"IOException",Toast.LENGTH_SHORT).show();
                 }
-
-            }
+            }.start();
+        }
 
     }
 
@@ -93,11 +96,11 @@ public class ChoosePic extends AppCompatActivity {
 
     public void saveCandies(View view) {
         HashSet<String> pathSet = new HashSet<>();
-       for (String path : FilesPath){
+        for (String path : FilesPath) {
             pathSet.add(path);
         }
         if (pathSet.size() == 4) {
-            MySharedPreferences.setImages(this,pathSet);
+            MySharedPreferences.setImages(this, pathSet);
             finish();
         } else {
             AlertDialog.Builder aD = new AlertDialog.Builder(this);
