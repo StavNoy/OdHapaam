@@ -31,17 +31,19 @@ public class GameScreen extends AppCompatActivity {
     // TODO: 24/09/2017 change between x and y
     GridLayout playGrid; //ViewGroup for play area
     int p = 0; //int for points
-     public Drawable[] images;
+    public Drawable[] images;
     private MyButton firstClick;//First of 2 clicks
     private boolean muted = true;
+    Animation downImation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        downImation = AnimationUtils.loadAnimation(this, R.anim.down);
         setContentView(R.layout.game);
-        PermissionManager.check(this,Manifest.permission.READ_EXTERNAL_STORAGE,102);
         playGrid = (GridLayout) findViewById(R.id.play_grid);
-       images = MySharedPreferences.getImages(this);
+        images = MySharedPreferences.getImages(this);
         p = MySharedPreferences.getScore(this);
 
         updateScore();
@@ -56,7 +58,7 @@ public class GameScreen extends AppCompatActivity {
     //refresh score
     private void updateScore() {
         MySharedPreferences.setScore(this, p);
-        String pointStr = getString(R.string.points) + p;
+        final String pointStr = getString(R.string.points) + p;
         ((TextView) findViewById(R.id.points)).setText(pointStr);
         // TODO add sound effect
     }
@@ -80,13 +82,12 @@ public class GameScreen extends AppCompatActivity {
 
         //Down animation for entire grid
 //        playGrid.startAnimation(new DownerFactory().Downer(DownerFactory.INIT));
-        final Animation downImate = AnimationUtils.loadAnimation(GameScreen.this, R.anim.down);
         //Listener to check for scoring only after animation
-        downImate.setAnimationListener(new Animation.AnimationListener() {
+        downImation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationEnd(Animation animation) {
-                for (MyButton[] xArr : candies) {
-                    for (MyButton newMB : xArr) {
+                for (final MyButton[] xArr : candies) {
+                    for (final MyButton newMB : xArr) {
                         whenSwaped(newMB);
                     }
                 }
@@ -94,27 +95,14 @@ public class GameScreen extends AppCompatActivity {
             //irrelevant
             public void onAnimationRepeat(Animation animation) {} public void onAnimationStart(Animation animation) {}
         });
-        playGrid.startAnimation(downImate);
+        playGrid.startAnimation(downImation);
     }
-//    //Factroy for down animation listener
-//    private class DownerFactory{
-//        final static int INIT = 0, AFTER_SWAP = 1;
-//        final Animation downImate = AnimationUtils.loadAnimation(GameScreen.this, R.anim.down);
-//        private Animation Downer(final int whatDo) {
-//            switch (whatDo){
-//                case 0: downImate.setAnimationListener(init);
-//                    return downImate;
-//                case 1:
-//                default: return downImate;
-//            }
-//
-//        }
-//    }
 
     //When a MyButton is clicked
     public final View.OnClickListener MyButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
+            //Animation to indicate click
             v.startAnimation(AnimationUtils.loadAnimation(getApplicationContext() , R.anim.clicky));
             //Downcast clicked to MyButton
             final MyButton clicked2 = (MyButton) v;
@@ -163,12 +151,12 @@ public class GameScreen extends AppCompatActivity {
     }
 
     private void whenSwaped(final MyButton swapped) {
-        //If Row has 3+
-        final ArrayList<MyButton> oldRow = inARow(swapped);
-        final boolean rowHas3 = oldRow != null;
         //If Column has 3+
         final ArrayList<MyButton> oldCol = inAColumn(swapped);
         final boolean colHas3 = oldCol != null;
+        //If Row has 3+
+        final ArrayList<MyButton> oldRow = inARow(swapped);
+        final boolean rowHas3 = oldRow != null;
         //Collect any repositioned popped
         ArrayList<MyButton> allNew = new ArrayList<MyButton>(0);
         //For rearranged column
@@ -196,9 +184,9 @@ public class GameScreen extends AppCompatActivity {
     @Nullable
     private ArrayList<MyButton> inAColumn(final MyButton clicked) {
         ArrayList<MyButton> inALine = new ArrayList<>();
-        //Every Y with current Y
+        //Every MyButton in same column has same Y
         final int y = clicked.getPosY();
-        for (MyButton[] xArr : candies) {
+        for (final MyButton[] xArr : candies) {
             //If next is same TYPE
             if (xArr[y].getTYPE() == clicked.getTYPE()) {
                 inALine.add(xArr[y]);
@@ -222,7 +210,7 @@ public class GameScreen extends AppCompatActivity {
         ArrayList<MyButton> inALine = new ArrayList<>();
         //Every Y on current X
         final MyButton[] xArr = candies[clicked.getPosX()];
-        for (MyButton xY : xArr) {
+        for (final MyButton xY : xArr) {
             //If next is same TYPE
             if (xY.getTYPE() == clicked.getTYPE()) {
                 inALine.add(xY);
@@ -240,30 +228,15 @@ public class GameScreen extends AppCompatActivity {
         return null;
     }
 
-    //Reposition row top after pop
-    //I M P O R T A N T : Must N-O-T be used before cloumnToTop(same parameter);
-    private ArrayList<MyButton> rowToTop(final ArrayList<MyButton> popRow) {
-        //Every MyButton in same row has same X
-        final int rowX = popRow.get(0).getPosX();
-        //If in top row, no rearrange needed
-        if (rowX == 0) {
-            return popRow;
-        } else {
-            ArrayList<MyButton> popsAtTop = new ArrayList<>(popRow);
-            for (MyButton pop : popRow) {
-                //In case pop was already repositioned by columnToTop
-                if (pop.isPopped()) {
-                    int y = pop.getPosY();
-                    for (int x = rowX - 1; x > 0; x--) { //candies[index-1] -> one above
-                        // Move all popped to the top- where X=0
-                        swap(pop, candies[x][y]);
-                        pop.animDown(); // pop now is candies[above] before. Start down animation
-                    }
-                    popsAtTop.add(candies[0][y]);// Each popped is now in candies[0]. Y is unchanged
-                }
-            }
-            return popsAtTop;
+    private void pop(final ArrayList<MyButton> inALine) {
+        for (final MyButton b : inALine) {
+            b.setPopped(true);
+            p++; //ToDo add pop animation
         }
+        //Add pop animation
+        p += inALine.size() - 3;//Extra point for each MyButton over 3;
+        updateScore();
+        if (!muted) MediaPlayer.create(this, R.raw.pop).start();//SFX
     }
 
     private ArrayList<MyButton> columnToTop(final ArrayList<MyButton> popcol) {
@@ -273,11 +246,12 @@ public class GameScreen extends AppCompatActivity {
         if (candies[0][y].isPopped()) {
             return popcol;
         } else {
-            //Collect popped MyButtons in new positions
-            ArrayList<MyButton> rePosPop = new ArrayList<>(popcol);
-            for (int x = popcol.size() - 1; x > 0 && popcol.iterator().hasNext(); x--) {
-                MyButton newPosition = candies[x][y];
-                MyButton pop = popcol.iterator().next();
+            //Collection of popped MyButtons in new positions
+            final ArrayList<MyButton> rePosPop = new ArrayList<>(popcol);
+            //Move column to top
+            for (int x = 0; x < popcol.size() ; x++) {
+                final MyButton newPosition = candies[x][y];
+                final MyButton pop = popcol.get(x);
                 if (!newPosition.isPopped()) {
                     swap(pop, newPosition);
                     pop.animDown(); // pop now is candies[above] before. Start down animation
@@ -288,36 +262,65 @@ public class GameScreen extends AppCompatActivity {
         }
     }
 
-    private void pop(final ArrayList<MyButton> inALine) {
-        for (MyButton b : inALine) {
-            b.setPopped(true);
-            p++; //ToDo add pop animation
+    //Reposition row top after pop
+    //I M P O R T A N T : Must N-O-T be used before cloumnToTop(same parameter);
+    private ArrayList<MyButton> rowToTop(final ArrayList<MyButton> popRow) {
+        //Every MyButton in same row has same X
+        final int rowX = popRow.get(0).getPosX();
+        //If in top row, no rearrange needed
+        if (rowX == 0) {
+            return popRow;
+        } else {
+            final ArrayList<MyButton> popsAtTop = new ArrayList<>(popRow);
+            for (final MyButton pop : popRow) {
+                //In case pop was already repositioned by columnToTop
+                if (pop.isPopped()) {
+                    final int y = pop.getPosY();
+                    for (int x = rowX ; x > 0; x--) {
+                        // Move all popped to the top- where X=0
+                        swap(candies[x][y], candies[x-1][y]); //candies[index-1] -> one above
+                        candies[x][y].startAnimation(downImation); // candies[x][y] now is candies[above pop] before. Start down animation
+                    }
+                    popsAtTop.add(candies[0][y]);// Each popped is now in candies[0]. Y is unchanged
+                }
+            }
+            return popsAtTop;
         }
-        //Add pop animation
-        p += inALine.size() - 3;//Extra point for each MyButton over 3;
-        updateScore();
-        if (!muted) MediaPlayer.create(this, R.raw.pop).start();//SFX
     }
 
     private void reFillPopped(final ArrayList<MyButton> allPopped) {
-        for (MyButton popped : allPopped) {
-            final MyButton pop = popped;
+        for (final MyButton pop : allPopped) {
             pop.setTYPE(new Random().nextInt(4));
             pop.setPopped(false);
-            Animation downImation = AnimationUtils.loadAnimation(this, R.anim.down);
+
+            //Animation for ascending pop. When finished, check for score
             downImation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     whenSwaped(pop);
                 }
+                //Irrelevant
                 public void onAnimationRepeat(Animation animation) {}  public void onAnimationStart(Animation animation) {}
             });
-            whenSwaped(pop);
         }
     }
 
 }
 //*****************************************D E P R I C A T E D **********************************************************************
+//    //Factroy for down animation listener
+//    private class DownerFactory{
+//        final static int INIT = 0, AFTER_SWAP = 1;
+//        final Animation downImate = AnimationUtils.loadAnimation(GameScreen.this, R.anim.down);
+//        private Animation Downer(final int whatDo) {
+//            switch (whatDo){
+//                case 0: downImate.setAnimationListener(init);
+//                    return downImate;
+//                case 1:
+//                default: return downImate;
+//            }
+//
+//        }
+//    }
 //    private void whenSwapedV1(final MyButton swapped) {
 //        //If Row has 3+
 //        ArrayList<MyButton> moreThan3 = inARow(swapped);

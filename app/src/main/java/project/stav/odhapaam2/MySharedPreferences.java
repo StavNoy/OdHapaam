@@ -25,11 +25,11 @@ import java.util.Set;
         return context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
-    public static synchronized int getScore(Context context){
+    static synchronized int getScore(Context context){
         return getPref(context).getInt(SCORE_KEY, 0);
     }
 
-    public static synchronized void setScore(Context context, int score){
+    static synchronized void setScore(Context context, int score){
         getPref(context).edit().putInt(SCORE_KEY, score).apply();
     }
 
