@@ -13,7 +13,7 @@ import project.stav.odhapaam2.R;
 
 public class MyButton extends AppCompatImageView {
 
-    private boolean poped = false;// Maybe replace with TYPE = -1 ?
+    private boolean popped = false;// Maybe replace with TYPE = -1 ?
     private int TYPE;
     private int posX;
     private int posY;
@@ -48,12 +48,12 @@ public class MyButton extends AppCompatImageView {
         }
     }
 
-    public void setPopped(boolean poped) {
-        this.poped = poped;
+    public void setPopped(boolean popped) {
+        this.popped = popped;
     }
 
     public boolean isPopped() {
-        return poped;
+        return popped;
     }
 
     public void animDown(){
