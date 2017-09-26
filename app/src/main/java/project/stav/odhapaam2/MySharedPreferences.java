@@ -33,7 +33,7 @@ import java.util.Set;
 
     public static synchronized Uri [] getImages(Context context){
         Uri [] images = new Uri[4];
-        Set<String> prefImgs = getPref(context).getStringSet(IMAGES_KEY,new HashSet<String>(0));// Maybe: 22/9/2017  make LinkedhHashSet? not good for patterns
+        Set<String> prefImgs = getPref(context).getStringSet(IMAGES_KEY,new HashSet<String>(0));// Maybe: make LinkedhHashSet? not good for predefined patterns
         //if not initialized - use default images
         if(!prefImgs.isEmpty()){
             for(int i =0 ; i<images.length ; i++){

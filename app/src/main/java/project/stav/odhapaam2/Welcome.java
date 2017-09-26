@@ -23,7 +23,7 @@ public class Welcome extends AppCompatActivity {
     }
 
     public void goStScreen(View view){
-        startActivity(new Intent(this, StartScreen.class));
+        startActivity(new Intent(this, ChoosePic.class));
     }
 
     public void goLog(View view) {
@@ -31,6 +31,6 @@ public class Welcome extends AppCompatActivity {
     }
     public void goPlay(View view) {
         //ToDo if not logged- Alert
-        startActivity(new Intent(this, MainScreen.class));
+        startActivity(new Intent(this, GameScreen.class));
     }
 }

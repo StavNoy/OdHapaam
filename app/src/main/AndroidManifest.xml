@@ -25,11 +25,11 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".StartScreen">
+        <activity android:name=".ChoosePic">
 
         </activity>
         <activity android:name=".LogActivity" />
-        <activity android:name=".MainScreen"/>
+        <activity android:name=".GameScreen"/>
     </application>
 
 </manifest>

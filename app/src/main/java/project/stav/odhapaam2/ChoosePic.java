@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class StartScreen extends AppCompatActivity {
+public class ChoosePic extends AppCompatActivity {
 
     //uri drown from gallery
     //the intent code of the image picking from gallery
@@ -30,7 +30,7 @@ public class StartScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.start_screen1);
+        setContentView(R.layout.choose_pic);
         PermissionManager.check(this,Manifest.permission.READ_EXTERNAL_STORAGE,MEDIA_REQUEST);
 
 

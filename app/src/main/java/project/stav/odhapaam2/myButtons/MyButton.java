@@ -4,7 +4,7 @@ import android.net.Uri;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.animation.AnimationUtils;
 
-import project.stav.odhapaam2.MainScreen;
+import project.stav.odhapaam2.GameScreen;
 import project.stav.odhapaam2.R;
 
 /**
@@ -40,7 +40,7 @@ public class MyButton extends AppCompatImageView {
 
     public void setTYPE(int TYPE) {
         this.TYPE = TYPE;
-        Uri[] images = ((MainScreen)this.getContext()).images;
+        Uri[] images = ((GameScreen)this.getContext()).images;
         if (images[0] != null) {
             this.setImageURI(images[TYPE]);
         } else { //If no images are picked
@@ -48,11 +48,11 @@ public class MyButton extends AppCompatImageView {
         }
     }
 
-    public void setPoped(boolean poped) {
+    public void setPopped(boolean poped) {
         this.poped = poped;
     }
 
-    public boolean isPoped() {
+    public boolean isPopped() {
         return poped;
     }
 

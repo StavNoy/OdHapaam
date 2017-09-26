@@ -4,7 +4,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="project.stav.odhapaam2.MainScreen"
+    tools:context="project.stav.odhapaam2.GameScreen"
     android:background="@drawable/background">
 
     <GridLayout
