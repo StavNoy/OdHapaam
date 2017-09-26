@@ -43,8 +43,8 @@ import java.util.Set;
         return images;
     }
 
-    public static synchronized void setImages(Context context, Uri[] uris){
-        Set<String> toSave=new HashSet<>(); // TODO: 22/9/2017 make LinkedHashSet
+    public static synchronized void setImages(Context context, HashSet<Uri> uris){
+       HashSet<String> toSave=new HashSet<>();
         for (Uri u : uris){
             toSave.add(u.toString());
         }

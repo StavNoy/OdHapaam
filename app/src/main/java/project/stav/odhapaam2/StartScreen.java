@@ -2,6 +2,7 @@ package project.stav.odhapaam2;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,12 +25,14 @@ public class StartScreen extends AppCompatActivity {
     private ImageView chosenView;
     //the map that connects the uri and the views
     Uri [] imagesUris = new Uri[4];
+    Intent CropIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_screen1);
-        PermissionManager.check(this,Manifest.permission.WRITE_EXTERNAL_STORAGE,MEDIA_REQUEST);
+        PermissionManager.check(this,Manifest.permission.READ_EXTERNAL_STORAGE,MEDIA_REQUEST);
+
 
     }
 
@@ -45,7 +48,9 @@ public class StartScreen extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
-            setImagesUris(data.getData());
+            Uri imageUri = data.getData();
+            setImagesUris(imageUri);
+            ImageCropFunction(imageUri);
         }
 
 
@@ -71,7 +76,7 @@ public class StartScreen extends AppCompatActivity {
 //            uriSet.add(uri);
 //        }
         if (uriSet.size()==4) {
-            MySharedPreferences.setImages(this, (Uri[]) uriSet.toArray());
+            MySharedPreferences.setImages(this, uriSet);
            finish();
         }else{
           AlertDialog.Builder aD = new AlertDialog.Builder(this);
@@ -79,7 +84,31 @@ public class StartScreen extends AppCompatActivity {
         }
 
         }
+    public void ImageCropFunction(Uri imageUri) {
+
+        // Image Crop Code
+        try {
+            CropIntent = new Intent("com.android.camera.action.CROP");
+
+            CropIntent.setDataAndType(imageUri, "image/*");
+
+            CropIntent.putExtra("crop", "true");
+            CropIntent.putExtra("outputX", 329);
+            CropIntent.putExtra("outputY", 180);
+            CropIntent.putExtra("aspectX", 1);
+            CropIntent.putExtra("aspectY", 1);
+            CropIntent.putExtra("scaleUpIfNeeded", true);
+            CropIntent.putExtra("return-data", true);
+
+            startActivityForResult(CropIntent, 1);
+
+        } catch (ActivityNotFoundException e) {
 
         }
+    }
+    //Image Crop Code End Here
+
+
+}
 
 
