@@ -120,6 +120,7 @@ public class GameScreen extends AppCompatActivity {
     public final View.OnClickListener MyButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
+            v.startAnimation(AnimationUtils.loadAnimation(getApplicationContext() , R.anim.clicky));
             //Downcast clicked to MyButton
             final MyButton clicked2 = (MyButton) v;
             // if this is click 1
@@ -129,6 +130,8 @@ public class GameScreen extends AppCompatActivity {
             } else if (firstClick.getTYPE() != clicked2.getTYPE()
                     && Math.abs((firstClick.getPosX() + firstClick.getPosY()) - (clicked2.getPosX() + clicked2.getPosY())) == 1) {
                 //ToDo add shrink animation
+                firstClick.startAnimation(AnimationUtils.loadAnimation(getApplicationContext() , R.anim.alpha_out));
+                clicked2.startAnimation(AnimationUtils.loadAnimation(getApplicationContext() , R.anim.alpha_out));
                 swap(firstClick, clicked2);
                 //ToDo add expand animation
                 whenSwaped(firstClick);
