@@ -1,6 +1,7 @@
 package project.stav.odhapaam2;
 
 import android.Manifest;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -16,6 +17,8 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -28,7 +31,7 @@ public class GameScreen extends AppCompatActivity {
     // TODO: 24/09/2017 change between x and y
     GridLayout playGrid; //ViewGroup for play area
     int p = 0; //int for points
-    public Uri[] images;//Images picked by user
+     public Drawable[] images;
     private MyButton firstClick;//First of 2 clicks
     private boolean muted = true;
 
@@ -38,7 +41,7 @@ public class GameScreen extends AppCompatActivity {
         setContentView(R.layout.game);
         PermissionManager.check(this,Manifest.permission.READ_EXTERNAL_STORAGE,102);
         playGrid = (GridLayout) findViewById(R.id.play_grid);
-        images = MySharedPreferences.getImages(this);
+       images = MySharedPreferences.getImages(this);
         p = MySharedPreferences.getScore(this);
 
         updateScore();
@@ -312,6 +315,7 @@ public class GameScreen extends AppCompatActivity {
             whenSwaped(pop);
         }
     }
+
 }
 //*****************************************D E P R I C A T E D **********************************************************************
 //    private void whenSwapedV1(final MyButton swapped) {

@@ -10,7 +10,13 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -20,18 +26,17 @@ public class ChoosePic extends AppCompatActivity {
     //the intent code of the image picking from gallery
     private static final int PICK_IMAGE = 100;
     //the code for requesting the external storage permission
-    private final int MEDIA_REQUEST =102;
+    private final int MEDIA_REQUEST = 102;
     //the last view that was clicked
     private ImageView chosenView;
-    //the map that connects the uri and the views
-    Uri [] imagesUris = new Uri[4];
-    Intent CropIntent;
+    String[] FilesPath = new String[4];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.choose_pic);
-        PermissionManager.check(this,Manifest.permission.READ_EXTERNAL_STORAGE,MEDIA_REQUEST);
+        PermissionManager.check(this, Manifest.permission.READ_EXTERNAL_STORAGE, MEDIA_REQUEST);
 
 
     }
@@ -56,39 +61,50 @@ public class ChoosePic extends AppCompatActivity {
 
     }
 
-    private void setImagesUris(Uri imageUri){
-        if (imageUri != null) {
-            //connect the view that was clicked with the image uri the image that the user chose
-            int index = Integer.parseInt(chosenView.getTag().toString());
-            imagesUris[index]= imageUri;
-            chosenView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            chosenView.setImageURI(imageUri);
+    private void setImagesUris(Uri imageUri) {
+            if (imageUri != null) {
+                //connect the view that was clicked with the image uri the image that the user chose
+                int index = Integer.parseInt(chosenView.getTag().toString());
+                chosenView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                chosenView.setImageURI(imageUri);
+                 String filesPath = getFilesDir()+"/images/img"+index+".jpg";
+                try (FileInputStream fis = new FileInputStream(imageUri.getPath());
+                     FileOutputStream fos = new FileOutputStream(filesPath)) {
 
+                    int b;
+                    while ((b = fis.read()) != -1) {
+                        fos.write(b);
+                    }
+                    FilesPath[index]=filesPath;
 
-        }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this,"IOException",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
     }
 
     public void chooseImage(View view) {
-        chosenView =(ImageView)view;
+        chosenView = (ImageView) view;
         openGallery();
     }
 
     public void saveCandies(View view) {
-        HashSet<Uri> uriSet =new HashSet<>(Arrays.asList(imagesUris));
-//        for (Uri uri : imagesUris){
-//            uriSet.add(uri);
-//        }
-        if (uriSet.size()==4) {
-            MySharedPreferences.setImages(this, uriSet);
-           finish();
-        }else{
-          AlertDialog.Builder aD = new AlertDialog.Builder(this);
+        HashSet<String> pathSet = new HashSet<>();
+       for (String path : FilesPath){
+            pathSet.add(path);
+        }
+        if (pathSet.size() == 4) {
+            MySharedPreferences.setImages(this,pathSet);
+            finish();
+        } else {
+            AlertDialog.Builder aD = new AlertDialog.Builder(this);
             aD.setMessage("please select four different images").show();
         }
 
-        }
-
-
+    }
 
 
 }
