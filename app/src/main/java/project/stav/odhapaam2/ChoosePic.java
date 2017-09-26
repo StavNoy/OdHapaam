@@ -61,8 +61,10 @@ public class ChoosePic extends AppCompatActivity {
             //connect the view that was clicked with the image uri the image that the user chose
             int index = Integer.parseInt(chosenView.getTag().toString());
             imagesUris[index]= imageUri;
-            chosenView.setImageURI(imageUri);
             chosenView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            chosenView.setImageURI(imageUri);
+
+
         }
     }
 

@@ -1,5 +1,6 @@
 package project.stav.odhapaam2;
 
+import android.Manifest;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -35,9 +36,11 @@ public class GameScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
+        PermissionManager.check(this,Manifest.permission.READ_EXTERNAL_STORAGE,102);
         playGrid = (GridLayout) findViewById(R.id.play_grid);
         images = MySharedPreferences.getImages(this);
         p = MySharedPreferences.getScore(this);
+
         updateScore();
 
         creatingButtons();
