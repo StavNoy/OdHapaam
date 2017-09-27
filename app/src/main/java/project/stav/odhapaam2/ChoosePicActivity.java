@@ -38,7 +38,7 @@ public class ChoosePicActivity extends AppCompatActivity {
 
     }
 
-    //send user to gallery for picking an image
+    //send uName to gallery for picking an image
     private void openGallery() {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
@@ -46,7 +46,7 @@ public class ChoosePicActivity extends AppCompatActivity {
 
 
     @Override
-    //the event after the user picked an image, saves it in Uri variable "imageUri"
+    //the event after the uName picked an image, saves it in Uri variable "imageUri"
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
@@ -61,7 +61,7 @@ public class ChoosePicActivity extends AppCompatActivity {
     private void setImagesUris(final Uri imageUri) {
 
         if (imageUri != null) {
-            //connect the view that was clicked with the image uri the image that the user chose
+            //connect the view that was clicked with the image uri the image that the uName chose
             final int index = Integer.parseInt(chosenView.getTag().toString());
             chosenView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             chosenView.setImageURI(imageUri);

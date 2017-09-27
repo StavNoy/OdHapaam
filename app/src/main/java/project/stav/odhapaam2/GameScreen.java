@@ -1,9 +1,7 @@
 package project.stav.odhapaam2;
 
-import android.Manifest;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -17,12 +15,10 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
-import project.stav.odhapaam2.myButtons.MyButton;
+import project.stav.odhapaam2.LogServer.Server.PointUploader;
 
 public class GameScreen extends AppCompatActivity {
     private final int gridside = 5; // getResources().getInteger(R.integer.grid_side); // FIXME: 25/09/2017
@@ -59,8 +55,8 @@ public class GameScreen extends AppCompatActivity {
     private void updateScore() {
         MySharedPreferences.setScore(this, p);
         final String pointStr = getString(R.string.points) + p;
+        PointUploader.INSTANCE.upLoad(this, p);
         ((TextView) findViewById(R.id.points)).setText(pointStr);
-        // TODO add sound effect
     }
 
     //Toggle. Button shows other option. Copy/Paste from Nikita Kurtin's WonderWoman/SpiderMan
@@ -133,7 +129,6 @@ public class GameScreen extends AppCompatActivity {
                     }
                 }
             }
-            // TODO: 25/09/2017 Add identical onDrag
         }
     };
 
@@ -306,143 +301,6 @@ public class GameScreen extends AppCompatActivity {
     }
 
 }
-//*****************************************D E P R I C A T E D **********************************************************************
-//    //Factroy for down animation listener
-//    private class DownerFactory{
-//        final static int INIT = 0, AFTER_SWAP = 1;
-//        final Animation downImate = AnimationUtils.loadAnimation(GameScreen.this, R.anim.down);
-//        private Animation Downer(final int whatDo) {
-//            switch (whatDo){
-//                case 0: downImate.setAnimationListener(init);
-//                    return downImate;
-//                case 1:
-//                default: return downImate;
-//            }
-//
-//        }
-//    }
-//    private void whenSwapedV1(final MyButton swapped) {
-//        //If Row has 3+
-//        ArrayList<MyButton> moreThan3 = inARow(swapped);
-//        if (moreThan3 != null) {
-//            pop(moreThan3);
-//            final ArrayList<MyButton> newRow = rowToTop(moreThan3);
-//            reFillPopped(newRow);
-//            for (MyButton newMB : newRow) {
-//                whenSwaped(newMB);
-//            }
-//
-//        } else {
-//            //If Column has 3+
-//            moreThan3 = inAColumn(swapped);
-//            if (moreThan3 != null) {
-//                pop(moreThan3);
-//                final ArrayList<MyButton> newColumn = columnToTop(moreThan3);
-//                reFillPopped(newColumn);
-//                for (MyButton newMB : newColumn) {
-//                    whenSwaped(newMB);
-//                }
-//            }
-//        }
-//    }
-
-    //Reposition column top after pop
-//    private ArrayList<MyButton> rePosPopColumnV1(ArrayList<MyButton> popped){
-//        int y = popped.get(0).getPosY(); //All have same Y, different X
-//        //Collect not popped.
-//        ArrayList<MyButton> notPopped=new ArrayList<>(candies.length-popped.size());
-//        for (int x = candies.length - 1; x >= 0; x--) {//From bottom to top
-//            MyButton[] xArr = candies[x];
-//            if (!xArr[y].isPopped()) {
-//                notPopped.add(xArr[y]);//First added is bottom, last is top
-//            }
-//        }
-//        //Move all not popped to bottom, while maintaining order
-//        for (MyButton nPop : notPopped) {
-//            int bottomX = candies.length-1; //Index of lowest square on screen
-//            int nPopI=notPopped.indexOf(nPop);//Bottom->0, top is biggest
-//            MyButton newPos;
-//            swap(candies[bottomX-nPopI][y],nPop);
-//            nPop.animDown();
-//        }
-//        // New ArrayList of Popped in new positions
-//        ArrayList<MyButton> rePosPop = new ArrayList<>(popped);
-//        for (int x = 0 ; x < popped.size(); x++){
-//            rePosPop.add(candies[x][y]);
-//        }
-//        return rePosPop;
-//    }
-//
-//    //Method for checking how many MyButtons are in a line
-//    private void checkInLine() {
-//        for (int x = 0; x < candies.length; x++) {
-//            for (int y = 0; y < candies[x].length; y++) {
-//                ArrayList<MyButton> inALine = new ArrayList<>();
-//                //Within bounds, as long as next has same TYPE
-//                for (int i = 0; y + i < candies[x].length && candies[x][y + i].getTYPE() == candies[x][y].getTYPE(); i++) {
-//                    inALine.add(candies[x][y + i]);
-//                }
-//                checkIfScore(inALine);
-//                inALine.clear();
-//                //Same for same position in each array
-//                for (int i = 0; x + i < candies.length && candies[x + i][y].getTYPE() == candies[x][y].getTYPE(); i++) {
-//                    inALine.add(candies[x + i][y]);
-//                }
-//                checkIfScore(inALine);
-//            }
-//        }
-//    }
-//
-//    private void checkIfScore(ArrayList<MyButton> inALine) {
-//        if (inALine.size() >= 3) { //if 3 or more are in line, add 1 to score for each MyButton
-//            for (MyButton b : inALine) {
-//                b.setPopped(true);
-//                p++;
-//            }
-//            p+=inALine.size()-3;//Extra point for each MyButton over 3;
-//            if(!muted) MediaPlayer.create(this,R.raw.pop).start();//sfx
-//            updateScore();
-//            //checkInLine();//recursion
-//            reArrange();
-//            reCreatePoped();
-//       }
-//    }
-//
-//    private void reArrange(){//After popping
-//        for (int x = 1; x < candies.length; x++) {
-//            for (int y = 0; y < candies[x].length; y++) {
-//                MyButton current = candies[x][y], next = candies[x - 1][y];
-//                if (current.isPopped() && !next.isPopped()) {
-//                    // start down animation
-//                    next.animDown();// Start down animation
-//                    swap(current, next);
-//                }
-//            }
-//        }
-//    }
-//
-//    private void reCreatePoped() {
-//        for (MyButton[] candyArr : candies) {
-//            for (MyButton mB : candyArr) {
-//                if (mB.isPopped()) {
-//                    mB.setTYPE(new Random().nextInt(4));
-//                    mB.setPopped(false);
-//                    mB.animDown();// Start down animation
-//                }
-//            }
-//        }
-//    }
-//}
-//
-//    //Set image from chosen/default, by TYPE
-//    private void setImage(MyButton mB) {
-//        if (images[0] != null) {
-//            mB.setImageURI(images[mB.getTYPE()]);
-//        } else { //If no images are picked
-//            mB.setBackgroundResource(altImages[mB.getTYPE()]);
-//        }
-//    }
-
     /* TODO: 24/09/2017 init method that gets predefined 2D array pattern - simplest
             separately write many different patterns for initial playGrid.
                 randomly choose between them.

@@ -33,4 +33,14 @@ public class Welcome extends AppCompatActivity {
         //ToDo if not logged- Alert
         startActivity(new Intent(this, GameScreen.class));
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(!MySharedPreferences.getStayLogged(this)){
+            MySharedPreferences.saveName(this,"");
+            MySharedPreferences.savePass(this,"");
+        }
+    }
 }

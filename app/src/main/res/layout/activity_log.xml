@@ -35,16 +35,24 @@
         android:inputType="textPassword"
         android:layout_below="@+id/uName"/>
 
+    <CheckBox
+        android:id="@+id/stayLogged"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Keep me logged in"
+        android:layout_below="@+id/uPass"
+        android:layout_margin="@dimen/activity_horizontal_margin" />
+
     <Button
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="sign in"
+        android:text="Log in"
         android:background="#637593"
         android:textColor="#e1e1e1"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="70dp"
-        android:onClick="LogIn"/>
+        android:onClick="logIn"/>
 
 </RelativeLayout>
 

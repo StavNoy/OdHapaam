@@ -1,4 +1,4 @@
-package project.stav.odhapaam2.myButtons;
+package project.stav.odhapaam2;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -14,7 +14,7 @@ import project.stav.odhapaam2.R;
 
 public class MyButton extends AppCompatImageView {
 
-    private boolean popped = false;// Maybe replace with TYPE = -1 ?
+    private boolean popped = false;
     private int TYPE;
     private int posX;
     private int posY;
