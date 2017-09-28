@@ -69,7 +69,7 @@ public class LogActivity extends AppCompatActivity {
                         }
                     }.execute(serverUrl,uData.toString());
                 } else {
-                    errAlert("Invalid Request");
+                    errAlert("Name must be at least 3 characters long, with no spacing.\nPassword must be at least 8 characters long, with at least 1 uppercase, 1 lowercase, and 1 digit ");
                 }
             }catch (JSONException e) {
                     e.printStackTrace();
@@ -85,6 +85,10 @@ public class LogActivity extends AppCompatActivity {
     }
     private boolean validName(final String name){//username must be at least 3 char long with no spaces
         return name.matches("^[^\\s]{3,}$");//ToDo add explanation in UI; Add "check available"
+    }
+
+    public void goHome(View v) {//Return to welcome screen
+        finish();
     }
 
 }
