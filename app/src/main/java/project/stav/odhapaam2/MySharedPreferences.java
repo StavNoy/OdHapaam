@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -35,11 +36,12 @@ public class MySharedPreferences {
 
     public static synchronized Drawable[] getImages(final Context context){
         final Drawable [] imageFiles = new Drawable[4];
-        final Set<String> prefImgs = getPref(context).getStringSet(IMAGES_KEY,new HashSet<String>(0));
+        final Set<String> prefImgs = getPref(context).getStringSet(IMAGES_KEY,new HashSet<String>(4));
         //if not initialized - use default images
+        Iterator iterator = prefImgs.iterator();
         if(!prefImgs.isEmpty()){
             for(int i =0 ; i<imageFiles.length ; i++){
-                imageFiles[i]=Drawable.createFromPath(prefImgs.iterator().next());
+                imageFiles[i]=Drawable.createFromPath( (String) iterator.next());
             }
         }
         return imageFiles;

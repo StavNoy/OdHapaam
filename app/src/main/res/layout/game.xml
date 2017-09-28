@@ -14,7 +14,7 @@
         android:columnCount="5"
         android:rowCount="5"
         android:background="@drawable/backgroundlayout"
-        android:alpha="0.5"
+        android:alpha="0.8"
         android:useDefaultMargins="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"

@@ -20,6 +20,7 @@
         android:layout_marginTop="40dp"
         android:layout_alignParentTop="true"/>
 
+
     <Button
         android:id="@+id/btn_game"
         android:layout_width="150dp"
@@ -45,7 +46,7 @@
             android:onClick="goLog"/>
         <Button
             android:id="@+id/btn_cemra"
-            android:background="@mipmap/ic_cemra"
+            android:background="@mipmap/ic_points"
             style="@style/welcome_buttonBar_Button"/>
         <Button
             android:id="@+id/btn_gallery"

@@ -66,7 +66,7 @@ public class ChoosePicActivity extends AppCompatActivity {
             chosenView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             chosenView.setImageURI(imageUri);
             final String filesPath = getFilesDir() + "/img" + index + ".jpg";
-            FilesPath[index] = filesPath;
+
             new Thread() {
                 @Override
                 public void run() {
@@ -85,6 +85,7 @@ public class ChoosePicActivity extends AppCompatActivity {
                     }
                 }
             }.start();
+            FilesPath[index] = filesPath;
         }
 
     }

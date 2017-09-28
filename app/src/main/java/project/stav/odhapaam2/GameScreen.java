@@ -23,8 +23,7 @@ import project.stav.odhapaam2.LogServer.Server.PointUploader;
 public class GameScreen extends AppCompatActivity {
     private final int gridside = 5; // getResources().getInteger(R.integer.grid_side); // FIXME: 25/09/2017
     private final MyButton[][] candies = new MyButton[gridside][gridside];
-    //candies[x] - lower X is higher row
-    // TODO: 24/09/2017 change between x and y
+    //candies[x] - lower row number is higher row on screen
     GridLayout playGrid; //ViewGroup for play area
     int p = 0; //int for points
     public Drawable[] images;
@@ -65,14 +64,19 @@ public class GameScreen extends AppCompatActivity {
     }
 
     private void creatingButtons() {
-        for (int x = 0; x < candies.length; x++) {
-            for (int y = 0; y < candies[x].length; y++) {
+        for (int row = 0; row < candies.length; row++) {
+            for (int col = 0; col < candies[row].length; col++) {
+                int type = new Random().nextInt(4);
                 //Creates MyButton with random TYPE and according image
-                candies[x][y] = new MyButton(this, new Random().nextInt(4), x, y);
-                candies[x][y].setOnClickListener(MyButtonListener);
+                candies[row][col] = new MyButton(this,type , row, col);
+                candies[row][col].setBackground(images[type]);
+                candies[row][col].setOnClickListener(MyButtonListener);
                 //setImage(candies[x][y]);//United with setTYPE
                 //Add the new MyButton to play grid
-                playGrid.addView(candies[x][y], (925 / candies[x].length), (1150 / candies.length));// TODO: 25/09/2017  fix scalability
+
+                playGrid.addView(candies[row][col], (925 / candies[row].length), (1150 / candies.length));// TODO: 25/09/2017  fix scalability
+
+
             }
         }
 
@@ -82,8 +86,8 @@ public class GameScreen extends AppCompatActivity {
         downImation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationEnd(Animation animation) {
-                for (final MyButton[] xArr : candies) {
-                    for (final MyButton newMB : xArr) {
+                for (final MyButton[] row : candies) {
+                    for (final MyButton newMB : row) {
                         whenSwaped(newMB);
                     }
                 }
@@ -107,7 +111,7 @@ public class GameScreen extends AppCompatActivity {
                 firstClick = clicked2;
                 //if views clicked have different TYPE and are adjacent ((1st x+y)-(2nd x+y)= 1|-1)
             } else if (firstClick.getTYPE() != clicked2.getTYPE()
-                    && Math.abs((firstClick.getPosX() + firstClick.getPosY()) - (clicked2.getPosX() + clicked2.getPosY())) == 1) {
+                    && Math.abs((firstClick.getRow() + firstClick.getColumn()) - (clicked2.getRow() + clicked2.getColumn())) == 1) {
                 //ToDo add shrink animation
                 firstClick.startAnimation(AnimationUtils.loadAnimation(getApplicationContext() , R.anim.alpha_out));
                 clicked2.startAnimation(AnimationUtils.loadAnimation(getApplicationContext() , R.anim.alpha_out));
@@ -175,16 +179,16 @@ public class GameScreen extends AppCompatActivity {
         }
     }
 
-    //Returns ArrayList of 3+ or null, based on Y of given MyButton
+    //Returns ArrayList of 3+ or null, based on column of given MyButton
     @Nullable
     private ArrayList<MyButton> inAColumn(final MyButton clicked) {
         ArrayList<MyButton> inALine = new ArrayList<>();
         //Every MyButton in same column has same Y
-        final int y = clicked.getPosY();
-        for (final MyButton[] xArr : candies) {
+        final int col = clicked.getColumn();
+        for (final MyButton[] row : candies) {
             //If next is same TYPE
-            if (xArr[y].getTYPE() == clicked.getTYPE()) {
-                inALine.add(xArr[y]);
+            if (row[col].getTYPE() == clicked.getTYPE()) {
+                inALine.add(row[col]);
                 //If next is different, but already have 3
             } else if (inALine.size() >= 3) {
                 return inALine;
@@ -199,16 +203,16 @@ public class GameScreen extends AppCompatActivity {
         return null;
     }
 
-    //Returns ArrayList of 3+ or null, based on X of given MyButon
+    //Returns ArrayList of 3+ or null, based on row of given MyButon
     @Nullable
     private ArrayList<MyButton> inARow(final MyButton clicked) {
         ArrayList<MyButton> inALine = new ArrayList<>();
-        //Every Y on current X
-        final MyButton[] xArr = candies[clicked.getPosX()];
-        for (final MyButton xY : xArr) {
+        //Every col on current row
+        final MyButton[] row = candies[clicked.getRow()];
+        for (final MyButton mB : row) {
             //If next is same TYPE
-            if (xY.getTYPE() == clicked.getTYPE()) {
-                inALine.add(xY);
+            if (mB.getTYPE() == clicked.getTYPE()) {
+                inALine.add(mB);
                 //If next is different, but already have 3
             } else if (inALine.size() >= 3) {
                 return inALine;
@@ -235,18 +239,18 @@ public class GameScreen extends AppCompatActivity {
     }
 
     private ArrayList<MyButton> columnToTop(final ArrayList<MyButton> popcol) {
-        //Every MyButton in same column has same Y
-        final int y = popcol.get(0).getPosY();
+        //Every MyButton in same column has same col
+        final int col = popcol.get(0).getColumn();
         //If top MyButton in current column is popped, no need for rearranging
-        if (candies[0][y].isPopped()) {
+        if (candies[0][col].isPopped()) {
             return popcol;
         } else {
             //Collection of popped MyButtons in new positions
             final ArrayList<MyButton> rePosPop = new ArrayList<>(popcol);
             //Move column to top
-            for (int x = 0; x < popcol.size() ; x++) {
-                final MyButton newPosition = candies[x][y];
-                final MyButton pop = popcol.get(x);
+            for (int row = 0; row < popcol.size() ; row++) {
+                final MyButton newPosition = candies[row][col];
+                final MyButton pop = popcol.get(row);
                 if (!newPosition.isPopped()) {
                     swap(pop, newPosition);
                     pop.animDown(); // pop now is candies[above] before. Start down animation
@@ -261,22 +265,22 @@ public class GameScreen extends AppCompatActivity {
     //I M P O R T A N T : Must N-O-T be used before cloumnToTop(same parameter);
     private ArrayList<MyButton> rowToTop(final ArrayList<MyButton> popRow) {
         //Every MyButton in same row has same X
-        final int rowX = popRow.get(0).getPosX();
+        int row = popRow.get(0).getRow();
         //If in top row, no rearrange needed
-        if (rowX == 0) {
+        if (row == 0) {
             return popRow;
         } else {
             final ArrayList<MyButton> popsAtTop = new ArrayList<>(popRow);
             for (final MyButton pop : popRow) {
                 //In case pop was already repositioned by columnToTop
                 if (pop.isPopped()) {
-                    final int y = pop.getPosY();
-                    for (int x = rowX ; x > 0; x--) {
+                    final int col = pop.getColumn();
+                    for (; row > 0; row--) {
                         // Move all popped to the top- where X=0
-                        swap(candies[x][y], candies[x-1][y]); //candies[index-1] -> one above
-                        candies[x][y].startAnimation(downImation); // candies[x][y] now is candies[above pop] before. Start down animation
+                        swap(candies[row][col], candies[row-1][col]); //candies[index-1] -> one above
+                        candies[row][col].startAnimation(downImation); // candies[x][y] now is candies[above pop] before. Start down animation
                     }
-                    popsAtTop.add(candies[0][y]);// Each popped is now in candies[0]. Y is unchanged
+                    popsAtTop.add(candies[0][col]);// Each popped is now in candies[0]. column is unchanged
                 }
             }
             return popsAtTop;
