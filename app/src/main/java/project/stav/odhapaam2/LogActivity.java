@@ -33,7 +33,7 @@ public class LogActivity extends AppCompatActivity {
 
 //    public void logIn(View view) {
 //        String uName = this.uName.getText().toString();
-//        if(uName.equals("game") && uPass.getText().toString().equals("123")){
+//        if(uName.equals("game_activity") && uPass.getText().toString().equals("123")){
 //            Intent i = new Intent(this , LogActivity.class);
 //            startActivity(i);
 //            Toast.makeText(this , "Logged in as "+uName ,Toast.LENGTH_LONG).show();

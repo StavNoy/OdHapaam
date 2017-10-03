@@ -31,7 +31,7 @@ public class Welcome extends AppCompatActivity {
     }
     public void goPlay(View view) {
         //ToDo if not logged- Alert
-        startActivity(new Intent(this, GameScreen.class));
+        startActivity(new Intent(this, GameActivity.class));
     }
 
 
@@ -42,5 +42,9 @@ public class Welcome extends AppCompatActivity {
             MySharedPreferences.saveName(this,"");
             MySharedPreferences.savePass(this,"");
         }
+    }
+
+    public void goHS(View view) {
+        startActivity(new Intent(this, HighScoreActivity.class));
     }
 }

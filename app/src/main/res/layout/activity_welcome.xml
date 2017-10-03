@@ -47,7 +47,8 @@
         <Button
             android:id="@+id/btn_cemra"
             android:background="@mipmap/ic_points"
-            style="@style/welcome_buttonBar_Button"/>
+            style="@style/welcome_buttonBar_Button"
+            android:onClick="goHS"/>
         <Button
             android:id="@+id/btn_gallery"
             android:background="@mipmap/ic_gallery"

@@ -23,7 +23,7 @@ import java.util.Random;
 
 import project.stav.odhapaam2.LogServer.Server.PointUploader;
 
-public class GameScreen extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
     private final int gridside = 5; // getResources().getInteger(R.integer.grid_side); // FIXME: 25/09/2017
     private final MyButton[][] candies = new MyButton[gridside][gridside];
     //candies[x] - lower row number is higher row on screen
@@ -39,7 +39,7 @@ public class GameScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         downImation = AnimationUtils.loadAnimation(this, R.anim.down);
-        setContentView(R.layout.game);
+        setContentView(R.layout.game_activity);
         playGrid = (GridLayout) findViewById(R.id.play_grid);
         images = MySharedPreferences.getImages(this);
         if (images[0] == null) {
