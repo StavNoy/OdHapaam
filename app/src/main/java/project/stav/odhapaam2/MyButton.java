@@ -1,5 +1,6 @@
 package project.stav.odhapaam2;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.animation.AnimationUtils;
 
@@ -36,12 +37,12 @@ public class MyButton extends AppCompatImageView {
 
     public void setTYPE(int TYPE) {
         this.TYPE = TYPE;
-      /*  Drawable[] images = ((GameScreen)this.getContext()).images;
+        Drawable[] images = ((GameScreen)this.getContext()).images;
         if (images[0] != null) {
             this.setImageDrawable(images[TYPE]);
         } else { //If no images are picked
             this.setBackgroundResource(altImages[TYPE]);
-        }*/
+        }
     }
 
     public void setPopped(boolean popped) {

@@ -40,9 +40,12 @@ public class GameScreen extends AppCompatActivity {
         playGrid = (GridLayout) findViewById(R.id.play_grid);
         images = MySharedPreferences.getImages(this);
         p = MySharedPreferences.getScore(this);
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         updateScore();
-
         creatingButtons();
     }
 
@@ -69,7 +72,7 @@ public class GameScreen extends AppCompatActivity {
                 int type = new Random().nextInt(4);
                 //Creates MyButton with random TYPE and according image
                 candies[row][col] = new MyButton(this,type , row, col);
-                candies[row][col].setBackground(images[type]);
+//                candies[row][col].setBackground(images[type]);
                 candies[row][col].setOnClickListener(MyButtonListener);
                 //setImage(candies[x][y]);//United with setTYPE
                 //Add the new MyButton to play grid
@@ -95,6 +98,7 @@ public class GameScreen extends AppCompatActivity {
             //irrelevant
             public void onAnimationRepeat(Animation animation) {} public void onAnimationStart(Animation animation) {}
         });
+
         playGrid.startAnimation(downImation);
     }
 
@@ -113,8 +117,9 @@ public class GameScreen extends AppCompatActivity {
             } else if (firstClick.getTYPE() != clicked2.getTYPE()
                     && Math.abs((firstClick.getRow() + firstClick.getColumn()) - (clicked2.getRow() + clicked2.getColumn())) == 1) {
                 //ToDo add shrink animation
-                firstClick.startAnimation(AnimationUtils.loadAnimation(getApplicationContext() , R.anim.alpha_out));
-                clicked2.startAnimation(AnimationUtils.loadAnimation(getApplicationContext() , R.anim.alpha_out));
+                final Animation alphOut = AnimationUtils.loadAnimation(getApplicationContext() , R.anim.alpha_out);
+                firstClick.startAnimation(alphOut);
+                clicked2.startAnimation(alphOut);
                 swap(firstClick, clicked2);
                 //ToDo add expand animation
                 whenSwaped(firstClick);
@@ -142,6 +147,8 @@ public class GameScreen extends AppCompatActivity {
         final int c1Type = click1.getTYPE();
         click1.setTYPE(click2.getTYPE());
         click2.setTYPE(c1Type);
+//        click1.setBackground(images[click1.getTYPE()]);
+//        click2.setBackground(images[click1.getTYPE()]);
         // if only one is popped, flip both
         if (click2.isPopped() ^ click1.isPopped()) {
             click2.setPopped(!click2.isPopped());
@@ -151,38 +158,35 @@ public class GameScreen extends AppCompatActivity {
 
     private void whenSwaped(final MyButton swapped) {
         //If Column has 3+
-        final ArrayList<MyButton> oldCol = inAColumn(swapped);
-        final boolean colHas3 = oldCol != null;
+        ArrayList<MyButton> col3Plus = inAColumn(swapped);
         //If Row has 3+
-        final ArrayList<MyButton> oldRow = inARow(swapped);
-        final boolean rowHas3 = oldRow != null;
+        ArrayList<MyButton> row3Plus = inARow(swapped);
         //Collect any repositioned popped
-        ArrayList<MyButton> allNew = new ArrayList<MyButton>(0);
-        //For rearranged column
-        ArrayList<MyButton> newColumn;
+        ArrayList<MyButton> allPopped = new ArrayList<MyButton>(0);
         //IMPORTANT : must be before row is rearranged
-        if (colHas3) {
-            pop(oldCol);
-            newColumn = columnToTop(oldCol);
-            allNew.addAll(newColumn);
+        if (col3Plus != null) {
+            pop(col3Plus);
+            col3Plus = columnToTop(col3Plus);
+            allPopped.addAll(col3Plus);
         }
-        //For rearranged Row
-        ArrayList<MyButton> newRow;
-        if (rowHas3) {
-            pop(oldRow);
-            newRow = rowToTop(oldRow);
-            allNew.addAll(newRow);
+        if (row3Plus != null) {
+            row3Plus = rowToTop(row3Plus);
+            pop(row3Plus);
+            allPopped.addAll(row3Plus);
         }
         //Refill any repositioned popped
-        if (!allNew.isEmpty()) {
-            reFillPopped(allNew);
+        if (!allPopped.isEmpty()) {
+            reFillPopped(allPopped);
+            for(MyButton newMB : allPopped){
+                whenSwaped(newMB);
+            }
         }
     }
 
     //Returns ArrayList of 3+ or null, based on column of given MyButton
     @Nullable
     private ArrayList<MyButton> inAColumn(final MyButton clicked) {
-        ArrayList<MyButton> inALine = new ArrayList<>();
+        ArrayList<MyButton> inALine = new ArrayList<>(0);
         //Every MyButton in same column has same Y
         final int col = clicked.getColumn();
         for (final MyButton[] row : candies) {
@@ -289,7 +293,12 @@ public class GameScreen extends AppCompatActivity {
 
     private void reFillPopped(final ArrayList<MyButton> allPopped) {
         for (final MyButton pop : allPopped) {
-            pop.setTYPE(new Random().nextInt(4));
+            //Give new different TYPE
+            final int oldTYPE = pop.getTYPE();
+            while(pop.getTYPE()==oldTYPE) {
+                pop.setTYPE(new Random().nextInt(4));
+//                pop.setBackground(images[pop.getTYPE()]);
+            }
             pop.setPopped(false);
 
             //Animation for ascending pop. When finished, check for score

@@ -1,6 +1,7 @@
 package project.stav.odhapaam2;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -24,20 +25,25 @@ import java.util.Map;
 public class ScoresAdapter extends RecyclerView.Adapter{
     final Context context;
     final JSONObject scoreList;
-    public CountriesAdapter(final JSONObject scoreList, final Context context){
+    public ScoresAdapter(final JSONObject scoreList, final Context context){
         this.context=context;
         this.scoreList = scoreList;
     }
-    public int getItemCount() {
-        return scores.length();
-    }
+//    public int getItemCount() {
+//        return scores.length();
+//    }
 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ScoreViewHolder((TextView) LayoutInflater.from(context).inflate(R.layout.highscore_item, null));
     }
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int i) {
-        final String name = scoreList.names().getString(i);
-        ((ScoreViewHolder)holder).nameScore.setText(scoreList.getInt(name).toString()+" "+name);
+//        final String name = scoreList.names().getString(i);
+//        ((ScoreViewHolder)holder).nameScore.setText(scoreList.getInt(name).toString()+" "+name);
+    }
+
+    @Override
+    public int getItemCount() {
+        return 0;
     }
 
     private void arrangeByScore(JSONObject list) throws JSONException {
@@ -47,7 +53,8 @@ public class ScoresAdapter extends RecyclerView.Adapter{
             String key = iter.next().toString();
             names.put(key, list.getInt(key));
         }
-        Collections.sort(names, new Comparator<Object>() {
-        });
+//        Collections.sort(names, new Comparator<Object>() {
+//
+//        });
     }
 }
