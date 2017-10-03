@@ -1,6 +1,6 @@
 package project.stav.odhapaam2;
 
-import android.support.v7.widget.RecyclerView;
+//import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 /**
@@ -8,10 +8,10 @@ import android.widget.TextView;
  */
 
 //Recycler view holder - Composition solution
-public class ScoreViewHolder extends RecyclerView.ViewHolder{
+/*public class ScoreViewHolder extends RecyclerView.ViewHolder{
     public final TextView nameScore;
     public ScoreViewHolder(TextView v){
         super(v);
         this.nameScore = v;
     }
-}
+}*/

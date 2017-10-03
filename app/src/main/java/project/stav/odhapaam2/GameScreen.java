@@ -1,12 +1,15 @@
 package project.stav.odhapaam2;
 
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableContainer;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -39,7 +42,10 @@ public class GameScreen extends AppCompatActivity {
         setContentView(R.layout.game);
         playGrid = (GridLayout) findViewById(R.id.play_grid);
         images = MySharedPreferences.getImages(this);
-        p = MySharedPreferences.getScore(this);
+        if (images[0] == null) {
+            images = new Drawable[]{getDrawable(R.drawable.green_x), getDrawable(R.drawable.red_circle), getDrawable(R.drawable.triangle), getDrawable(R.drawable.yellow_square)};
+            p = MySharedPreferences.getScore(this);
+        }
     }
 
     @Override
@@ -72,9 +78,8 @@ public class GameScreen extends AppCompatActivity {
                 int type = new Random().nextInt(4);
                 //Creates MyButton with random TYPE and according image
                 candies[row][col] = new MyButton(this,type , row, col);
-//                candies[row][col].setBackground(images[type]);
-                candies[row][col].setOnClickListener(MyButtonListener);
-                //setImage(candies[x][y]);//United with setTYPE
+               // candies[row][col].setBackground(images[type]);
+                 candies[row][col].setOnClickListener(MyButtonListener);
                 //Add the new MyButton to play grid
 
                 playGrid.addView(candies[row][col], (925 / candies[row].length), (1150 / candies.length));// TODO: 25/09/2017  fix scalability
@@ -147,8 +152,8 @@ public class GameScreen extends AppCompatActivity {
         final int c1Type = click1.getTYPE();
         click1.setTYPE(click2.getTYPE());
         click2.setTYPE(c1Type);
-//        click1.setBackground(images[click1.getTYPE()]);
-//        click2.setBackground(images[click1.getTYPE()]);
+       // click1.setBackground(images[click1.getTYPE()]);
+     //  click2.setBackground(images[click1.getTYPE()]);
         // if only one is popped, flip both
         if (click2.isPopped() ^ click1.isPopped()) {
             click2.setPopped(!click2.isPopped());
@@ -166,11 +171,11 @@ public class GameScreen extends AppCompatActivity {
         //IMPORTANT : must be before row is rearranged
         if (col3Plus != null) {
             pop(col3Plus);
-            col3Plus = columnToTop(col3Plus);
+            //col3Plus = columnToTop(col3Plus);
             allPopped.addAll(col3Plus);
         }
         if (row3Plus != null) {
-            row3Plus = rowToTop(row3Plus);
+            //row3Plus = rowToTop(row3Plus);
             pop(row3Plus);
             allPopped.addAll(row3Plus);
         }
@@ -293,12 +298,11 @@ public class GameScreen extends AppCompatActivity {
 
     private void reFillPopped(final ArrayList<MyButton> allPopped) {
         for (final MyButton pop : allPopped) {
-            //Give new different TYPE
-            final int oldTYPE = pop.getTYPE();
-            while(pop.getTYPE()==oldTYPE) {
-                pop.setTYPE(new Random().nextInt(4));
-//                pop.setBackground(images[pop.getTYPE()]);
-            }
+            Random r = new Random();
+            int random = r.nextInt(4);
+            while(random==pop.getTYPE())random=r.nextInt(4);
+            pop.setTYPE(random);
+
             pop.setPopped(false);
 
             //Animation for ascending pop. When finished, check for score

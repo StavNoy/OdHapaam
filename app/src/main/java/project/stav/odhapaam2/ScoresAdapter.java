@@ -1,4 +1,4 @@
-package project.stav.odhapaam2;
+/*
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +22,7 @@ import java.util.Map;
  * Created by Noy on 3/10/2017.
  */
 
-public class ScoresAdapter extends RecyclerView.Adapter{
+/*public class ScoresAdapter extends RecyclerView.Adapter{
     final Context context;
     final JSONObject scoreList;
     public ScoresAdapter(final JSONObject scoreList, final Context context){
@@ -57,4 +57,4 @@ public class ScoresAdapter extends RecyclerView.Adapter{
 //
 //        });
     }
-}
+}*/
