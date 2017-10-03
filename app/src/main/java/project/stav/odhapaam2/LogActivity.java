@@ -61,7 +61,7 @@ public class LogActivity extends AppCompatActivity {
                                     MySharedPreferences.saveName(context, NAME);
                                     MySharedPreferences.savePass(context, PASS);
                                     //Save "Stay signed in" state
-                                  //  MySharedPreferences.setStayLogged(context, ((CheckBox)findViewById(R.id.stayLogged)).isChecked());
+                                    MySharedPreferences.setStayLogged(context, ((CheckBox)findViewById(R.id.stayLogged)).isChecked());
                                 }
                             }else {
                                 errAlert("Invalid Request");
