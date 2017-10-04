@@ -49,10 +49,10 @@ public class LogActivity extends AppCompatActivity {
                                     //Confirmation toast
                                     Toast.makeText(context,"Loged In as "+NAME, Toast.LENGTH_LONG).show();
                                     //Save Credentials
-                                    MySharedPreferences.saveName(context, NAME);
-                                    MySharedPreferences.savePass(context, PASS);
+                                    SharedPrefs.saveName(context, NAME);
+                                    SharedPrefs.savePass(context, PASS);
                                     //Save "Stay signed in" state
-                                    MySharedPreferences.setStayLogged(context, ((CheckBox)findViewById(R.id.stayLogged)).isChecked());
+                                    SharedPrefs.setStayLogged(context, ((CheckBox)findViewById(R.id.stayLogged)).isChecked());
                                 }
                             }else {
                                 errAlert("Invalid Request");
@@ -60,7 +60,7 @@ public class LogActivity extends AppCompatActivity {
                         }
                     }.execute(localHostServerUrl,uData.toString());
                 } else {
-                    errAlert("Name must be at least 3 characters long, with no spacing.\nPassword must be at least 8 characters long, with at least 1 uppercase, 1 lowercase, and 1 digit ");
+                    errAlert("Name must be at least 3 characters long, with no spacing.\nPassword must be at least 8 characters long, with at least 1 uppercase, 1 lowercase, and 1 numeral ");
                 }
             }catch (JSONException e) {
                     e.printStackTrace();
@@ -68,7 +68,7 @@ public class LogActivity extends AppCompatActivity {
     }
 
     public void trySignUp(View v){
-        Upload.INSTANCE.upLoad(this,MySharedPreferences.getScore(this),Upload.SIGNUP);
+        Upload.INSTANCE.upLoad(this, SharedPrefs.getScore(this),Upload.SIGNUP);
         tryLogIn(v);
     }
 
@@ -77,14 +77,17 @@ public class LogActivity extends AppCompatActivity {
     }
 
     private boolean validPass(final String pswrd){
-        return pswrd.matches("(?=.*[A-Z]+)(?=.*[a-z]+)(?=.*\\d+)^.{8,}$");//ToDo add explanation in UI
+        return pswrd.matches("(?=.*[A-Z]+)(?=.*[a-z]+)(?=.*\\d+)^.{8,}$");
     }
     private boolean validName(final String name){//username must be at least 3 char long with no spaces
-        return name.matches("^[^\\s]{3,}$");//ToDo add explanation in UI; Add "check available"
+        return name.matches("^[^\\s]{3,}$");
     }
 
     public void goHome(View v) {//Return to welcome screen
         finish();
     }
 
+    public void info(View view) {
+        errAlert("Name must be at least 3 characters long, with no spacing.\nPassword must be at least 8 characters long, with at least 1 uppercase, 1 lowercase, and 1 numeral ");
+    }
 }

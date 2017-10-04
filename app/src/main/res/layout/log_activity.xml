@@ -38,6 +38,7 @@
         android:hint="User Name"
         android:layout_below="@+id/ttl"
         android:layout_marginTop="50dp"/>
+
     <EditText
         android:id="@+id/uPass"
         style="@style/loginput"
@@ -50,8 +51,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Keep me logged in"
+        android:layout_below="@+id/uPass" />
+    <ImageView
+        android:src="@drawable/ic_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/uPass"
-        android:layout_margin="@dimen/activity_horizontal_margin" />
+        android:layout_alignRight="@id/uPass"
+        android:onClick="info"/>
 
     <Button
         android:text="Existing User"

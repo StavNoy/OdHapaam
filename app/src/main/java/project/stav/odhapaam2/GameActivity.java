@@ -21,7 +21,7 @@ import java.util.Random;
 import project.stav.odhapaam2.LogServer.Server.Upload;
 
 public class GameActivity extends AppCompatActivity {
-    private final int gridside = 5; // getResources().getInteger(R.integer.grid_side); // FIXME: 25/09/2017
+    private final int gridside = 5;
     private final MyButton[][] candies = new MyButton[gridside][gridside];
     //candies[x] - lower row number is higher row on screen
     GridLayout playGrid; //ViewGroup for play area
@@ -38,10 +38,10 @@ public class GameActivity extends AppCompatActivity {
         downImation = AnimationUtils.loadAnimation(this, R.anim.down);
         setContentView(R.layout.game_activity);
         playGrid = (GridLayout) findViewById(R.id.play_grid);
-        images = MySharedPreferences.getImages(this);
+        images = SharedPrefs.getImages(this);
         if (images[0] == null) {
             images = new Drawable[]{getDrawable(R.drawable.green_x), getDrawable(R.drawable.red_circle), getDrawable(R.drawable.triangle), getDrawable(R.drawable.yellow_square)};
-            p = MySharedPreferences.getScore(this);
+            p = SharedPrefs.getScore(this);
         }
     }
 
@@ -58,7 +58,7 @@ public class GameActivity extends AppCompatActivity {
 
     //refresh score
     private void updateScore() {
-        MySharedPreferences.setScore(this, p);
+        SharedPrefs.setScore(this, p);
         final String pointStr = getString(R.string.points) + p;
         Upload.INSTANCE.upLoad(this, p, Upload.SAVE);
         ((TextView) findViewById(R.id.points)).setText(pointStr);
@@ -118,18 +118,15 @@ public class GameActivity extends AppCompatActivity {
                 //if views clicked have different TYPE and are adjacent ((1st x+y)-(2nd x+y)= 1|-1)
             } else if (firstClick.getTYPE() != clicked2.getTYPE()
                     && Math.abs((firstClick.getRow() + firstClick.getColumn()) - (clicked2.getRow() + clicked2.getColumn())) == 1) {
-                //ToDo add shrink animation
                 final Animation alphOut = AnimationUtils.loadAnimation(getApplicationContext() , R.anim.alpha_out);
                 firstClick.startAnimation(alphOut);
                 clicked2.startAnimation(alphOut);
                 swap(firstClick, clicked2);
-                //ToDo add expand animation
                 whenSwaped(firstClick);
                 whenSwaped(clicked2);
                 firstClick = null;
                 //This is click 2. Both clicks are same type and/or not adjacent
             } else {
-                //ToDo add animation for incorrect move + make vibrate optional
                 firstClick = null;
                 final Vibrator vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
                 if (vib.hasVibrator()) {

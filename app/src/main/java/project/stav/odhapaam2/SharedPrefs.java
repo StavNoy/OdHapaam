@@ -12,7 +12,7 @@ import java.util.Set;
  * Created by stav.noy on 19/09/2017.
  */
 
-public class MySharedPreferences {
+public class SharedPrefs {
     //TODO - for production - encrypt all keys
     private static final String PREFS = "RasheyTevot";
     private static final String SCORE_KEY = "score";
@@ -62,13 +62,13 @@ public class MySharedPreferences {
         getPref(context).edit().putString(NAME_KEY,uName).apply();
     }
     public static synchronized String getName(final Context context){
-        return getPref(context).getString(NAME_KEY, null);
+        return getPref(context).getString(NAME_KEY, "");
     }
     public static synchronized void savePass(final Context context, final String uPass){
         getPref(context).edit().putString(PASS_KEY,uPass).apply();
     }
     public static synchronized String getPass(final Context context){
-        return getPref(context).getString(PASS_KEY, null);
+        return getPref(context).getString(PASS_KEY, "");
     }
 
 }

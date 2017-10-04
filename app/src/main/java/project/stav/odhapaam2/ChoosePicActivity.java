@@ -100,7 +100,7 @@ public class ChoosePicActivity extends AppCompatActivity {
             pathSet.add(path);
         }
         if (pathSet.size() == 4) {
-            MySharedPreferences.setImages(this, pathSet);
+            SharedPrefs.setImages(this, pathSet);
             finish();
         } else {
             AlertDialog.Builder aD = new AlertDialog.Builder(this);
