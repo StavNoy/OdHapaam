@@ -41,9 +41,16 @@
         <item name="android:gravity">center</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:strokeWidth">10dp</item>
         <item name="android:strokeColor">#000000</item>
     </style>
-    
+
+    <style name="home_button">
+        <item name="android:contentDescription">Home Button</item>
+        <item name="android:layout_width">46dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:src">@mipmap/ic_home</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
 
 </resources>

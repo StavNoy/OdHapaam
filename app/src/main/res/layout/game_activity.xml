@@ -33,20 +33,14 @@
 
     <ImageButton
         android:contentDescription="Mute toggle"
-        android:layout_width="46dp"
-        android:layout_height="50dp"
+        style="@style/home_button"
         android:layout_margin="5dp"
-        android:layout_alignParentTop="true"
         android:src="@mipmap/ic_unmute"
+        android:layout_alignParentLeft="false"
         android:layout_alignParentRight="true"
         android:onClick="mute" />
     <ImageButton
-        android:contentDescription="Home"
-        android:layout_width="46dp"
-        android:layout_height="50dp"
-        android:layout_margin="5dp"
-        android:layout_alignParentTop="true"
-        android:src="@mipmap/ic_home"
-        android:layout_alignParentLeft="true"
-        android:onClick="goHome" />
+        style="@style/home_button"
+        android:onClick="goHome"
+        android:layout_margin="5dp"/>
 </RelativeLayout>

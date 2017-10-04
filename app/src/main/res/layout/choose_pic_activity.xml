@@ -3,6 +3,10 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
   >
+    <ImageButton
+        style="@style/home_button"
+        android:onClick="goHome"
+        android:layout_margin="5dp"/>
 
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"

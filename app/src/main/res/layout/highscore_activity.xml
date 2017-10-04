@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-   <include layout="@layout/highscore_row"/>
+    <include layout="@layout/highscore_row" android:id="@+id/highscore_head"/>
 
     <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/highscore_head"
         android:id="@+id/highscore"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-</LinearLayout>
+    <ImageButton
+        style="@style/home_button"
+        android:onClick="goHome"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +18,7 @@ import project.stav.odhapaam2.LogServer.Server.HttpRequest;
  */
 
 public class HighScoreActivity extends AppCompatActivity {
-    private static final String localHostServerUrl = "http://127.0.0.1:9999/highscore";
+    private final String localHostServerUrl = getResources().getString(R.string.server_url)+"/highscore";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,10 @@ public class HighScoreActivity extends AppCompatActivity {
         final RecyclerView highScore = (RecyclerView) findViewById(R.id.highscore);
         highScore.setLayoutManager(new LinearLayoutManager(this));
         highScore.setAdapter(new ScoresAdapter(tryGetScores(),this));
+    }
+
+    public void goHome(View v) {//Return to welcome screen
+        finish();
     }
 
     private JSONArray tryGetScores(){

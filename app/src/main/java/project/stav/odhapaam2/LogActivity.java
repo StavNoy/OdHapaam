@@ -17,7 +17,7 @@ import project.stav.odhapaam2.LogServer.Server.Upload;
 
 public class LogActivity extends AppCompatActivity {
 
-    private static final String localHostServerUrl = "http://127.0.0.1:9999/login";
+    private final String localHostServerUrl = getResources().getString(R.string.server_url)+"/login";
     EditText uName, uPass;
     Context context;
 

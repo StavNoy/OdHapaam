@@ -11,10 +11,9 @@ import project.stav.odhapaam2.SharedPrefs;
 
 public enum Upload {
     INSTANCE;
-    public static final String SAVE = "save", SIGNUP = "signup";
+    public static final String SAVE = "/save", SIGNUP = "/signup";
     public void upLoad(final Context context, final int p, final String action) {
-        final String localHostServer = "http://127.0.0.1:9999/";
-        final String url = localHostServer+action;
+        final String url = context.getResources().getString(R.string.server_url)+action;
         try {
             final String NAME = SharedPrefs.getName(context), PASS = SharedPrefs.getPass(context);
             if (valid(NAME) && valid(PASS)) {

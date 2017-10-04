@@ -37,6 +37,10 @@ public class ChoosePicActivity extends AppCompatActivity {
 
     }
 
+    public void goHome(View v) {//Return to welcome screen
+        finish();
+    }
+
     //send uName to gallery for picking an image
     private void openGallery() {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);

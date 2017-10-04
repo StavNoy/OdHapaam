@@ -38,15 +38,15 @@ public class MyButton extends AppCompatImageView {
     public void setTYPE(int TYPE) {
         this.TYPE = TYPE;
         //If no images are picked
-            //this.setBackgroundResource(altImages[TYPE]);
-        this.setBackground(((GameScreen)this.getContext()).images[TYPE]);
-        Drawable[] images = ((GameActivity)this.getContext()).images;
+        //this.setBackgroundResource(altImages[TYPE]);
+//        this.setBackground(((GameActivity) this.getContext()).images[TYPE]);
+        Drawable[] images = ((GameActivity) this.getContext()).images;
         if (images[0] != null) {
             this.setImageDrawable(images[TYPE]);
         } else { //If no images are picked
             this.setBackgroundResource(altImages[TYPE]);
         }
-
+    }
 
 
     public void setPopped(boolean popped) {

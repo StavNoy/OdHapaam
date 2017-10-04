@@ -12,14 +12,8 @@
     android:background="@drawable/main_background">
 
     <ImageButton
-        android:contentDescription="Home"
-        android:layout_width="46dp"
-        android:layout_height="50dp"
-        android:layout_margin="5dp"
-        android:layout_alignParentTop="true"
-        android:src="@mipmap/ic_home"
-        android:layout_alignParentLeft="true"
-        android:onClick="goHome" />
+        style="@style/home_button"
+        android:onClick="goHome"/>
 
     <TextView
         android:id="@+id/ttl"
