@@ -1,6 +1,7 @@
 package project.stav.odhapaam2.LogServer.Server;//HttpRequest v1.4 Updated: 2017-04-28
 //needed imports:
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -170,5 +171,8 @@ public class HttpRequest {
     //JSONObject representation of String response from server
     public JSONObject sendAndReadJSON() throws JSONException, IOException {
         return new JSONObject(sendAndReadString());
+    }
+    public JSONArray sendAndReadJSONArray() throws JSONException, IOException {
+        return new JSONArray(sendAndReadString());
     }
 }

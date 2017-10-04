@@ -1,15 +1,12 @@
 package project.stav.odhapaam2;
 
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -21,7 +18,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
 
-import project.stav.odhapaam2.LogServer.Server.PointUploader;
+import project.stav.odhapaam2.LogServer.Server.Upload;
 
 public class GameActivity extends AppCompatActivity {
     private final int gridside = 5; // getResources().getInteger(R.integer.grid_side); // FIXME: 25/09/2017
@@ -63,7 +60,7 @@ public class GameActivity extends AppCompatActivity {
     private void updateScore() {
         MySharedPreferences.setScore(this, p);
         final String pointStr = getString(R.string.points) + p;
-        PointUploader.INSTANCE.upLoad(this, p);
+        Upload.INSTANCE.upLoad(this, p, Upload.SAVE);
         ((TextView) findViewById(R.id.points)).setText(pointStr);
     }
 

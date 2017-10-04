@@ -1,17 +1,17 @@
 package project.stav.odhapaam2;
 
 //import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
+import android.support.v7.widget.RecyclerView;
+import android.widget.LinearLayout;
 
 /**
  * Created by hackeru on 13/08/2017.
  */
 
-//Recycler view holder - Composition solution
-/*public class ScoreViewHolder extends RecyclerView.ViewHolder{
-    public final TextView nameScore;
-    public ScoreViewHolder(TextView v){
-        super(v);
-        this.nameScore = v;
+public class ScoreViewHolder extends RecyclerView.ViewHolder{
+    public final LinearLayout row;
+    public ScoreViewHolder(LinearLayout row){
+        super(row);
+        this.row = row;
     }
-}*/
+}

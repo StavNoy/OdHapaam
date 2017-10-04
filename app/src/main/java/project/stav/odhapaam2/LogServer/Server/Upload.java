@@ -9,16 +9,18 @@ import project.stav.odhapaam2.MySharedPreferences;
  * Created by Noy on 27/9/2017.
  */
 
-public enum PointUploader {
+public enum Upload {
     //ToDo protect from cheating
     INSTANCE;
-    public void upLoad(final Context context, final int p) {
-        final String SERVER_URL = "http://127.0.0.1:9999/save";
+    public static final String SAVE = "save", SIGNUP = "signup";
+    public void upLoad(final Context context, final int p, final String action) {
+        final String localHostServer = "http://127.0.0.1:9999/";
+        final String url = localHostServer+action;
         try {
             final String NAME = MySharedPreferences.getName(context), PASS = MySharedPreferences.getPass(context);
             if (valid(NAME) && valid(PASS)) {
                 final JSONObject uData = new JSONObject().put("name", NAME).put("pass", PASS).put("points", p);
-                new JSONLoadTask().execute(SERVER_URL, uData.toString());
+                new JSONLoadTask().execute(url, uData.toString());
             }
         }catch (JSONException e) {
             e.printStackTrace();

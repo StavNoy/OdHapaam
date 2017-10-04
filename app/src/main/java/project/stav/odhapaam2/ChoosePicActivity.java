@@ -14,7 +14,6 @@ import android.widget.Toast;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.HashSet;
 
 public class ChoosePicActivity extends AppCompatActivity {
@@ -32,7 +31,7 @@ public class ChoosePicActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.choose_pic);
+        setContentView(R.layout.choose_pic_activity);
         PermissionManager.check(this, Manifest.permission.READ_EXTERNAL_STORAGE, MEDIA_REQUEST);
 
 

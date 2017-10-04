@@ -1,7 +1,6 @@
 package project.stav.odhapaam2;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,32 +13,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import project.stav.odhapaam2.LogServer.Server.JSONLoadTask;
+import project.stav.odhapaam2.LogServer.Server.Upload;
 
 public class LogActivity extends AppCompatActivity {
 
-    private static final String serverUrl = "http://127.0.0.1:9999/login";
+    private static final String localHostServerUrl = "http://127.0.0.1:9999/login";
     EditText uName, uPass;
     Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log);
+        setContentView(R.layout.log_activity);
         context = this;
 
         uName = (EditText) findViewById(R.id.uName);
         uPass = (EditText) findViewById(R.id.uPass);
     }
 
-//    public void logIn(View view) {
-//        String uName = this.uName.getText().toString();
-//        if(uName.equals("game_activity") && uPass.getText().toString().equals("123")){
-//            Intent i = new Intent(this , LogActivity.class);
-//            startActivity(i);
-//            Toast.makeText(this , "Logged in as "+uName ,Toast.LENGTH_LONG).show();
-//        }else {
-//            Toast.makeText(this , "try again" ,Toast.LENGTH_LONG).show();}
-//        }
 
     public void tryLogIn(View v){
             try {
@@ -67,13 +58,18 @@ public class LogActivity extends AppCompatActivity {
                                 errAlert("Invalid Request");
                             }
                         }
-                    }.execute(serverUrl,uData.toString());
+                    }.execute(localHostServerUrl,uData.toString());
                 } else {
                     errAlert("Name must be at least 3 characters long, with no spacing.\nPassword must be at least 8 characters long, with at least 1 uppercase, 1 lowercase, and 1 digit ");
                 }
             }catch (JSONException e) {
                     e.printStackTrace();
         }
+    }
+
+    public void trySignUp(View v){
+        Upload.INSTANCE.upLoad(this,MySharedPreferences.getScore(this),Upload.SIGNUP);
+        tryLogIn(v);
     }
 
     private AlertDialog errAlert(final String msg){
