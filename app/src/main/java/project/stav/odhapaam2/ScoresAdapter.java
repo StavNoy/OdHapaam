@@ -23,7 +23,6 @@ public class ScoresAdapter extends RecyclerView.Adapter{
     public ScoresAdapter(final JSONArray scoreList, final Context context){
         this.context=context;
         this.scoreList = scoreList;
-
     }
 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

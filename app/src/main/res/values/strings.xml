@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">OdHapaam2</string>
     <string name="points">Points: </string>
-    <string name="server_url">http://127.0.0.1:9999</string>
 </resources>

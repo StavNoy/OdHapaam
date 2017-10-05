@@ -9,7 +9,6 @@ import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -21,46 +20,35 @@ import project.stav.odhapaam2.LogServer.Server.HttpRequest;
 
 public class HighScoreActivity extends AppCompatActivity {
 
-    private final String highScoreUrl = getResources().getString(R.string.server_url)+"/highscore";
+    private static final String HIGH_SCORE_URL = WelcomeActivity.SERVER_URL + "/highscore";
+
+    public void goHome(View v) {//Return to welcome screen
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.highscore_activity);
         final RecyclerView highScore = (RecyclerView) findViewById(R.id.highscore);
-        highScore.setLayoutManager(new LinearLayoutManager(this));
-        highScore.setAdapter(new ScoresAdapter(tryGetScores(),this));
-    }
-
-    public void goHome(View v) {//Return to welcome screen
-        finish();
+        highScore.setLayoutManager(new LinearLayoutManager(HighScoreActivity.this));
+        final JSONArray scores = tryGetScores();
+        if (scores != null) highScore.setAdapter(new ScoresAdapter(scores,HighScoreActivity.this));
     }
 
     private JSONArray tryGetScores(){
-        final JSONArray[] scores = {null};
-        try {
-            scores[0] = new HttpRequest(highScoreUrl).prepare(HttpRequest.Method.GET).sendAndReadJSONArray();
-            new AsyncTask<String, Void, JSONArray>(){
-                @Override
-                protected JSONArray doInBackground(String... strings) {
-                    try {
-                        final String URL = strings[0];
-                            return new HttpRequest(URL).prepare(HttpRequest.Method.GET).sendAndReadJSONArray();
-                    } catch (IOException | JSONException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
+        final JSONArray[] scores = {new JSONArray()};
+        new Thread(){
+            public void run() {
+                try {
+                    scores[0] = new HttpRequest(HIGH_SCORE_URL).prepare(HttpRequest.Method.GET).sendAndReadJSONArray();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                @Override
-                protected void onPostExecute(JSONArray jsonArray) {
-                    scores[0] = jsonArray;
-                }
-            };
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            }
+        }.start();
         return scores[0];
     }
 }

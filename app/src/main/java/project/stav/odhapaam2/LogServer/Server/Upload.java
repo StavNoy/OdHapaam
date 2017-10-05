@@ -17,7 +17,7 @@ public enum Upload {
     public static final String PATH_SAVE = "/save", PATH_SIGNUP = "/signup";
     public void upLoad(final Context context,final String NAME, final String PASS, final int p, final String path) {
         if (WelcomeActivity.checkConnect(context)) {
-            final String url = context.getResources().getString(R.string.server_url)+path;
+            final String url = WelcomeActivity.SERVER_URL+path;
             try {
                 if (valid(NAME) && valid(PASS)) {
                     final JSONObject uData = new JSONObject().put("name", NAME).put("pass", PASS).put("points", p);

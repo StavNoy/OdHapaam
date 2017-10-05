@@ -15,10 +15,11 @@ import android.widget.TextView;
 
 public class WelcomeActivity extends AppCompatActivity {
 
+    public static final String SERVER_URL = "http://127.0.0.1:9999";
     TextView welcome;
     EditText user;
 
-    //Check internet connection
+    //Check internet connection. If not connected- prompt to go to settings
     public static boolean checkConnect(final Context context){
         final ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -30,7 +31,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            context.startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+                            context.startActivity(new Intent(Settings.ACTION_SETTINGS));
                         }
             }).show();
         } return isConnected;
@@ -71,13 +72,15 @@ public class WelcomeActivity extends AppCompatActivity {
                             }
             }).show();
         } else { //Logged In
-            startActivity(new Intent(this, GameActivity.class));
+            startActivity(new Intent(WelcomeActivity.this, GameActivity.class));
         }
     }
 
     public void goHS(View view) {
         //Only works with internet connection
-        if (checkConnect(this)) startActivity(new Intent(this, HighScoreActivity.class));
+        if (checkConnect(WelcomeActivity.this)) {
+            startActivity(new Intent(WelcomeActivity.this, HighScoreActivity.class));
+        }
     }
 
 

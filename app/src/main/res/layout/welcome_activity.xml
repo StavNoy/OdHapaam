@@ -45,7 +45,7 @@
             style="@style/welcome_buttonBar_Button"
             android:onClick="goLog"/>
         <Button
-            android:id="@+id/btn_cemra"
+            android:id="@+id/btn_HiScr"
             android:background="@mipmap/ic_points"
             style="@style/welcome_buttonBar_Button"
             android:onClick="goHS"/>

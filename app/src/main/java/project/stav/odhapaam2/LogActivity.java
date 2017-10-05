@@ -17,15 +17,13 @@ import project.stav.odhapaam2.LogServer.Server.Upload;
 
 public class LogActivity extends AppCompatActivity {
 
-    private final String loginUrl = getResources().getString(R.string.server_url)+"/login";
-    EditText uName, uPass;
-    Context context;
+    private static final String LOGIN_URL = WelcomeActivity.SERVER_URL +"/login";
+    private EditText uName, uPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.log_activity);
-        context = this;
 
         uName = (EditText) findViewById(R.id.uName);
         uPass = (EditText) findViewById(R.id.uPass);
@@ -33,7 +31,8 @@ public class LogActivity extends AppCompatActivity {
 
 
     public void tryLogIn(View v){
-        if (WelcomeActivity.checkConnect(this)) {
+        final Context context = LogActivity.this;
+        if (WelcomeActivity.checkConnect(context)) {
             try {
                 final String NAME = uName.getText().toString(), PASS = uPass.getText().toString();
                 if (validName(NAME) && validPass(PASS)){
@@ -59,12 +58,12 @@ public class LogActivity extends AppCompatActivity {
                                 errAlert("Invalid Request");
                             }
                         }
-                    }.execute(loginUrl,uData.toString());
+                    }.execute(LOGIN_URL,uData.toString());
                 } else {
                     info(v);
                 }
             }catch (JSONException e) {
-                    e.printStackTrace();
+                e.printStackTrace();
         }
         }
     }
@@ -81,7 +80,7 @@ public class LogActivity extends AppCompatActivity {
     }
 
     private AlertDialog errAlert(final String msg){
-        return new AlertDialog.Builder(context).setTitle("Error").setMessage(msg).setNeutralButton("OK",null).show();
+        return new AlertDialog.Builder(LogActivity.this).setTitle("Error").setMessage(msg).setNeutralButton("OK",null).show();
     }
 
     private boolean validPass(final String pswrd){
