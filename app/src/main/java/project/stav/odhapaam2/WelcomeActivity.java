@@ -1,7 +1,11 @@
 package project.stav.odhapaam2;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,11 +13,28 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class Welcome extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity {
 
     TextView welcome;
     EditText user;
 
+    //Check internet connection
+    public static boolean checkConnect(final Context context){
+        final ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        final boolean isConnected = activeNetwork != null && activeNetwork.isConnected();
+        if (!isConnected) {
+            new AlertDialog.Builder(context).setTitle("No internet connection")
+                    .setMessage("Certain features will not work. \nGo to Settings?")
+                    .setNegativeButton("No", null)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            context.startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+                        }
+            }).show();
+        } return isConnected;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +43,10 @@ public class Welcome extends AppCompatActivity {
 
         welcome = (TextView) findViewById(R.id.welcome);
         user = (EditText) findViewById(R.id.uName);
+        checkConnect(this);
     }
 
-    public void goStScreen(View view){
+    public void goChoosePic(View view){
         startActivity(new Intent(this, ChoosePicActivity.class));
     }
 
@@ -40,7 +62,7 @@ public class Welcome extends AppCompatActivity {
                     .setNegativeButton("No, Just play", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            startActivity(new Intent(Welcome.this, GameActivity.class));
+                            startActivity(new Intent(WelcomeActivity.this, GameActivity.class));
                         }
                      }).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
@@ -54,8 +76,10 @@ public class Welcome extends AppCompatActivity {
     }
 
     public void goHS(View view) {
-        startActivity(new Intent(this, HighScoreActivity.class));
+        //Only works with internet connection
+        if (checkConnect(this)) startActivity(new Intent(this, HighScoreActivity.class));
     }
+
 
     @Override
     protected void onDestroy() {

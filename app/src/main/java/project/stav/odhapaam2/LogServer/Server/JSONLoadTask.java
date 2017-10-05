@@ -18,13 +18,8 @@ public class JSONLoadTask extends AsyncTask<String, Void, JSONObject> {
     protected JSONObject doInBackground(String... strings) {
             try {
                 final String URL = strings[0];
-                //For getting highscores
-                if (strings.length == 1) {
-                return new HttpRequest(URL).prepare(HttpRequest.Method.GET).sendAndReadJSON();
-                } else {
-                    final String jsnStr = strings[1];
-                    return new HttpRequest(URL).prepare(HttpRequest.Method.POST).withData(jsnStr).sendAndReadJSON();
-                }
+                final String jsnStr = strings[1];
+                return new HttpRequest(URL).prepare(HttpRequest.Method.POST).withData(jsnStr).sendAndReadJSON();
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }

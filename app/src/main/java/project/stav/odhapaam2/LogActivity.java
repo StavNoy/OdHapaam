@@ -17,7 +17,7 @@ import project.stav.odhapaam2.LogServer.Server.Upload;
 
 public class LogActivity extends AppCompatActivity {
 
-    private final String localHostServerUrl = getResources().getString(R.string.server_url)+"/login";
+    private final String loginUrl = getResources().getString(R.string.server_url)+"/login";
     EditText uName, uPass;
     Context context;
 
@@ -33,6 +33,7 @@ public class LogActivity extends AppCompatActivity {
 
 
     public void tryLogIn(View v){
+        if (WelcomeActivity.checkConnect(this)) {
             try {
                 final String NAME = uName.getText().toString(), PASS = uPass.getText().toString();
                 if (validName(NAME) && validPass(PASS)){
@@ -58,18 +59,25 @@ public class LogActivity extends AppCompatActivity {
                                 errAlert("Invalid Request");
                             }
                         }
-                    }.execute(localHostServerUrl,uData.toString());
+                    }.execute(loginUrl,uData.toString());
                 } else {
-                    errAlert("Name must be at least 3 characters long, with no spacing.\nPassword must be at least 8 characters long, with at least 1 uppercase, 1 lowercase, and 1 numeral ");
+                    info(v);
                 }
             }catch (JSONException e) {
                     e.printStackTrace();
         }
+        }
     }
 
     public void trySignUp(View v){
-        Upload.INSTANCE.upLoad(this, SharedPrefs.getScore(this),Upload.SIGNUP);
-        tryLogIn(v);
+        //Requires Internet Connection
+        final String NAME = uName.getText().toString(), PASS = uPass.getText().toString();
+        if (validName(NAME) && validPass(PASS)) {
+            Upload.INSTANCE.upLoad(this,NAME, PASS, SharedPrefs.getScore(this),Upload.PATH_SIGNUP);
+            tryLogIn(v);
+        } else {
+            info(v);
+        }
     }
 
     private AlertDialog errAlert(final String msg){

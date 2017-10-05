@@ -60,7 +60,7 @@ public class GameActivity extends AppCompatActivity {
     private void updateScore() {
         SharedPrefs.setScore(this, p);
         final String pointStr = getString(R.string.points) + p;
-        Upload.INSTANCE.upLoad(this, p, Upload.SAVE);
+        Upload.INSTANCE.upLoad(this,SharedPrefs.getName(this),SharedPrefs.getPass(this), p, Upload.PATH_SAVE);
         ((TextView) findViewById(R.id.points)).setText(pointStr);
     }
 

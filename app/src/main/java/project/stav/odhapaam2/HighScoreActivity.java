@@ -1,5 +1,6 @@
 package project.stav.odhapaam2;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -18,7 +20,8 @@ import project.stav.odhapaam2.LogServer.Server.HttpRequest;
  */
 
 public class HighScoreActivity extends AppCompatActivity {
-    private final String localHostServerUrl = getResources().getString(R.string.server_url)+"/highscore";
+
+    private final String highScoreUrl = getResources().getString(R.string.server_url)+"/highscore";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +37,30 @@ public class HighScoreActivity extends AppCompatActivity {
     }
 
     private JSONArray tryGetScores(){
-        JSONArray scores = null;
+        final JSONArray[] scores = {null};
         try {
-            scores = new HttpRequest(localHostServerUrl).prepare(HttpRequest.Method.GET).sendAndReadJSONArray();
+            scores[0] = new HttpRequest(highScoreUrl).prepare(HttpRequest.Method.GET).sendAndReadJSONArray();
+            new AsyncTask<String, Void, JSONArray>(){
+                @Override
+                protected JSONArray doInBackground(String... strings) {
+                    try {
+                        final String URL = strings[0];
+                            return new HttpRequest(URL).prepare(HttpRequest.Method.GET).sendAndReadJSONArray();
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+                @Override
+                protected void onPostExecute(JSONArray jsonArray) {
+                    scores[0] = jsonArray;
+                }
+            };
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return scores;
+        return scores[0];
     }
 }

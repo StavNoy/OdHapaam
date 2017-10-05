@@ -4,7 +4,7 @@
     android:id="@+id/activity_welcome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="project.stav.odhapaam2.Welcome"
+    tools:context="project.stav.odhapaam2.WelcomeActivity"
     android:background="@drawable/black_background">
 
 
@@ -53,7 +53,7 @@
             android:id="@+id/btn_gallery"
             android:background="@mipmap/ic_gallery"
             style="@style/welcome_buttonBar_Button"
-            android:onClick="goStScreen"/>
+            android:onClick="goChoosePic"/>
     </LinearLayout>
 
 </RelativeLayout>
