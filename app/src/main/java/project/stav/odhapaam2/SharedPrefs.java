@@ -8,12 +8,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-/**
- * Created by stav.noy on 19/09/2017.
- */
 
-public class SharedPrefs {
-    //TODO - for production - encrypt all keys
+class SharedPrefs {
+    //for production - encrypt all keys
     private static final String PREFS = "RasheyTevot";
     private static final String SCORE_KEY = "score";
     private static final String IMAGES_KEY = "images";
@@ -34,7 +31,7 @@ public class SharedPrefs {
         getPref(context).edit().putInt(SCORE_KEY, score).apply();
     }
 
-    public static synchronized Drawable[] getImages(final Context context){
+    static synchronized Drawable[] getImages(final Context context){
         final Drawable [] imageFiles = new Drawable[4];
         final Set<String> prefImgs = getPref(context).getStringSet(IMAGES_KEY,new HashSet<String>(4));
         //if not initialized - use default images
@@ -47,27 +44,27 @@ public class SharedPrefs {
         return imageFiles;
     }
 
-    public static synchronized void setImages(final Context context,final HashSet<String> paths){
+    static synchronized void setImages(final Context context, final HashSet<String> paths){
         getPref(context).edit().putStringSet(IMAGES_KEY,paths).apply();
     }
 
-    public static synchronized void setStayLogged(final Context context,final Boolean stayLogged){
+    static synchronized void setStayLogged(final Context context, final Boolean stayLogged){
         getPref(context).edit().putBoolean(LOG_KEY, stayLogged).apply();
     }
-    public static synchronized boolean getStayLogged(final Context context){
+    static synchronized boolean getStayLogged(final Context context){
         return getPref(context).getBoolean(LOG_KEY, false);
     }
 
-    public static synchronized void saveName(final Context context, final String uName){
+    static synchronized void saveName(final Context context, final String uName){
         getPref(context).edit().putString(NAME_KEY,uName).apply();
     }
-    public static synchronized String getName(final Context context){
+    static synchronized String getName(final Context context){
         return getPref(context).getString(NAME_KEY, "");
     }
-    public static synchronized void savePass(final Context context, final String uPass){
+    static synchronized void savePass(final Context context, final String uPass){
         getPref(context).edit().putString(PASS_KEY,uPass).apply();
     }
-    public static synchronized String getPass(final Context context){
+    static synchronized String getPass(final Context context){
         return getPref(context).getString(PASS_KEY, "");
     }
 

@@ -28,11 +28,10 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".ChoosePicActivity">
-
-        </activity>
+        <activity android:name=".ChoosePicActivity"/>
         <activity android:name=".LogActivity" />
         <activity android:name=".GameActivity"/>
+        <activity android:name=".HighScoreActivity"/>
     </application>
 
 </manifest>

@@ -22,14 +22,14 @@ import project.stav.odhapaam2.LogServer.Server.Upload;
 
 public class GameActivity extends AppCompatActivity {
     private final int gridside = 5;
-    private final MyButton[][] candies = new MyButton[gridside][gridside];
+    private final GamePiece[][] candies = new GamePiece[gridside][gridside];
     //candies[x] - lower row number is higher row on screen
     GridLayout playGrid; //ViewGroup for play area
     int p = 0; //int for points
-    public Drawable[] images;
-    private MyButton firstClick;//First of 2 clicks
+    Drawable[] images;
+    private GamePiece firstClick;//First of 2 clicks
     private boolean muted = true;
-    Animation downImation;
+    private Animation downImation;
 
 
     @Override
@@ -37,7 +37,7 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         downImation = AnimationUtils.loadAnimation(this, R.anim.down);
         setContentView(R.layout.game_activity);
-        playGrid = (GridLayout) findViewById(R.id.play_grid);
+        playGrid = findViewById(R.id.play_grid);
         images = SharedPrefs.getImages(this);
         if (images[0] == null) {
             images = new Drawable[]{getDrawable(R.drawable.green_x), getDrawable(R.drawable.red_circle), getDrawable(R.drawable.triangle), getDrawable(R.drawable.yellow_square)};
@@ -73,13 +73,13 @@ public class GameActivity extends AppCompatActivity {
         for (int row = 0; row < candies.length; row++) {
             for (int col = 0; col < candies[row].length; col++) {
                 int type = new Random().nextInt(4);
-                //Creates MyButton with random TYPE and according image
-                candies[row][col] = new MyButton(this,type , row, col);
+                //Creates GamePiece with random TYPE and according image
+                candies[row][col] = new GamePiece(this,type , row, col);
                // candies[row][col].setBackground(images[type]);
-                 candies[row][col].setOnClickListener(MyButtonListener);
-                //Add the new MyButton to play grid
+                 candies[row][col].setOnClickListener(GamePieceListener);
+                //Add the new GamePiece to play grid
 
-                playGrid.addView(candies[row][col], (925 / candies[row].length), (1150 / candies.length));// TODO: 25/09/2017  fix scalability
+                playGrid.addView(candies[row][col], (925 / candies[row].length), (1150 / candies.length));// TODO: fix scalability
 
 
             }
@@ -91,9 +91,9 @@ public class GameActivity extends AppCompatActivity {
         downImation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationEnd(Animation animation) {
-                for (final MyButton[] row : candies) {
-                    for (final MyButton newMB : row) {
-                        whenSwaped(newMB);
+                for (GamePiece[] row : candies) {
+                    for (GamePiece newGamePiece : row) {
+                        whenSwaped(newGamePiece);
                     }
                 }
             }
@@ -104,32 +104,28 @@ public class GameActivity extends AppCompatActivity {
         playGrid.startAnimation(downImation);
     }
 
-    //When a MyButton is clicked
-    public final View.OnClickListener MyButtonListener = new View.OnClickListener() {
+    //When a GamePiece is clicked
+    public final View.OnClickListener GamePieceListener = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
             //Animation to indicate click
             v.startAnimation(AnimationUtils.loadAnimation(getApplicationContext() , R.anim.clicky));
-            //Downcast clicked to MyButton
-            final MyButton clicked2 = (MyButton) v;
+            //Downcast clicked to GamePiece
+            final GamePiece nowClicked = (GamePiece) v;
             // if this is click 1
             if (firstClick == null) {
-                firstClick = clicked2;
-                //if views clicked have different TYPE and are adjacent ((1st x+y)-(2nd x+y)= 1|-1)
-            } else if (firstClick.getTYPE() != clicked2.getTYPE()
-                    && Math.abs((firstClick.getRow() + firstClick.getColumn()) - (clicked2.getRow() + clicked2.getColumn())) == 1) {
-                final Animation alphOut = AnimationUtils.loadAnimation(getApplicationContext() , R.anim.alpha_out);
-                firstClick.startAnimation(alphOut);
-                clicked2.startAnimation(alphOut);
-                swap(firstClick, clicked2);
+                firstClick = nowClicked;
+                //if both GamePiece clicked have same TYPE and are adjacent
+            } else if ((!firstClick.sameTYPE(nowClicked)) && firstClick.adjacent(nowClicked)) {
+                swap(firstClick, nowClicked);
                 whenSwaped(firstClick);
-                whenSwaped(clicked2);
+                whenSwaped(nowClicked);
                 firstClick = null;
                 //This is click 2. Both clicks are same type and/or not adjacent
             } else {
                 firstClick = null;
                 final Vibrator vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                if (vib.hasVibrator()) {
+                if (vib!=null && vib.hasVibrator()) {
                     if (Build.VERSION.SDK_INT < 26) {
                         vib.vibrate(300);
                     } else {
@@ -141,13 +137,15 @@ public class GameActivity extends AppCompatActivity {
     };
 
     //Change between 2 views
-    private void swap(final MyButton click1, final MyButton click2) {
+    private void swap(final GamePiece click1, final GamePiece click2) {
+        //start animation
+        final Animation alphOut = AnimationUtils.loadAnimation(getApplicationContext() , R.anim.alpha_out);
+        click1.startAnimation(alphOut);
+        click2.startAnimation(alphOut);
         //Exchange the TYPEs of the 2 views
         final int c1Type = click1.getTYPE();
         click1.setTYPE(click2.getTYPE());
         click2.setTYPE(c1Type);
-       // click1.setBackground(images[click1.getTYPE()]);
-     //  click2.setBackground(images[click1.getTYPE()]);
         // if only one is popped, flip both
         if (click2.isPopped() ^ click1.isPopped()) {
             click2.setPopped(!click2.isPopped());
@@ -155,13 +153,13 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void whenSwaped(final MyButton swapped) {
+    private void whenSwaped(final GamePiece swapped) {
         //If Column has 3+
-        ArrayList<MyButton> col3Plus = inAColumn(swapped);
+        ArrayList<GamePiece> col3Plus = inAColumn(swapped);
         //If Row has 3+
-        ArrayList<MyButton> row3Plus = inARow(swapped);
+        ArrayList<GamePiece> row3Plus = inARow(swapped);
         //Collect any repositioned popped
-        ArrayList<MyButton> allPopped = new ArrayList<MyButton>(0);
+        ArrayList<GamePiece> allPopped = new ArrayList<>(0);
         //IMPORTANT : must be before row is rearranged
         if (col3Plus != null) {
             pop(col3Plus);
@@ -176,21 +174,21 @@ public class GameActivity extends AppCompatActivity {
         //Refill any repositioned popped
         if (!allPopped.isEmpty()) {
             reFillPopped(allPopped);
-            for(MyButton newMB : allPopped){
-                whenSwaped(newMB);
+            for(GamePiece newGamePiece : allPopped){
+                whenSwaped(newGamePiece);
             }
         }
     }
 
-    //Returns ArrayList of 3+ or null, based on column of given MyButton
+    //Returns ArrayList of 3+ or null, based on column of given GamePiece
     @Nullable
-    private ArrayList<MyButton> inAColumn(final MyButton clicked) {
-        ArrayList<MyButton> inALine = new ArrayList<>(0);
-        //Every MyButton in same column has same Y
+    private ArrayList<GamePiece> inAColumn(final GamePiece clicked) {
+        ArrayList<GamePiece> inALine = new ArrayList<>(0);
+        //Every GamePiece in same column has same Y
         final int col = clicked.getColumn();
-        for (final MyButton[] row : candies) {
+        for (final GamePiece[] row : candies) {
             //If next is same TYPE
-            if (row[col].getTYPE() == clicked.getTYPE()) {
+            if (row[col].sameTYPE(clicked)) {
                 inALine.add(row[col]);
                 //If next is different, but already have 3
             } else if (inALine.size() >= 3) {
@@ -206,16 +204,16 @@ public class GameActivity extends AppCompatActivity {
         return null;
     }
 
-    //Returns ArrayList of 3+ or null, based on row of given MyButon
+    //Returns ArrayList of 3+ or null, based on row of given GamePiece
     @Nullable
-    private ArrayList<MyButton> inARow(final MyButton clicked) {
-        ArrayList<MyButton> inALine = new ArrayList<>();
+    private ArrayList<GamePiece> inARow(final GamePiece clicked) {
+        ArrayList<GamePiece> inALine = new ArrayList<>();
         //Every col on current row
-        final MyButton[] row = candies[clicked.getRow()];
-        for (final MyButton mB : row) {
+        final GamePiece[] row = candies[clicked.getRow()];
+        for (final GamePiece gamePiece : row) {
             //If next is same TYPE
-            if (mB.getTYPE() == clicked.getTYPE()) {
-                inALine.add(mB);
+            if (gamePiece.sameTYPE(clicked)) {
+                inALine.add(gamePiece);
                 //If next is different, but already have 3
             } else if (inALine.size() >= 3) {
                 return inALine;
@@ -230,30 +228,30 @@ public class GameActivity extends AppCompatActivity {
         return null;
     }
 
-    private void pop(final ArrayList<MyButton> inALine) {
-        for (final MyButton b : inALine) {
+    private void pop(final ArrayList<GamePiece> inALine) {
+        for (final GamePiece b : inALine) {
             b.setPopped(true);
             p++; //ToDo add pop animation
         }
         //Add pop animation
-        p += inALine.size() - 3;//Extra point for each MyButton over 3;
+        p += inALine.size() - 3;//Extra point for each GamePiece over 3;
         updateScore();
         if (!muted) MediaPlayer.create(this, R.raw.pop).start();//SFX
     }
 
-    private ArrayList<MyButton> columnToTop(final ArrayList<MyButton> popcol) {
-        //Every MyButton in same column has same col
+    private ArrayList<GamePiece> columnToTop(final ArrayList<GamePiece> popcol) {
+        //Every GamePiece in same column has same col
         final int col = popcol.get(0).getColumn();
-        //If top MyButton in current column is popped, no need for rearranging
+        //If top GamePiece in current column is popped, no need for rearranging
         if (candies[0][col].isPopped()) {
             return popcol;
         } else {
-            //Collection of popped MyButtons in new positions
-            final ArrayList<MyButton> rePosPop = new ArrayList<>(popcol);
+            //Collection of popped GamePiece in new positions
+            final ArrayList<GamePiece> rePosPop = new ArrayList<>(popcol);
             //Move column to top
             for (int row = 0; row < popcol.size() ; row++) {
-                final MyButton newPosition = candies[row][col];
-                final MyButton pop = popcol.get(row);
+                final GamePiece newPosition = candies[row][col];
+                final GamePiece pop = popcol.get(row);
                 if (!newPosition.isPopped()) {
                     swap(pop, newPosition);
                     pop.animDown(); // pop now is candies[above] before. Start down animation
@@ -266,15 +264,15 @@ public class GameActivity extends AppCompatActivity {
 
     //Reposition row top after pop
     //I M P O R T A N T : Must N-O-T be used before cloumnToTop(same parameter);
-    private ArrayList<MyButton> rowToTop(final ArrayList<MyButton> popRow) {
-        //Every MyButton in same row has same X
+    private ArrayList<GamePiece> rowToTop(final ArrayList<GamePiece> popRow) {
+        //Every GamePiece in same row has same X
         int row = popRow.get(0).getRow();
         //If in top row, no rearrange needed
         if (row == 0) {
             return popRow;
         } else {
-            final ArrayList<MyButton> popsAtTop = new ArrayList<>(popRow);
-            for (final MyButton pop : popRow) {
+            final ArrayList<GamePiece> popsAtTop = new ArrayList<>(popRow);
+            for (final GamePiece pop : popRow) {
                 //In case pop was already repositioned by columnToTop
                 if (pop.isPopped()) {
                     final int col = pop.getColumn();
@@ -290,8 +288,8 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void reFillPopped(final ArrayList<MyButton> allPopped) {
-        for (final MyButton pop : allPopped) {
+    private void reFillPopped(final ArrayList<GamePiece> allPopped) {
+        for (final GamePiece pop : allPopped) {
             Random r = new Random();
             int random = r.nextInt(4);
             while(random==pop.getTYPE())random=r.nextInt(4);
@@ -312,9 +310,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
 }
-    /* TODO: 24/09/2017 init method that gets predefined 2D array pattern - simplest
+    /* Optional improvement : initializing method that receives predefined 2D array pattern - simplest
             separately write many different patterns for initial playGrid.
-                randomly choose between them.
+                "randomly" choose between them.
             Or: Create 1D Array pattern for all, reassign 2nd Dimension */
 
 

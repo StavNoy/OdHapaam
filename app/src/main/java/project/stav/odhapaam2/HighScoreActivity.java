@@ -1,6 +1,5 @@
 package project.stav.odhapaam2;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,9 +13,6 @@ import java.io.IOException;
 
 import project.stav.odhapaam2.LogServer.Server.HttpRequest;
 
-/**
- * Created by Noy on 27/9/2017.
- */
 
 public class HighScoreActivity extends AppCompatActivity {
 
@@ -30,7 +26,7 @@ public class HighScoreActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.highscore_activity);
-        final RecyclerView highScore = (RecyclerView) findViewById(R.id.highscore);
+        final RecyclerView highScore = findViewById(R.id.highscore);
         highScore.setLayoutManager(new LinearLayoutManager(HighScoreActivity.this));
         final JSONArray scores = tryGetScores();
         if (scores != null) highScore.setAdapter(new ScoresAdapter(scores,HighScoreActivity.this));

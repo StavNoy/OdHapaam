@@ -1,46 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="project.stav.odhapaam2.GameActivity"
-    android:background="@drawable/background">
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    android:weightSum="10">
 
     <GridLayout
         android:id="@+id/play_grid"
         android:layout_width="match_parent"
-        android:layout_height="420dp"
+        android:layout_height="0dp"
+        android:layout_weight="8"
         android:columnCount="5"
         android:rowCount="5"
         android:background="@drawable/backgroundlayout"
         android:alpha="0.8"
-        android:useDefaultMargins="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:useDefaultMargins="true"/>
 
-    <TextView
-        android:id="@+id/points"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/points"
-        android:textSize="30sp"
-        android:textColor="#ffffff"
-        android:layout_margin="25dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:weightSum="5"
+        android:orientation="horizontal">
 
-    <ImageButton
-        android:contentDescription="Mute toggle"
-        style="@style/home_button"
-        android:layout_margin="5dp"
-        android:src="@mipmap/ic_unmute"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentRight="true"
-        android:onClick="mute" />
-    <ImageButton
-        style="@style/home_button"
-        android:onClick="goHome"
-        android:layout_margin="5dp"/>
-</RelativeLayout>
+        <ImageButton
+            android:contentDescription="Mute toggle"
+            style="@style/func_button"
+            android:layout_margin="5dp"
+            android:src="@mipmap/ic_unmute"
+            android:onClick="mute"
+            android:layout_weight="1"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/points"
+            android:textSize="30sp"
+            android:textColor="#ffffff"
+            android:layout_margin="25dp"
+            android:layout_weight="3" />
+
+        <ImageButton
+            style="@style/func_button"
+            android:onClick="goHome"
+            android:layout_margin="5dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+
+    </LinearLayout>

@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
   >
     <ImageButton
-        style="@style/home_button"
+        style="@style/func_button"
         android:onClick="goHome"
         android:layout_margin="5dp"/>
 
